@@ -1,0 +1,1641 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Linux上搭建热更服务器并在移动端通过react native项目验证, blog">
+    <meta name="baidu-site-verification" content="fmlEuI34ir">
+    <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
+    <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
+    <meta name="description" content="本文介绍搭建热更服务器并在手机上测试react native热更的全过程。简书地址
+
+
+安装MySQL安装完成后，会弹出初始密码，粗细的我，随手点了OK，此处挖坑半天。权限密码问题可以参考这篇博客，其它的都是小问题
+
+code-push热更">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Linux上搭建热更服务器并在移动端通过react native项目验证 | 回忆点滴</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?8835c2c7d2db94534f40216cf670e8ea";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+    
+        <script>
+            (function(){
+                var bp = document.createElement('script');
+                var curProtocol = window.location.protocol.split(':')[0];
+                if (curProtocol === 'https') {
+                    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+                }
+                else {
+                    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+                }
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(bp, s);
+            })();
+        </script>
+    
+
+    <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+    </script>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="stylesheet" href="/css/prism-material-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
+<script src="/js/prism-line-numbers.min.js"></script>
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">回忆点滴</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>时间轴</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/galleries" class="waves-effect waves-light">
+            
+            <i class="fa fa-photo"></i>
+            
+            <span>相册</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/contact" class="waves-effect waves-light">
+            
+            <i class="fa fa-comments"></i>
+            
+            <span>留言板</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">回忆点滴</div>
+        <div class="logo-desc">
+            
+            Keep learning, keep coding
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                时间轴
+            </a>
+        </li>
+        
+        <li>
+            <a href="/galleries" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-photo"></i>
+                
+                相册
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        <li>
+            <a href="/contact" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-comments"></i>
+                
+                留言板
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/qdhaiqiang" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #F062A7;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/qdhaiqiang" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Linux上搭建热更服务器并在移动端通过react native项目验证
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                        <a href="/tags/linux/" target="_blank">
+                            <span class="chip bg-color">linux</span>
+                        </a>
+                        
+                        <a href="/tags/codepush/" target="_blank">
+                            <span class="chip bg-color">codepush</span>
+                        </a>
+                        
+                        <a href="/tags/react-native/" target="_blank">
+                            <span class="chip bg-color">react-native</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                        <a href="/categories/大前端/" class="post-category" target="_blank">
+                            大前端
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-06-13
+                </div>
+
+                <div class="post-author info-break-policy">
+                    <i class="fa fa-user-o fa-fw"></i>作者:&nbsp;&nbsp;
+                    
+                    马海强
+                    
+                </div>
+
+                
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    3.7k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    16 分
+                </div>
+                
+                
+
+                
+                <div id="busuanzi_container_page_pv" class="info-break-policy">
+                    <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                    <span id="busuanzi_value_page_pv"></span>
+                </div>
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>本文介绍搭建热更服务器并在手机上测试react native热更的全过程。<br><a href="https://www.jianshu.com/p/7fd2dc0352d2" target="_blank" rel="noopener">简书地址</a></p>
+<a id="more"></a>
+
+<h2 id="安装MySQL"><a href="#安装MySQL" class="headerlink" title="安装MySQL"></a><a href="https://link.jianshu.com/?t=https%3A%2F%2Fwww.mysql.com%2Fdownloads%2F" target="_blank" rel="noopener">安装MySQL</a></h2><p>安装完成后，会弹出初始密码，粗细的我，随手点了OK，此处挖坑半天。<br><a href="https://link.jianshu.com/?t=http%3A%2F%2Fblog.csdn.net%2Fu014410695%2Farticle%2Fdetails%2F50630233" target="_blank" rel="noopener">权限密码问题可以参考这篇博客，其它的都是小问题</a></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/4109786-429725387cd40b07.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="app热更原理.png"></p>
+<h2 id="code-push热更服务器搭建："><a href="#code-push热更服务器搭建：" class="headerlink" title="code-push热更服务器搭建："></a>code-push热更服务器搭建：</h2><h4 id="安装code-push-server"><a href="#安装code-push-server" class="headerlink" title="安装code-push-server"></a>安装code-push-server</h4><ul>
+<li>npm安装<pre><code># 安装code-push-server
+npm install code-push-server -g</code></pre></li>
+<li>源码安装（推荐）<pre><code># 从git库下载最新代码
+git clone https://github.com/lisong/code-push-server.git
+# 进入到code-push-server目录
+cd code-push-server
+# 安装
+npm install</code></pre><h4 id="Code-Push-Server配置"><a href="#Code-Push-Server配置" class="headerlink" title="Code-Push-Server配置"></a>Code-Push-Server配置</h4>修改config/config.js文件，指定数据库，数据存放位置</li>
+<li>配置数据库<pre><code>db: {
+username: "root",
+password: "Your PWD",
+database: "codepush",
+host: "127.0.0.1",
+port: 3306,
+dialect: "mysql"
+}</code></pre></li>
+<li>配置存储（默认为local,本次也采用local）<pre><code>common: {
+ // dataDir用于进行存放比对文件
+ dataDir: "/Users/tablee/workspaces/data",
+ // 存储类型，可选值有local,oss,qiniu,s3
+ storageType: "local"
+},
+</code></pre></li>
+</ul>
+<p>// 文件存储在本地 当storageType为local时需要配置<br>local: {<br>   // 二进制文件存放目录，文件下载目录，不要使用临时目录<br>   storageDir: “/Users/tablee/workspaces/storage”,<br>   // 文件下载地址 CodePushServer地址 + ’/download‘,download对应app.js里面的地址<br>   //默认此处的下载地址是127.0.0.1:3000这个自然是错误的，要外网ip地址<br>   downloadUrl: “<a href="https://tech.haier.net:7788/download&quot;" target="_blank" rel="noopener">https://tech.haier.net:7788/download"</a>,<br>   // public static download spacename<br>   public: ‘/download’<br>},</p>
+<p>//七牛云存储配置 当storageType为qiniu时需要配置<br>qiniu: {<br>  accessKey: “”,<br>  secretKey: “”,<br>  bucketName: “”,<br>  //文件下载域名地址<br>  downloadUrl: “”<br>},<br>//阿里云存储配置 当storageType为oss时需要配置<br>oss: {<br>  accessKeyId: “”,<br>  secretAccessKey: “”,<br>  endpoint: “”,<br>  bucketName: “”,<br>  // 对象Key的前缀，允许放到子文件夹里面<br>  prefix: “”,<br>  // 文件下载域名地址，需要包含前缀<br>  downloadUrl: “”,<br>}</p>
+<pre><code>* 配置签名,可以不修改，但是推荐更改</code></pre><p>jwt: {<br>    // 登录jwt签名密钥，必须更改，否则有安全隐患，可以使用随机生成的字符串<br>    // Recommended: 63 random alpha-numeric characters<br>    // Generate using: <a href="https://www.grc.com/passwords.htm" target="_blank" rel="noopener">https://www.grc.com/passwords.htm</a><br>    tokenSecret: ‘<a href="https://www.grc.com/passwords.htm'" target="_blank" rel="noopener">https://www.grc.com/passwords.htm'</a><br>}</p>
+<pre><code>####  初始化数据库
+配置完成后，进行数据初始化工作
+* npm安装</code></pre><h1 id="初始化数据库-替换为数据库密码（参考后面配置说明）"><a href="#初始化数据库-替换为数据库密码（参考后面配置说明）" class="headerlink" title="初始化数据库,替换为数据库密码（参考后面配置说明）"></a>初始化数据库,<strong>替换为数据库密码</strong>（参考后面配置说明）</h1><p>code-push-server-db init –dbhost localhost –dbuser root –dbpassword <strong>Your PWD</strong> –dbport 3306</p>
+<pre><code>* 源码安装</code></pre><h1 id="初始化数据库"><a href="#初始化数据库" class="headerlink" title="初始化数据库"></a>初始化数据库</h1><p>./bin/db init –dbhost localhost –dbuser root –dbpassword <strong>Your PWD</strong> –dbport 3306</p>
+<pre><code>**注意事项**：
+* 1.  不论采取哪种安装方式，初始化数据库时要保证数据库用户名密码正确；数据库中不能存在codepush数据库(默认数据库为codepush)
+* 2. 采用源码安装，执行bin目录下的db命令时，要保证此文件具有可执行权限，如果没有，需要添加权限</code></pre><h1 id="添加db文件的可执行权限"><a href="#添加db文件的可执行权限" class="headerlink" title="添加db文件的可执行权限"></a>添加db文件的可执行权限</h1><p>chmod +x bin/db</p>
+<pre><code>* 3. 如果数据库密码复杂，带有特殊符号，初始化语句将执行失败。此时因为是第一次安装，可以在数据库服务器手动创建名为**`codepush`**(必须是这个名字)的数据库，然后执行`/opt/chuangke/code-push-server/sql/`目录下的`codepush-all.sql`脚本来初始化数据库。
+初始化成功后数据库中的表如下：
+![codepush database](http://upload-images.jianshu.io/upload_images/4109786-4975e1c5d8e408c8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+####  服务启动
+安装配置文件中的目录结构，到/Users目录中建立如下文件夹 /Users/tablee/workspaces/storage 
+* npm启动</code></pre><h1 id="启动服务，默认使用3000端口-可以在浏览器中打开-http-127-0-0-1-3000"><a href="#启动服务，默认使用3000端口-可以在浏览器中打开-http-127-0-0-1-3000" class="headerlink" title="启动服务，默认使用3000端口,可以在浏览器中打开 http://127.0.0.1:3000"></a>启动服务，默认使用3000端口,可以在浏览器中打开 <a href="http://127.0.0.1:3000" target="_blank" rel="noopener">http://127.0.0.1:3000</a></h1><p>code-push-server</p>
+<h1 id="指定端口号运行"><a href="#指定端口号运行" class="headerlink" title="指定端口号运行"></a>指定端口号运行</h1><p>PORT=3000 HOST=127.0.0.1 NODE_ENV=production code-push-server</p>
+<pre><code>* 源码启动</code></pre><h1 id="启动服务-保证www具有可执行权限-，在浏览器中打开-http-127-0-0-1-3000"><a href="#启动服务-保证www具有可执行权限-，在浏览器中打开-http-127-0-0-1-3000" class="headerlink" title="启动服务(保证www具有可执行权限)，在浏览器中打开 http://127.0.0.1:3000"></a>启动服务(保证www具有可执行权限)，在浏览器中打开 <a href="http://127.0.0.1:3000" target="_blank" rel="noopener">http://127.0.0.1:3000</a></h1><p>./bin/www</p>
+<h1 id="以守护进程的方式运行"><a href="#以守护进程的方式运行" class="headerlink" title="以守护进程的方式运行"></a>以守护进程的方式运行</h1><p>nohup ./bin/www &amp;</p>
+<h1 id="指定端口号运行-1"><a href="#指定端口号运行-1" class="headerlink" title="指定端口号运行"></a>指定端口号运行</h1><p>PORT=3000 HOST=127.0.0.1 NODE_ENV=production node ./bin/www</p>
+<pre><code>* forever 后台启动（推荐）
+**先安装forever**
+当然，有人说forever已经过时了，推荐使用pm2代替forever，请参考[linux npm start 保持后台运行](https://www.jianshu.com/p/420ec3665d2f)</code></pre><h1 id="全局安装"><a href="#全局安装" class="headerlink" title="全局安装"></a>全局安装</h1><p>$ npm install forever -g</p>
+<h1 id="查看是否安装成功"><a href="#查看是否安装成功" class="headerlink" title="查看是否安装成功"></a>查看是否安装成功</h1><p>$ forever list<br>info:    No forever processes running</p>
+<pre><code>很抱歉，如果不顺利的话，会有这么个情况</code></pre><p>[root@izm5e3m6sxwr4dw9w7r6h4z lib]# npm install forever -g<br>/opt/software/node-v10.0.0-linux-x64/bin/forever -&gt; /opt/software/node-v10.0.0-linux-x64/lib/node_modules/forever/bin/forever<br>npm WARN optional SKIPPING OPTIONAL DEPENDENCY: <a href="mailto:fsevents@1.2.7" target="_blank" rel="noopener">fsevents@1.2.7</a> (node_modules/forever/node_modules/fsevents):<br>npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for <a href="mailto:fsevents@1.2.7" target="_blank" rel="noopener">fsevents@1.2.7</a>: wanted {“os”:”darwin”,”arch”:”any”} (current: {“os”:”linux”,”arch”:”x64”})</p>
+<ul>
+<li><a href="mailto:forever@0.15.3" target="_blank" rel="noopener">forever@0.15.3</a><br>updated 1 package in 2.109s<br>[root@izm5e3m6sxwr4dw9w7r6h4z lib]# forever list</li>
+</ul>
+<p>-bash: forever: 未找到命令<br>[root@izm5e3m6sxwr4dw9w7r6h4z lib]# </p>
+<pre><code>不美丽了，命名安装成功了，但是还是提示找不到命令，怎么办呢？我来教你，这个是因为这个-g是吧命令安装到了node所在目录，可以看看具体在哪</code></pre><p>[root@izm5e3m6sxwr4dw9w7r6h4z ~]# npm list -g –depth 0<br>/opt/software/node-v10.0.0-linux-x64/lib<br>├── <a href="mailto:forever@0.15.3" target="_blank" rel="noopener">forever@0.15.3</a><br>└── <a href="mailto:npm@5.6.0" target="_blank" rel="noopener">npm@5.6.0</a></p>
+<p>[root@izm5e3m6sxwr4dw9w7r6h4z ~]# cd /opt/software/node-v10.0.0-linux-x64/lib<br>[root@izm5e3m6sxwr4dw9w7r6h4z lib]# ls<br>node_modules<br>[root@izm5e3m6sxwr4dw9w7r6h4z lib]# cd node_modules/forever/bin/<br>[root@izm5e3m6sxwr4dw9w7r6h4z bin]# ls<br>forever  monitor<br>[root@izm5e3m6sxwr4dw9w7r6h4z bin]#</p>
+<pre><code>这次是真的看见forever被安装到哪里，接下来就来个软链到`/usr/bin`下就可以了</code></pre><p>[root@izm5e3m6sxwr4dw9w7r6h4z bin]# ln -s /opt/software/node-v10.0.0-linux-x64/lib/node_modules/forever/bin/forever /usr/bin/forever<br>[root@izm5e3m6sxwr4dw9w7r6h4z bin]# forever list<br>info:    No forever processes running<br>[root@izm5e3m6sxwr4dw9w7r6h4z bin]#</p>
+<pre><code>完美，接着使用forever启动应用啦。
+比如我的server源码的位置在`/opt/chuangke/code-push-server/`，在当前目录下执行如下命令启动</code></pre><p>NODE_ENV=production forever start -l log/forever.log -o log/info.log -e log/err.log bin/www</p>
+<pre><code>可以用如下绝对路径命令启动：</code></pre><p>NODE_ENV=production forever start -l /opt/chuangke/code-push-server/log/forever.log -o /home/haieradmin/codepush/code-push-server/log/info.log -e /home/haieradmin/codepush/code-push-server/log/err.log /home/haieradmin/codepush/code-push-server/bin/www</p>
+<pre><code>* 服务启动验证
+命令行验证</code></pre><p>$ forever list<br>info:    Forever processes running<br>data:        uid  command                   script                                 forever pid   id logfile                                        uptime<br>data:    [0] 8Or8 /usr/local/node8/bin/node /opt/chuangke/code-push-server/bin/www 60199   60209    /opt/chuangke/code-push-server/log/forever.log 0:15:2:21.503 </p>
+<pre><code>如果服务器启动成功，则用浏览器访问默认的3000端口，可以看到如下效果
+![首页](http://upload-images.jianshu.io/upload_images/4109786-3c67822345f455b2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+到此服务器端到配置就完成了。
+
+##  客户端热更验证
+客户端测试代码以 https://github.com/lisong/code-push-demo-app 为例
+#### 客户端安装code-push-cli</code></pre><h1 id="全局安装-1"><a href="#全局安装-1" class="headerlink" title="全局安装"></a>全局安装</h1><p>$ npm install -g code-push-cli </p>
+<h1 id="查看版本"><a href="#查看版本" class="headerlink" title="查看版本"></a>查看版本</h1><p>$ code-push -v<br>2.1.8</p>
+<pre><code>#### 下载客户端验证程序，并安装第一版
+ 1. clone程序并install</code></pre><p>$ git clone <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>:lisong/code-push-demo-app.git</p>
+<h1 id="cd-到demo路径，执行npm-install-安装node依赖包"><a href="#cd-到demo路径，执行npm-install-安装node依赖包" class="headerlink" title="cd  到demo路径，执行npm install 安装node依赖包"></a>cd  到demo路径，执行npm install 安装node依赖包</h1><p>$ cd code-push-demo-app<br>$ npm install</p>
+<pre><code>
+打开命令终端，登录code-push-server服务器，这里配置为local，所以登录地址为http://127.0.0.1:3000 </code></pre><p>$ code-push login <a href="http://127.0.0.1:3000" target="_blank" rel="noopener">http://127.0.0.1:3000</a>  //账号密码为博主提供  account:  admin password:  123456<br>登录成功之后获取token</p>
+<pre><code>将文本框中的key复制粘贴到登录终端，点击回车登录成功
+![登录页面](http://upload-images.jianshu.io/upload_images/4109786-5ed0dd3b34e078e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+输入账号密码，点击登录。获取token：
+![获取token](http://upload-images.jianshu.io/upload_images/4109786-a0dc9ad5f2a2231f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)</code></pre><p>$ code-push login <a href="http://127.0.0.1:3000" target="_blank" rel="noopener">http://127.0.0.1:3000</a><br>Please login to Mobile Center in the browser window we’ve just opened.<br>Enter your token from the browser:  HugyOJpzvzhEhB05galUftoL4zrz4ksvOXqog<br>Successfully logged-in. Your session file was written to C:\Users\marvin\AppData\Local.code-push.config. You can run the code-push logout command at any time to delete this file and terminate your session.</p>
+<pre><code>在命令行查看当前热更服务器的部署信息，</code></pre><p>$ code-push app list<br>┌──────┬─────────────┐<br>│ Name │ Deployments │<br>└──────┴─────────────┘</p>
+<pre><code>
+ 2. 添加新的APP（以安卓为例）</code></pre><h1 id="安卓版"><a href="#安卓版" class="headerlink" title="安卓版"></a>安卓版</h1><p>$ code-push app add CodePushReactNativeDemo-android android react-native<br>Successfully added the “CodePushReactNativeDemo-android” app, along with the following default deployments:<br>┌────────────┬───────────────────────────────────────┐<br>│ Name       │ Deployment Key                        │<br>├────────────┼───────────────────────────────────────┤<br>│ Production │ VKNbn9Oe5Wj9bPoGkYCUVuzRuqHV4ksvOXqog │<br>├────────────┼───────────────────────────────────────┤<br>│ Staging    │ 6KfLoVvhgdsnFzFCIohRb2t5grmD4ksvOXqog │<br>└────────────┴───────────────────────────────────────┘</p>
+<h1 id="再运行命令查看"><a href="#再运行命令查看" class="headerlink" title="再运行命令查看"></a>再运行命令查看</h1><p>$ code-push app list<br>┌─────────────────────────────────┬─────────────────────┐<br>│ Name                            │ Deployments         │<br>├─────────────────────────────────┼─────────────────────┤<br>│ CodePushReactNativeDemo-android │ Production, Staging │<br>└─────────────────────────────────┴─────────────────────┘</p>
+<pre><code> 3. 修改配置
+添加完成之后可以用code-push app list命令查看创建好的app，并将测试的Staging key拷贝到MainApplication.java中的 “Your Key“ 的位置，推送的时候通过key将app和服务器端关联。
+
+用Android Studio打开`code-push-demo-app/android`目录到MainApplication.java里面修改以下代码：</code></pre><p>@Override</p>
+<p>protected List<reactpackage> getPackages() {</reactpackage></p>
+<p>  return Arrays.<reactpackage>asList(</reactpackage></p>
+<pre><code>  new MainReactPackage(),
+
+  new CodePush(
+
+     "YourKey",  // code-push app add项目后生成的app 推送key
+
+     MainApplication.this,
+
+     BuildConfig.DEBUG,
+
+     "YourCodePushServerUrl"   // config.js中配置的downloadUrl 地址 不需要/download后缀
+
+  )</code></pre><p>  );<br>}</p>
+<pre><code>我的配置是：
+修改MainApplication.java的代码如下：</code></pre><pre><code>@Override
+protected List&lt;ReactPackage&gt; getPackages() {
+  return Arrays.&lt;ReactPackage&gt;asList(
+      new MainReactPackage(),
+      new CodePushBuilder(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey),getApplicationContext())
+            .setIsDebugMode(BuildConfig.DEBUG)
+            .setServerUrl(getResources().getString(R.string.reactNativeCodePush_androidServerURL))
+            .build()
+  );
+}</code></pre><pre><code>修改`android/app/src/main/res/values/strings.xml`文件，指定reactNativeCodePush_androidDeploymentKey和reactNativeCodePush_androidServerURL的值。</code></pre><resources>
+    <string moduleconfig="true" name="reactNativeCodePush_androidDeploymentKey">6KfLoVvhgdsnFzFCIohRb2t5grmD4ksvOXqog</string>
+    <string moduleconfig="true" name="reactNativeCodePush_androidServerURL">http://xxx.xxx:3000/</string>
+    <string name="app_name">CodePushDemoApp</string>
+</resources>
+```
+ 4. cd 到code-push-demo-app目录，允许react-native start 启动react-native 服务。可以选择用数据线连接手机，手机开启开发者模式。也可以直接将`code-push-demo-app\android\app\build\outputs\apk\debug`以后的apk包发送到手机上，直接打开安装。
+```
+$ react-native run-android
+```
+在手机上运行app的截图如下：
+![code-push-demo-app](http://upload-images.jianshu.io/upload_images/4109786-50b93d71f61fe113.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+ 5. Android Studio编译并将项目运行到手机上，reload更新到最新js包在code-push-demo-app中首页随意做一些修改，这里是将CodePushDemoApp/App.js文件做了如下修改。
+![一些修改](http://upload-images.jianshu.io/upload_images/4109786-dc556461f48bcdef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+执行推送命令
+```
+# 测试环境执行：
+$ code-push release-react CodePushReactNativeDemo-android android
+Detecting android app version:
+
+<p>Using the target binary version value “2.1.0” from “android\app\build.gradle”.</p>
+<p>Running “react-native bundle” command:</p>
+<p>node node_modules\react-native\local-cli\cli.js bundle –assets-dest C:\Users\marvin\AppData\Local\Temp\CodePush\CodePush –bundle-output C:\Users\marvin\AppData\Local\Temp\CodePush\CodePush\index.android.bundle –dev false –entry-file index.js –platform android<br>Scanning folders for symlinks in D:\Git\oschina\react\code-push-demo-app\node_modules (101ms)<br>Scanning folders for symlinks in D:\Git\oschina\react\code-push-demo-app\node_modules (48ms)<br>Loading dependency graph, done.<br>bundle: Writing bundle output to: C:\Users\marvin\AppData\Local\Temp\CodePush\CodePush\index.android.bundle<br>bundle: Done writing bundle output<br>bundle: Copying 1 asset files<br>bundle: Done copying assets</p>
+<p>Releasing update contents to CodePush:</p>
+<p>Successfully released an update containing the “C:\Users\marvin\AppData\Local\Temp\CodePush\CodePush” directory to the “Staging” deployment of the “CodePushReactNativeDemo-android” app.</p>
+<h1 id="生产环境执行："><a href="#生产环境执行：" class="headerlink" title="生产环境执行："></a>生产环境执行：</h1><p>$ code-push release-react CodePushReactNativeDemo-android android -d Production</p>
+<p>#指定版本，添加注释<br>$ code-push release-react CodePushReactNativeDemo-android android -d Production –des “marvin code push testing” -t “1.0.0”</p>
+<pre><code>Successfully 表示热更包推送成功，然后在手机上点击**Press for dialog-driven sync**链接。
+弹出下载确认
+![确认更新](http://upload-images.jianshu.io/upload_images/4109786-18c3d1a89c799c81.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+点击【install】
+![已更新](http://upload-images.jianshu.io/upload_images/4109786-66fcf62d7789c8da.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+至此，热更服务器搭建，及android版app体验完毕。
+
+
+## 扩展
+1、产看更新包安装情况</code></pre><h1 id="code-push-deployment-history-appName-deploymentName"><a href="#code-push-deployment-history-appName-deploymentName" class="headerlink" title="code-push deployment history appName deploymentName"></a>code-push deployment history appName deploymentName</h1><p>code-push deployment history CodePushReactNativeDemo-android Staging</p>
+<pre><code>Staging 或者 Production
+![image.png](https://upload-images.jianshu.io/upload_images/4109786-7912f2739b4edd06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+2、列表部署名称</code></pre><p>code-push deployment ls CodePushReactNativeDemo-android</p>
+<pre><code>![部署名](https://upload-images.jianshu.io/upload_images/4109786-1ec0da855309e131.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+3、常见错误
+3.1、 download地址写错，默认是http://127.0.0.1:3000 如果不改成外网域名和端口，下载将失败。
+app启动抓包查看的结果就是，返回的下载地址无法下载到资源。
+![image.png](https://upload-images.jianshu.io/upload_images/4109786-f32d3631189ba63b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+3.2、nginx限制资源大小
+需要修改配置，我们的一个app打包后约70M，上传时就报错了，后来才知道是nginx指定的上传大小是50M，所以要修改nginx配置文件，加上`client_max_body_size 100M;  `这个样配置。
+
+3.3、数据库配置错误
+将数据库的端口，或者用户名密码写错也很常见
+
+3.4、目录权限问题
+配置文件里默认的dataDir和storeage目录必须有code-push运行用户的操作权限，否则会有以下错误。
+![image.png](https://upload-images.jianshu.io/upload_images/4109786-13c3240c61b7afde.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+
+## 常用命令
+</code></pre><p>// 账户相关<br>code-push login 登陆<br>code-push loout 注销<br>code-push access-key ls 列出登陆的token<br>code-push access-key rm <accesskye> 删除某个 access-key</accesskye></p>
+<pre><code>
+
+</code></pre><p>// app操作相关<br>code-push app add <appname> <platform> react-native  在账号里面添加一个新的app<br>code-push app remove 或者 rm 在账号里移除一个 app<br>code-push app rename 重命名一个存在 app<br>code-push app list 或则 ls 列出账号下面的所有 app<br>code-push app transfer 把app的所有权转移到另外一个账号</platform></appname></p>
+<pre><code></code></pre><p>// 应用信息相关<br>code-push deployment add <appname> 部署<br>code-push deployment rm <appname> 删除部署<br>code-push deployment rename <appname> 重命名<br>code-push deployment ls <appname> 列出应用的部署情况<br>code-push deployment ls <appname> -k 查看部署的key<br>code-push deployment history <appname> <deploymentname> 查看历史版本</deploymentname></appname></appname></appname></appname></appname></appname></p>
+<pre><code>
+
+</code></pre><p>// 发布<br>code-push release-react <appname> <platform> -t 版本  -d 环境  –des 描述 -m true （强制更新）</platform></appname></p>
+<p>// 清除历史部署记录<br>code-push deployment clear <appname> Production or Staging</appname></p>
+<p>// 回滚<br>code-push rollback <appname> Production –targetRelease v4(codepush服务部署的版本号)</appname></p>
+<p>```</p>
+<p>注意事项：</p>
+<ol>
+<li><p>更新规则<br>  1&gt; CodePush部署版本 &gt; App版本</p>
+<p>  更新可用，但当前版本比运行版本高。不作更新</p>
+<p>  2&gt; CodePush部署版本 &lt; App版本</p>
+<p>   不执行更新处理</p>
+<p>  3&gt; CodePush部署版本 == App版本</p>
+<p>   自动下载更新，并根据加载策略加载最新bundle</p>
+</li>
+</ol>
+<ol start="2">
+<li><p>回滚 </p>
+<p> 当部署的版本不同时，不能跨版本回滚。</p>
+<p> 例如：CodePush历史版本中为2.10.1，此时发布2.10.2版本。当从2.10.2发起回滚操作回到2.10.1时，是不可行的。</p>
+</li>
+</ol>
+<h2 id="部署信息参数"><a href="#部署信息参数" class="headerlink" title="部署信息参数"></a>部署信息参数</h2><p>在部署了版本之后，执行 【code-push deployment ls uniApp-Android】可以查看当前版本、当前部署环境下的部署信息：</p>
+<ol>
+<li><p>Update Metadata（更新信息）<br> Label：标识当前部署版本，每部署新版本，版本号增加1</p>
+<p> App Version：当前部署的App版本号</p>
+<p> Mandatory：是否强制更新</p>
+<p> Release Time：部署时间</p>
+<p> Released By：部署用户</p>
+<p> Description：部署 描述信息</p>
+</li>
+</ol>
+<p>从上面内容不难发现，这些信息基本都会在我们执行 code-push release 时配置</p>
+<ol start="2">
+<li><p>Install Metrics（安装指标） </p>
+<p> Active：成功安装并运行当前release的用户的数量，即表示当前下载更新部署的活跃用户数量，of 左边数会随着用户安装、卸载而 增加、减少。of右边数代表当前安装或收                    到部署版本的用户数，当有用户卸载App，该数值会降低。</p>
+<p> 因此它很好的解释了当前更新包有多少活跃用户，多少用户接收过这个安装包</p>
+<p> Total：成功安装部署当前release的用户量，只增不减</p>
+<p> Pending：当前release版本被下载的数量，但是还没有被安装，该值会随着用户下载安装后增加， 在卸载时降低。</p>
+</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://222xiaohuan.iteye.com/blog/2347617" target="_blank" rel="noopener">code-push-server 搭建自己的推送服务器流程</a><br><a href="https://www.jianshu.com/p/d6a155a6f6f4" target="_blank" rel="noopener">热更新（android）windows系统code-push-server 的使用</a><br><a href="https://blog.csdn.net/mad2man/article/details/51096829" target="_blank" rel="noopener">ReactNative集成CodePush教程  集成Code Push的案例说明</a><br><a href="https://www.jianshu.com/p/8e08c7661275" target="_blank" rel="noopener">react-native热更新全方位讲解</a><br><a href="https://juejin.im/post/5911dca544d904007bfdf8ab" target="_blank" rel="noopener">零客户端开发经验 React Native 热更新 CodePush 打包集成指北</a><br><a href="https://www.jianshu.com/p/fa362da953c7" target="_blank" rel="noopener">react native codepush热更新解决成功更新</a><br><a href="https://blog.csdn.net/yy1300326388/article/details/48344411" target="_blank" rel="noopener">Android Studio 权威教程 打包、生成jks密钥、签名Apk、多渠道打包</a><br><a href="http://www.tl628.com/index.php/2018/05/31/code-push_fa_bu_de_shi_hou_chu_xian_error_upload_error/" target="_blank" rel="noopener">http://www.tl628.com/index.php/2018/05/31/code-push_fa_bu_de_shi_hou_chu_xian_error_upload_error/</a></p>
+
+            </div>
+            <hr />
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">写作不易，客官能否打赏一杯奶茶？</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《Linux上搭建热更服务器并在移动端通过react native项目验证》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2018/06/13/linux-shang-da-jian-re-geng-fu-wu-qi-bing-zai-yi-dong-duan-tong-guo-react-native-xiang-mu-yan-zheng/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                马海强
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+    <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments input[type=text],
+    #vcomments input[type=email],
+    #vcomments input[type=url],
+    #vcomments textarea {
+        box-sizing: border-box;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #42b983;
+        font-weight: 500;
+        text-decoration: underline;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div id="vcomments" class="card-content"></div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
+<!-- <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script> -->
+
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: '',
+        appKey: '',
+        notify: 'true' === 'true',
+        verify: 'false' === 'true',
+        visitor: '' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: 'ヾﾉ≧∀≦)o 来呀！吐槽一番吧！'
+    });
+</script>
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/06/15/mysql-shu-ju-ku-an-zhuang-he-yi-ban-pei-zhi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="mysql数据库安装和一般配置">
+                        
+                        <span class="card-title">mysql数据库安装和一般配置</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            在linux上安装mysql server，进行常规设置简书地址
+
+
+同事那里的总结拿过来自己保存一份，类似的教程太多了。
+在linux上安装mysql server，进行常规设置
+MySQL数据库安装
+安装
+ # 更新包索引
+ sudo 
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2018-06-15
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/数据库/" class="post-category" target="_blank">
+                                    数据库
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/linux/" target="_blank">
+                        <span class="chip bg-color">linux</span>
+                    </a>
+                    
+                    <a href="/tags/mysql/" target="_blank">
+                        <span class="chip bg-color">mysql</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/06/10/xue-xi-shu-dan/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="学习书单">
+                        
+                        <span class="card-title">学习书单</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            免费的计算机编程类中文书籍。简书地址
+
+
+你想要的干货，都在这里哟！
+
+摘自:github上由justjavac整理的free-programming-books-zh_CN(免费的计算机编程类中文书籍)觉得不错的可以去star和fork一
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-06-10
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/学习资源/" class="post-category" target="_blank">
+                                    学习资源
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/tools/" target="_blank">
+                        <span class="chip bg-color">tools</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            &copy; 2018-2021 Marvin. 版权所有
+
+            
+            &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+            <span class="white-color">138.1k</span>
+            
+
+            <br>
+            <span id="sitetime"></span>
+
+            
+            
+            <br>
+            
+            <span id="busuanzi_container_site_pv" style='display:none'>
+                <i class="fa fa-heart-o"></i>
+                本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv" style='display:none'>
+                人次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+            </span>
+            
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/qdhaiqiang" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:qdhaiqiang@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://gitee.com/marvinma/imagebed/raw/master/img/weichat.png" class="tooltipped" target="_blank" data-tooltip="微信联系我: https://gitee.com/marvinma/imagebed/raw/master/img/weichat.png" data-position="top" data-delay="50">
+        <i class="fa fa-weixin"></i>
+    </a>
+
+
+
+
+
+    <a href="http://wpa.qq.com/msgrd?v=3&uin=389709260&site=qq&menu=yes" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+    $(document).ready(function () {
+
+        var int = setInterval(fixCount, 50);
+        var pvcountOffset = 80000;
+        var uvcountOffset = 20000;
+
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据 
+                clearInterval(int);
+            }
+        }
+    });
+</script>
+
+<script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+        year - 作为date对象的年份，为4位年份值
+        month - 0-11之间的整数，做为date对象的月份
+        day - 1-31之间的整数，做为date对象的天数
+        hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+        minutes - 0-59之间的整数，做为date对象的分钟数
+        seconds - 0-59之间的整数，做为date对象的秒数
+        microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+        var t1 = Date.UTC(2017, 09, 11, 00, 00, 00); //北京时间2018-2-13 00:00:00
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+</script>
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <script type="text/javascript"> var OriginTitile = document.title, st; 
+    document.addEventListener("visibilitychange", function () { document.hidden ? 
+        (document.title = "走了你还会回来的~", clearTimeout(st)) : 
+        (document.title = "你看回来了吧！！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) })
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=查教程获取"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', '查教程获取');
+</script>
+
+
+
+    
+    <script src="/libs/others/clicklove.js"></script>
+    
+
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    <!-- 雪花特效 -->
+    
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"live2d-widget-model-shizuku"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":false},"react":{"opacity":0.7}});</script></body>
+
+</html>
