@@ -94,7 +94,7 @@
       
       <i class="fas fa-archive" style="zoom: 0.6;"></i>
       
-      <span>归档</span>
+      <span>时间轴</span>
     </a>
     
   </li>
@@ -208,7 +208,7 @@
 			
 			    <i class="fa-fw fas fa-archive"></i>
 			
-			归档
+			时间轴
 		</a>
           
         </li>
@@ -475,20 +475,20 @@
                 </a>
                 
                 
-                <a href="/categories/clojurescript/" title="clojurescript: 3">
+                <a href="/categories/cljs/" title="cljs: 5">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #85C1E9;">clojurescript
-                        <span class="tag-length">3</span>
+                            style="background-color: #85C1E9;">cljs
+                        <span class="tag-length">5</span>
                     </span>
                 </a>
                 
                 
-                <a href="/categories/cljs/" title="cljs: 5">
+                <a href="/categories/clojurescript/" title="clojurescript: 3">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #F8C471;">cljs
-                        <span class="tag-length">5</span>
+                            style="background-color: #F8C471;">clojurescript
+                        <span class="tag-length">3</span>
                     </span>
                 </a>
                 
@@ -574,11 +574,11 @@
                 </a>
                 
                 
-                <a href="/categories/mac/" title="mac: 4">
+                <a href="/categories/mac/" title="mac: 3">
                     <span class="chip center-align waves-effect waves-light
                              chip-active "
                             style="background-color: #D7BDE2;">mac
-                        <span class="tag-length">4</span>
+                        <span class="tag-length">3</span>
                     </span>
                 </a>
                 
@@ -710,57 +710,6 @@
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2019/11/02/cheng-xu-yuan-de-macos-kai-fa-huan-jing-zhi-yi/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="程序猿的MacOS开发环境之一">
-                            
-                            <span class="card-title">程序猿的MacOS开发环境之一</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                程序猿的macOS上应该有的软件和小插件
-简书地址
-
-
- 每个江湖上的高手都有自己趁手的兵器，你也应该有你自己的那把小李飞刀。小李飞刀这个兵器还真不是突然想到的。
-要是问我什么不是方天画戟、青龙偃月刀、丈八蛇矛云云，或者为啥不是独孤求败的利
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-02
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fa fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/mac/" class="post-category" target="_blank">
-                                    mac
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/mac/" target="_blank">
-                            <span class="chip bg-color">mac</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
                     <a href="/2019/10/19/shen-zhou-jing-dun-t47t1-an-zhuang-hei-ping-guo/">
                         <div class="card-image tag-image">
                             
@@ -822,13 +771,13 @@
 
     <footer class="page-footer bg-color">
     
-    <div class="container row center-align" style="margin-bottom: 0px !important;">
+    <div class="container row center-align" style="margin-bottom: 15px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2020-2021</span>
+                <span id="year">2018-2021</span>
             
-            <span id="year">2020</span>
+            <span id="year">2018</span>
             <a href="/about" target="_blank">马海强</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
@@ -851,6 +800,50 @@
             </span>
             
             <br>
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2018";
+                    var startMonth = "6";
+                    var startDate = "5";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
             
             <br>
             
@@ -1013,6 +1006,16 @@ $(function () {
     <script src="/js/matery.js"></script>
 
     <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?8835c2c7d2db94534f40216cf670e8ea";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 
     <!-- Baidu Push -->
 

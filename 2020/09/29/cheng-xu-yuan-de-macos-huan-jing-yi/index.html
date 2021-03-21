@@ -94,7 +94,7 @@
       
       <i class="fas fa-archive" style="zoom: 0.6;"></i>
       
-      <span>归档</span>
+      <span>时间轴</span>
     </a>
     
   </li>
@@ -208,7 +208,7 @@
 			
 			    <i class="fa-fw fas fa-archive"></i>
 			
-			归档
+			时间轴
 		</a>
           
         </li>
@@ -508,7 +508,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.5k
+                    3.6k
                 </div>
                 
 
@@ -565,31 +565,31 @@
 </blockquote>
 <h2 id="1-shell客户端"><a href="#1-shell客户端" class="headerlink" title="1. shell客户端"></a>1. shell客户端</h2><p>iterm2截止目前最喜欢的shell客户端，没有之一，之所以加个截止目前，是因为今年用emcas，都说这里面的shell也很赞。</p>
 <p>做后端开发，经常要快速进入某一台远端服务器，然后看个log，改个配置啥的，这时候iterm+sshpass就能让你事半功倍了。<br>关于怎么配，此处不再细说。</p>
-<pre><code>wget http://sourceforge.net/projects/sshpass/files/sshpass/1.05/sshpass-1.05.tar.gz  
+<pre class="line-numbers language-shell"><code class="language-shell">wget http://sourceforge.net/projects/sshpass/files/sshpass/1.05/sshpass-1.05.tar.gz  
 tar xvzf sshpass-1.05.tar.gz  
 cd sshpass-1.05
 ./configure  
 make  
 make install  
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>推荐两个网友的杰作，一个安装，一个使用。<br><a target="_blank" rel="noopener" href="https://www.iteye.com/blog/tinyhema-2093795">mac下使用sshpass实现ssh记住密码</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ae7bf4086b0d">Mac下，使用sshpass让iTerm2支持ssh登录信息保存</a></p>
 <p>安装sshpass有问题的用户，可以试试</p>
-<pre><code>brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
+<pre class="line-numbers language-shell"><code class="language-shell">brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
 Updating Homebrew...
 Warning: Calling Non-checksummed download of sshpass formula file from an arbitrary URL is deprecated! Use 'brew extract' or 'brew create' and 'brew tap-new' to create a formula file in a tap on GitHub instead.
 ######################################################################## 100.0%
-==&gt; Downloading http://sourceforge.net/projects/sshpass/files/sshpass/1.06/sshpass-1.06.tar.gz
-==&gt; Downloading from https://netcologne.dl.sourceforge.net/project/sshpass/sshpass/1.06/sshpass-1.06.tar.gz
+==> Downloading http://sourceforge.net/projects/sshpass/files/sshpass/1.06/sshpass-1.06.tar.gz
+==> Downloading from https://netcologne.dl.sourceforge.net/project/sshpass/sshpass/1.06/sshpass-1.06.tar.gz
 ######################################################################## 100.0%
-==&gt; ./configure --prefix=/usr/local/Cellar/sshpass/1.06
-==&gt; make install
+==> ./configure --prefix=/usr/local/Cellar/sshpass/1.06
+==> make install
 🍺  /usr/local/Cellar/sshpass/1.06: 9 files, 45.8KB, built in 9 seconds
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>安装成功。</p>
 <p>iterm里另一个不得不用的是<code>Zsh</code>和<code>Oh My Zsh</code>家庭套餐，点到为止，网上一搜一大把，选个自己喜欢的theme用就行了。</p>
 <p>iterm2的profiles里执行一个登录的命令</p>
-<pre><code>/usr/local/bin/sshpass -f /Users/mahaiqiang/Documents/sshpass/&lt;file_name&gt; ssh -p&lt;port&gt; marvin@ip
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">/usr/local/bin/sshpass -f /Users/mahaiqiang/Documents/sshpass/<file_name> ssh -p<port> marvin@ip
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>file_name 只存储这个ip对应的用户登录密码，而且文件没有后缀。</p>
 <p>如果没有安装成功sshpass，也可以用iterm的命令行模式，执行一个shell脚本，脚本的内容可能荣幸</p>
 <pre class="line-numbers language-shell"><code class="language-shell">#!/usr/bin/expect -f
@@ -613,71 +613,73 @@ expect eof
 <p>数据库工具在Mac上我比较钟情这款，导入导出都很方便，其他不推荐。不要说不是免费版，我相信你一定有办法免费，而且你还能搞个汉化版。</p>
 <p>在Windows我用的最多<a target="_blank" rel="noopener" href="https://www.heidisql.com/">HeidiSQL</a>，轻量级，非常稳定的数据库客户端。是可惜没有mac版。</p>
 <h2 id="3-transmit"><a href="#3-transmit" class="headerlink" title="3. transmit"></a>3. transmit</h2><p>相同功能的我还用过的filezilla和WinScp，但是从体验和视觉上来说，我更喜欢transmit，简洁直观</p>
-<p><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/transmit.png" alt="transmit"></p>
+<p><img src="/loading.gif" data-original="/images/mac/transmit.png" alt="transmit"></p>
 <h2 id="4-tinyCal"><a href="#4-tinyCal" class="headerlink" title="4. tinyCal"></a>4. tinyCal</h2><p>这个小日历可了不得，试图比mac自带的日历小，但是又比mac状态栏上那个还不如没有日历表好。截图如下：</p>
-<p><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/tinyCal.png" alt="tinyCal"></p>
+<p><img src="/loading.gif" data-original="/images/mac/tinyCal.png" alt="transmit"></p>
 <p>还有农历，看着不错吧，在设置个开机自启，系统自带的可以关闭了。</p>
 <h2 id="5-Alfred"><a href="#5-Alfred" class="headerlink" title="5. Alfred"></a>5. Alfred</h2><p>这个是在去年在海尔一起工作的小唐同学那里看来的，直接抄一下原创：<br>Alfred作为老牌效率神器，网上很多帖子都已经做过介绍，这里说一下Alfred的剪贴板。</p>
-<p>Alfred的剪贴板可以保存最近几天位于系统剪贴板的所有内容。因此如果当键入命令时，突然想起来这个命令我昨天好像复制过，那就可以直接调出来，贴进命令行即可。</p>
+<p>[站外图片上传中…(image-2652a3-1572691340926)]<br>Alfred的剪贴板可以保存最近几天位于系统剪贴板的所有内容。因此如果当键入命令时，突然想起来这个命令我昨天好像复制过，那就可以直接调出来，贴进命令行即可。</p>
 <p>这款神器可是<a target="_blank" rel="noopener" href="https://github.com/hzlzh/Best-App">Best-App</a>排行NO.1的，可见一斑。</p>
 <p>使用教程：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e9f3352c785f">5分钟上手Mac效率神器Alfred以及Alfred常用操作</a></p>
-<h2 id="6-LICECap-捕捉屏幕生成GIF"><a href="#6-LICECap-捕捉屏幕生成GIF" class="headerlink" title="6. LICECap 捕捉屏幕生成GIF"></a>6. LICECap 捕捉屏幕生成GIF</h2><pre><code>brew cask install LICECap
-</code></pre>
+<h2 id="6-LICECap-捕捉屏幕生成GIF"><a href="#6-LICECap-捕捉屏幕生成GIF" class="headerlink" title="6. LICECap 捕捉屏幕生成GIF"></a>6. LICECap 捕捉屏幕生成GIF</h2><pre class="line-numbers language-shell"><code class="language-shell">brew cask install LICECap
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>相对应的截图软件推荐<a target="_blank" rel="noopener" href="https://zh.xnipapp.com/">xnipapp</a>一款免费的截图软件，还支持滚动截图，离线操作。</p>
 <h2 id="7-Recorder-it"><a href="#7-Recorder-it" class="headerlink" title="7. Recorder it"></a>7. Recorder it</h2><p>屏幕录制软件，可以在xclient.info上下载到。</p>
 <h2 id="8-keycastr-显示快捷键"><a href="#8-keycastr-显示快捷键" class="headerlink" title="8. keycastr 显示快捷键"></a>8. keycastr 显示快捷键</h2><p>在你想做一个教程时，不管是gif了，还是录屏了，你或许在冥思苦想到底怎么解释我在键盘上按了啥，这回不用解释了，你按了啥有软件帮你显示出来了，简单明了。</p>
-<pre><code>brew cask install keycastr
-</code></pre>
-<p><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/keycastr.png" alt="keycastr"></p>
+<pre class="line-numbers language-shell"><code class="language-shell">brew cask install keycastr
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/mac/keycastr.png" alt="keycastr"></p>
 <p>配合上生成gif搞个小教程简直不要太爽。</p>
 <h2 id="9-ssh-tunnel"><a href="#9-ssh-tunnel" class="headerlink" title="9. ssh tunnel"></a>9. ssh tunnel</h2><p>再复制小唐同学推荐的一个神器ssh tunnel。</p>
 <h4 id="场景："><a href="#场景：" class="headerlink" title="场景："></a>场景：</h4><p>我们需要搭建开发环境，使得本地的web server/api server 能够访问位于云服务器上局域网环境中的数据库，例如百度云提供的数据库服务。这些数据库服务器可以在百度云的机器上直接访问，而不能在公网环境下通过公网ip访问。这个时候可以用百度云的普通server建一个tunnel，从而实现数据访问。在xshell中也有类似功能，中文翻译做：隧道。</p>
-<h4 id="界面展示："><a href="#界面展示：" class="headerlink" title="界面展示："></a>界面展示：</h4><p><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80" alt="image">/ssh tunnel.png)</p>
+<h4 id="界面展示："><a href="#界面展示：" class="headerlink" title="界面展示："></a>界面展示：</h4><p><img src="/loading.gif" data-original="/images/mac/ssh-tunnel.png" alt="keycastr"></p>
 <p>如图便是建立了三个tunnel，分别连向了两个关系型数据库服务器和一个redis服务器。<br>举例来说第一条隧道连接，使用时的访问方法，就是直接localhost:13306即可。<br>当然，直接用ssh命令也可解决，但麻烦不是。程序员就应该能偷懒的时候尽可能偷懒，美其名曰：解放和发展生产力~<br>命令行：</p>
-<pre><code>ssh -CfNg -L 16306:postgresql94.rd*****lwr2zr.rds.bj.baidubce.com:3306 root@180.***.***.189
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">ssh -CfNg -L 16306:postgresql94.rd*****lwr2zr.rds.bj.baidubce.com:3306 root@180.***.***.189
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>原作者：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e0b96caa3e7c">tangxqa</a></p>
-<h2 id="10-PicGo"><a href="#10-PicGo" class="headerlink" title="10. PicGo"></a>10. PicGo</h2><p><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo">图床</a>，上传图片后直接将复制复制到了粘贴板，非常方便，尤其要写markdown<br><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/PicGo.png" alt="PicGo"></p>
-<pre><code>brew cask install PicGo
-</code></pre>
+<h2 id="10-PicGo"><a href="#10-PicGo" class="headerlink" title="10. PicGo"></a>10. PicGo</h2><p><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/PicGo">图床</a>，上传图片后直接将复制复制到了粘贴板，非常方便，尤其要写markdown<br><img src="/loading.gif" data-original="/images/mac/PicGo.png" alt="PicGo"></p>
+<pre class="line-numbers language-shell"><code class="language-shell">brew cask install PicGo
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>如果常写markdown的话，绝对是个不错的选择，谁还每个github账号，合理使用资源就行了，图片拖进上传区，直接就能返回来个markdown的地址放到粘贴板里了。至于怎么利用github做图床自行google下。</p>
 <h2 id="11-Charles抓包工具"><a href="#11-Charles抓包工具" class="headerlink" title="11. Charles抓包工具"></a>11. Charles抓包工具</h2><p><a target="_blank" rel="noopener" href="http://www.charlesproxy.com/">Charles</a>是一款抓包代理调试工具、类 Fiddler。<br>ios系统手机上有一款抓包神器：stream<br>安卓手机上一般用：Packet Capture，或者抓包精灵</p>
 <h2 id="12-内网穿透工具"><a href="#12-内网穿透工具" class="headerlink" title="12. 内网穿透工具"></a>12. 内网穿透工具</h2><p>这个东西不常用，但是如果不知道还有个这么个玩意儿那就有点low了。<br>我用过serveo和ngrok，ngrok相对稳定，但是使用便捷性赶不上什么都不用serveo一句命令的快。<br>我的两个总结：<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/57485240708c">使用serveo一秒钟实现内网穿透</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4f008e2b7622">使用ngrok一分钟实现内网穿透</a></p>
 <h2 id="13-为知笔记-印象笔记"><a href="#13-为知笔记-印象笔记" class="headerlink" title="13. 为知笔记|印象笔记"></a>13. 为知笔记|印象笔记</h2><p>有时候你会有两台电脑，或者需要用移动端看看曾经报错的一些有效资源，这时候如果没有个云笔记，有点说不过去了，而且这种笔记不管是保存自己的东西，还可以通过google浏览器插件快速收藏网页，将某<br>一篇博客剪切成自己的东西笔记。</p>
+<p><img src="/loading.gif" data-original="/images/mac/Wiz.png" alt="为知笔记"></p>
 <h2 id="14-Parallels虚拟机神器"><a href="#14-Parallels虚拟机神器" class="headerlink" title="14. Parallels虚拟机神器"></a>14. Parallels虚拟机神器</h2><p>带你飞~</p>
 <h2 id="15-LogTail-日志监控查看工具"><a href="#15-LogTail-日志监控查看工具" class="headerlink" title="15. LogTail 日志监控查看工具"></a>15. LogTail 日志监控查看工具</h2><p>前面说到的iterm配合sshpass登录到服务器不是个啥问题了，但是最近用的不管是阿里云和百度云的ECS，在终端连接一会儿后就会自动断开，而且我也不知道咋搞，就算是tail 了，一会儿没有动就自己断开了，非常糟心。</p>
-<p>今天终于找到了一款我众里寻他千百度的logtail，我简直爱死他了，查看云服务器日志居然还有这么个玩意儿，简直神器啊，来两张图看看：<br><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/LogTail.png" alt="我收藏的标签"></p>
-<p><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/LogTail2.png" alt="滚动时自动开始/停止tail"></p>
-<p><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/LogTail3.png" alt="标签功能"></p>
+<p>今天终于找到了一款我众里寻他千百度的logtail，我简直爱死他了，查看云服务器日志居然还有这么个玩意儿，简直神器啊，来两张图看看：<br><img src="/loading.gif" data-original="/images/mac/LogTail.png" alt="我收藏的标签"></p>
+<p><img src="/loading.gif" data-original="/images/mac/LogTail2.png" alt="滚动时自动开始/停止tail"></p>
+<p><img src="/loading.gif" data-original="/images/mac/LogTail3.png" alt="标签功能"></p>
 <p>有了它服务器上的日志就不需要搭建类似ELK或者EFK环境了。</p>
 <h2 id="16-mpv：一个高可配的程序猿专用视频播放器"><a href="#16-mpv：一个高可配的程序猿专用视频播放器" class="headerlink" title="16. mpv：一个高可配的程序猿专用视频播放器"></a>16. <a target="_blank" rel="noopener" href="https://mpv.io/">mpv</a>：一个高可配的程序猿专用视频播放器</h2><p>安装：</p>
-<pre><code>brew cask install mpv
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">brew cask install mpv
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>这是一款一个跨平台、简洁、开源、免费、且性能和功能兼备万能视频播放器。MPV 是一个基于 MPlayer 和 mplayer2 的开源极简全能播放器。支持各种视频格式、音频解码、支持特效字幕（电影动漫的ass特效字幕都没啥问题），不仅支持本地播放，同样支持网络播放。重点是 MPV 具有多系统平台支持、命令行、自定义、GPU 解码、脚本支持等特点……</p>
 <p><a target="_blank" rel="noopener" href="https://www.iplaysoft.com/mpv.html">看这篇介绍</a></p>
 <h2 id="17-Moom"><a href="#17-Moom" class="headerlink" title="17 Moom"></a>17 Moom</h2><p>或许有许多人和小编一样，感觉Mac OS在使用时各种都很好用，但是就是对于窗口大小的调整需要用鼠标去拖动大小不满意。</p>
 <p>  那么有没有一种更为快速的方法，可以让你迅速的最大化、最小化各种窗口，甚至和WIN10系统一样做到左右对半分配两个窗口呢？当然有！只需要在你的Mac上安装Moom这一款小软件即可实现。</p>
-<p>Moom是苹果os平台上优秀的窗口管理工具，可以快速修改当前窗口的大小并放置在指定位置，默认情况下拥有五种尺寸可选，单击选项即可更改窗口大小，如最大化，移动到左边、右边等操作，还可以自定义窗口，让用户可以更好的查看mac上的内容。<br><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/Moom.png" alt="moom"></p>
+<p>Moom是苹果os平台上优秀的窗口管理工具，可以快速修改当前窗口的大小并放置在指定位置，默认情况下拥有五种尺寸可选，单击选项即可更改窗口大小，如最大化，移动到左边、右边等操作，还可以自定义窗口，让用户可以更好的查看mac上的内容。<br><img src="/loading.gif" data-original="/images/mac/Moom.png" alt="moom"></p>
 <h2 id="18-PopClip"><a href="#18-PopClip" class="headerlink" title="18. PopClip"></a>18. PopClip</h2><p>一款在 Mac 上人尽皆知的小工具，它简单高效，具有强大的拓展功能，PopClip 最基本的功能即用鼠标选中一段文字就可以做复制粘贴的动作，省去了我们平时 Command+C or V 的麻烦。</p>
-<p>除此之外，再无拓展支持的情况下，根据鼠标选中的内容，PopClip 还自身支持链接的跳转打开、自带词典的翻译、邮件地址跳转、搜索引擎搜索、单词纠正等功能，但这个工具真正强大之处在于它的拓展功能的使用哦。<br><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/PopClip.png" alt="image.png"></p>
+<p>除此之外，再无拓展支持的情况下，根据鼠标选中的内容，PopClip 还自身支持链接的跳转打开、自带词典的翻译、邮件地址跳转、搜索引擎搜索、单词纠正等功能，但这个工具真正强大之处在于它的拓展功能的使用哦。<br><img src="/loading.gif" data-original="/images/mac/PopClip.png" alt="PopClip"></p>
+<h2 id="19-Beyond-Compare"><a href="#19-Beyond-Compare" class="headerlink" title="19. Beyond Compare"></a>19. Beyond Compare</h2><p>在<a target="_blank" rel="noopener" href="https://macwk.com/soft/beyond-compare">macwk</a>下载的beyond compare直接是破解版呢，这个工具是我在windows一直使用的工具，在mac上现在也有了，可以对比整个文件夹，这一点非常棒，👍，推荐一下。<br><img src="/loading.gif" data-original="/images/mac/BeyondCompare.jpg" alt="Beyond Compare"><br><img src="/loading.gif" data-original="/images/mac/BeyondCompare2.jpg" alt="Beyond Compare"></p>
 <h1 id="小插件"><a href="#小插件" class="headerlink" title="小插件"></a>小插件</h1><ol>
-<li><p>Bartender<br>展开和收缩状态栏<br><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/Bartender.png" alt="image.png"></p>
+<li><p>Bartender<br>展开和收缩状态栏<br><img src="/loading.gif" data-original="/images/mac/Bartender.png" alt="Bartender"></p>
 </li>
 <li><p>外接2K显示器无法开启hign dpi时的处理</p>
 </li>
 </ol>
 <p>开启教程：<a target="_blank" rel="noopener" href="https://bbs.feng.com/forum.php?mod=viewthread&amp;tid=11669269&amp;page=1">https://bbs.feng.com/forum.php?mod=viewthread&amp;tid=11669269&amp;page=1</a><br>用到的三个软件：</p>
-<p><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/Bartender.png" alt="image"></p>
+<p><img src="/loading.gif" data-original="/images/mac/higndpi.png" alt="hign dpi"></p>
 <p>设置完成之后，在外接显示器也可以看到hign dpi的选项：</p>
-<p><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/Bartender2.png" alt="image"></p>
+<p><img src="/loading.gif" data-original="/images/mac/higndpi2.png" alt="hign dpi"></p>
 <ol start="3">
-<li>Go2Shell<br>在访达里增加一个打开命令行的快捷入口，快速进入命令行<br><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/Go2Shell.png" alt="image.png"></li>
+<li>Go2Shell<br>在访达里增加一个打开命令行的快捷入口，快速进入命令行<br><img src="/loading.gif" data-original="/images/mac/Go2Shell.png" alt="Go2Shell1"></li>
 </ol>
-<p>还可以设置在哪打开<br><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/Go2Shell2.png" alt="image.png"></p>
+<p>还可以设置在哪打开<br><img src="/loading.gif" data-original="/images/mac/Go2Shell2.png" alt="Go2Shell2"></p>
 <ol start="4">
-<li><p>FeHelper<br>一款谷歌浏览器插件，主要是免费的工具集合。<br><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/FeHelper.png" alt="FeHelper"></p>
+<li><p>FeHelper<br>一款谷歌浏览器插件，主要是免费的工具集合。<br><img src="/loading.gif" data-original="/images/mac/FeHelper.png" alt="FeHelper"></p>
 </li>
-<li><p>Octotree<br>这又是一款chrome插件，能将github项目在左侧边栏以目录树形结构展示。让你更直观地感受自己或别人的项目。感谢@朋友你的学生卡掉了 同学的推荐<br><img src="/loading.gif" data-original="%E7%A8%8B%E5%BA%8F%E7%8C%BF%E7%9A%84MacOS%E7%8E%AF%E5%A2%83(%E4%B8%80)/Octotree.png" alt="image.png"></p>
+<li><p>Octotree<br>这又是一款chrome插件，能将github项目在左侧边栏以目录树形结构展示。让你更直观地感受自己或别人的项目。感谢@朋友你的学生卡掉了 同学的推荐<br><img src="/loading.gif" data-original="/images/mac/Octotree.png" alt="Octotree"></p>
 </li>
 <li><p>WeChatPlugin mac<br>mac微信助手，<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b6ecd2c3c1dd">mac微信助手，功能全新升级</a>，有很多比如消息防撤回、远程控制(已支持语音)、微信多开、第二次登录免认证等等的功能。</p>
 </li>
@@ -1367,13 +1369,13 @@ expect eof
 
     <footer class="page-footer bg-color">
     
-    <div class="container row center-align" style="margin-bottom: 0px !important;">
+    <div class="container row center-align" style="margin-bottom: 15px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2020-2021</span>
+                <span id="year">2018-2021</span>
             
-            <span id="year">2020</span>
+            <span id="year">2018</span>
             <a href="/about" target="_blank">马海强</a>
             |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
@@ -1396,6 +1398,50 @@ expect eof
             </span>
             
             <br>
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2018";
+                    var startMonth = "6";
+                    var startDate = "5";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
             
             <br>
             
@@ -1558,6 +1604,16 @@ $(function () {
     <script src="/js/matery.js"></script>
 
     <!-- Baidu Analytics -->
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?8835c2c7d2db94534f40216cf670e8ea";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 
     <!-- Baidu Push -->
 
