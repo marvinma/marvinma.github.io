@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>回忆点滴</title>
   
-  <subtitle>[object Object]</subtitle>
+  <subtitle>没有挫折，就没有壮丽的人生</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://qdhaiqiang.github.io/"/>
-  <updated>2021-03-19T14:55:52.796Z</updated>
+  <updated>2021-03-20T16:26:38.834Z</updated>
   <id>https://qdhaiqiang.github.io/</id>
   
   <author>
@@ -21,11 +21,11 @@
     <link href="https://qdhaiqiang.github.io/2021/03/19/hexo-qie-huan-matery-fei-zhu-liu-zhu-ti/"/>
     <id>https://qdhaiqiang.github.io/2021/03/19/hexo-qie-huan-matery-fei-zhu-liu-zhu-ti/</id>
     <published>2021-03-18T16:31:27.000Z</published>
-    <updated>2021-03-19T14:55:52.796Z</updated>
+    <updated>2021-03-20T16:26:38.834Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;新版本antd pro后台项目的demo搭建使用&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/5c5c2d0fc119&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;今天将hexo的blog打算维护一下，换个主题，搞搞之前放在简书上的图片。&lt;br&gt;嗯~一个大工程，有事干了&lt;/p&gt;
     
     </summary>
     
@@ -48,7 +48,7 @@
     <summary type="html">
     
       &lt;p&gt;2020年工作和生活个人总结&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/6ec047a09f89&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/6ec047a09f89&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -64,12 +64,12 @@
     <link href="https://qdhaiqiang.github.io/2021/03/01/lao-ba-2020-nian-de-ru-zhang/"/>
     <id>https://qdhaiqiang.github.io/2021/03/01/lao-ba-2020-nian-de-ru-zhang/</id>
     <published>2021-03-01T08:40:51.000Z</published>
-    <updated>2021-03-17T15:27:58.802Z</updated>
+    <updated>2021-03-20T12:13:34.043Z</updated>
     
     <summary type="html">
     
       &lt;p&gt;老爸的一笔收入账&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/e3b09ac0a2e4&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/e3b09ac0a2e4&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -89,7 +89,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;Mac上mysql 5.7 修改默认的sql_mode，去除 ONLY_FULL_GROUP_BY限制&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/7359f28b41e4&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;Mac上mysql 5.7 修改默认的sql_mode，去除 ONLY_FULL_GROUP_BY限制&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/7359f28b41e4&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -109,7 +109,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;上一篇的补充&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/c485142a6a7e&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;上一篇的补充&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/c485142a6a7e&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -131,7 +131,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/2f8b0f0aca93&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/2f8b0f0aca93&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -149,18 +149,18 @@
     <link href="https://qdhaiqiang.github.io/2020/09/28/an-zhuo-you-xian-wu-xian-tou-ping-shen-qi-scrcpy/"/>
     <id>https://qdhaiqiang.github.io/2020/09/28/an-zhuo-you-xian-wu-xian-tou-ping-shen-qi-scrcpy/</id>
     <published>2020-09-28T15:23:00.000Z</published>
-    <updated>2021-03-19T14:55:52.798Z</updated>
+    <updated>2021-03-20T10:27:29.177Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;一款最简单，切PC上可以操作移动设备的安卓投屏软件，基于adb实现&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/04bdcf8a09b9&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;一款最简单，切PC上可以操作移动设备的安卓投屏软件，基于adb实现&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/04bdcf8a09b9&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
-      <category term="cljs" scheme="https://qdhaiqiang.github.io/categories/cljs/"/>
+      <category term="安卓" scheme="https://qdhaiqiang.github.io/categories/%E5%AE%89%E5%8D%93/"/>
     
     
-      <category term="微信" scheme="https://qdhaiqiang.github.io/tags/%E5%BE%AE%E4%BF%A1/"/>
+      <category term="工具" scheme="https://qdhaiqiang.github.io/tags/%E5%B7%A5%E5%85%B7/"/>
     
   </entry>
   
@@ -173,7 +173,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;nginx搭建一个文件服务器&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/96560e2f4e47&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;nginx搭建一个文件服务器&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/96560e2f4e47&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -193,7 +193,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;新起websocket服务后本地如何调试呢？&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/8ad2746b0866&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;新起websocket服务后本地如何调试呢？&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/8ad2746b0866&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -213,7 +213,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;在shadow-cljs项目中在最后编译的时候将所有的css写入到同一个css文件，在index.html里引用一次&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/ff7885afaab9&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;在shadow-cljs项目中在最后编译的时候将所有的css写入到同一个css文件，在index.html里引用一次&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/ff7885afaab9&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -233,7 +233,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;mac上使用腾讯会议+OBS客户端做直播&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/7764b4c643a6&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;mac上使用腾讯会议+OBS客户端做直播&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/7764b4c643a6&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -253,7 +253,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;新版本antd pro后台项目的demo搭建使用&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/5c5c2d0fc119&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;新版本antd pro后台项目的demo搭建使用&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/5c5c2d0fc119&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -273,7 +273,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;配置微信公众号的本地开发环境&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/05a58682cbac&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;配置微信公众号的本地开发环境&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/05a58682cbac&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -293,7 +293,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;在luminus web的clojure模板里直接使用java文件的正确姿势。&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/80e3fcb4267e&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;在luminus web的clojure模板里直接使用java文件的正确姿势。&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/80e3fcb4267e&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -313,7 +313,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;在linux上搭建postgresql和postgrest服务&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/a71fa1207042&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;在linux上搭建postgresql和postgrest服务&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/a71fa1207042&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -336,7 +336,7 @@
     <summary type="html">
     
       &lt;p&gt;用emacs工具debug后端的clj代码&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/36a065d7d46c&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/36a065d7d46c&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -357,7 +357,7 @@
     <summary type="html">
     
       &lt;p&gt;物料的时候玩玩emacs里的小游戏放松放松&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/1cf86d794219&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/1cf86d794219&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -377,7 +377,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;curl需要监控的接口，将结果发送邮件通知，也可以判断REST接口的返回数据内容。&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/4b025d8dc12a&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;curl需要监控的接口，将结果发送邮件通知，也可以判断REST接口的返回数据内容。&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/4b025d8dc12a&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -397,7 +397,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;linux服务器配置sendmail在命令行里方便发送邮件&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/e663f29f0eca&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;linux服务器配置sendmail在命令行里方便发送邮件&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/e663f29f0eca&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
@@ -418,7 +418,7 @@
     <summary type="html">
     
       &lt;p&gt;clojurescript 国际化核心代码&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/97867dd37db5&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/97867dd37db5&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
