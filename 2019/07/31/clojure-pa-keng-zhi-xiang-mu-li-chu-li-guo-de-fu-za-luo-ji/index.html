@@ -531,16 +531,15 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>clojure中调用java,解决jar包依赖冲突</p>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/597b88132e0b">简书地址</a></p>
+                <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/597b88132e0b">简书地址</a></p>
 <span id="more"></span>
 
 <h3 id="1、一个高阶函数的使用：将db查询结果日期进行format，并且group和求sum，重新组织结构"><a href="#1、一个高阶函数的使用：将db查询结果日期进行format，并且group和求sum，重新组织结构" class="headerlink" title="1、一个高阶函数的使用：将db查询结果日期进行format，并且group和求sum，重新组织结构"></a>1、一个高阶函数的使用：将db查询结果日期进行format，并且group和求sum，重新组织结构</h3><p>从DB中查到的map结果集如下：</p>
-<pre><code>(alk-wxapi.db.db-patient/get-patient-cost
+<pre class="line-numbers language-clojure"><code class="language-clojure">(alk-wxapi.db.db-patient/get-patient-cost
   {:page       0,
    :size       10,
    :patient-id 222})
-=&gt;
+=>
 ({:deleted 0,
   :drug-flag 1,
   :drug-id 1,
@@ -571,47 +570,47 @@
   :drug-name "奥马珠",
   :patient-id "222",
   :sum 200.0})
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>json以后格式是一条条的record：</p>
-<pre><code>"data": [
-      {
-        "deleted": 0,
-        "drug-flag": 1,
-        "drug-id": 1,
-        "cost-date": "2019-05-07",
-        "id": "1",
-        "create-time": "2019-06-05T22:42:14",
-        "count": 2,
-        "drug-name": "安脱达",
-        "patient-id": "222",
-        "sum": 58
-      },
-      {
-        "deleted": 0,
-        "drug-flag": 1,
-        "drug-id": 1,
-        "cost-date": "2019-06-05",
-        "id": "3",
-        "create-time": "2019-06-05T22:42:01",
-        "count": 10,
-        "drug-name": "安脱达",
-        "patient-id": "222",
-        "sum": 120
-      },
-      {
-        "deleted": 0,
-        "drug-flag": 1,
-        "drug-id": 4,
-        "cost-date": "2019-05-07",
-        "id": "2",
-        "create-time": "2019-06-05T22:41:50",
-        "count": 15,
-        "drug-name": "奥马珠",
-        "patient-id": "222",
-        "sum": 200
-      }
-    ]
-</code></pre>
+<pre class="line-numbers language-json"><code class="language-json"><span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"deleted"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token property">"drug-flag"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token property">"drug-id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token property">"cost-date"</span><span class="token operator">:</span> <span class="token string">"2019-05-07"</span><span class="token punctuation">,</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span>
+        <span class="token property">"create-time"</span><span class="token operator">:</span> <span class="token string">"2019-06-05T22:42:14"</span><span class="token punctuation">,</span>
+        <span class="token property">"count"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+        <span class="token property">"drug-name"</span><span class="token operator">:</span> <span class="token string">"安脱达"</span><span class="token punctuation">,</span>
+        <span class="token property">"patient-id"</span><span class="token operator">:</span> <span class="token string">"222"</span><span class="token punctuation">,</span>
+        <span class="token property">"sum"</span><span class="token operator">:</span> <span class="token number">58</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"deleted"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token property">"drug-flag"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token property">"drug-id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token property">"cost-date"</span><span class="token operator">:</span> <span class="token string">"2019-06-05"</span><span class="token punctuation">,</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"3"</span><span class="token punctuation">,</span>
+        <span class="token property">"create-time"</span><span class="token operator">:</span> <span class="token string">"2019-06-05T22:42:01"</span><span class="token punctuation">,</span>
+        <span class="token property">"count"</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+        <span class="token property">"drug-name"</span><span class="token operator">:</span> <span class="token string">"安脱达"</span><span class="token punctuation">,</span>
+        <span class="token property">"patient-id"</span><span class="token operator">:</span> <span class="token string">"222"</span><span class="token punctuation">,</span>
+        <span class="token property">"sum"</span><span class="token operator">:</span> <span class="token number">120</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"deleted"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token property">"drug-flag"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token property">"drug-id"</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
+        <span class="token property">"cost-date"</span><span class="token operator">:</span> <span class="token string">"2019-05-07"</span><span class="token punctuation">,</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"2"</span><span class="token punctuation">,</span>
+        <span class="token property">"create-time"</span><span class="token operator">:</span> <span class="token string">"2019-06-05T22:41:50"</span><span class="token punctuation">,</span>
+        <span class="token property">"count"</span><span class="token operator">:</span> <span class="token number">15</span><span class="token punctuation">,</span>
+        <span class="token property">"drug-name"</span><span class="token operator">:</span> <span class="token string">"奥马珠"</span><span class="token punctuation">,</span>
+        <span class="token property">"patient-id"</span><span class="token operator">:</span> <span class="token string">"222"</span><span class="token punctuation">,</span>
+        <span class="token property">"sum"</span><span class="token operator">:</span> <span class="token number">200</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>而预期的json是干这么几件事:</p>
 <blockquote>
 <p>1、根据日期将分组，以指定字段为key，group的日期为value<br>2、对日期进行格式化<br>3、同一日期下的数据，以list为key，record作为value<br>4、对每个list里record的sum字段求和，与list同级，以total-cost为key，和为value<br>5、同4类似，对list里的record的count求和，与list同级，以total-count为key，和为value</p>
@@ -779,8 +778,8 @@
 <pre class="line-numbers language-clojure"><code class="language-clojure">(def x '[(nil nil nil nil nil) (nil nil nil nil nil) ({:drug-id "300", :drug-name "西替利嗪，左西替利嗪（仙特朗，优泽）", :checked true, :dosage "1111", :dosage-unit "滴/天"} nil {:drug-id "302", :drug-name "谈说斯汀（UPDATE）", :checked true, :dosage "1111", :dosage-unit "滴/天"} nil) ()])
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>找出不为nil的</p>
-<pre><code>(filter (complement nil?) (mapcat identity x))
-</code></pre>
+<pre class="line-numbers language-clojure"><code class="language-clojure">(filter (complement nil?) (mapcat identity x))
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="4、两个数中找到不为nil的第一个数"><a href="#4、两个数中找到不为nil的第一个数" class="headerlink" title="4、两个数中找到不为nil的第一个数"></a>4、两个数中找到不为nil的第一个数</h3><pre class="line-numbers language-clojure"><code class="language-clojure">(first (filter (complement nil?)
         [a b]))
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
@@ -1317,8 +1316,7 @@ ssh -R 80:localhost:3000 serveo.net
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            clojure中调用java,解决jar包依赖冲突
-简书地址
+                            简书地址
                         
                     </div>
                     <div class="publish-info">

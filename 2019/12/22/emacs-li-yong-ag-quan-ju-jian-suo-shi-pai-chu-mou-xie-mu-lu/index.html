@@ -535,16 +535,15 @@
 <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a2461ab7cdd0">简书地址</a></p>
 <span id="more"></span>
 
-
 <p>如果不做下面的配置，在emacs里执行全局搜索<c-c p="" s="">时会搜索所有目录，比如node_mudules，target等目录。</c-c></p>
 <p>因为我们是shadow-cljs和lein功能，是从luminus哭创建的，所以有这个问题</p>
 <p>需要在项目根目录下创建个文件<code>.projectile</code> ,</p>
 <p>内容如下：</p>
-<pre><code>-/log
+<pre class="line-numbers language-shell"><code class="language-shell">-/log
 -/tmp
 -/node_modules
 -/target%
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>写法与<code>.gitignore</code>如出一辙。</p>
 <p>这样配置后，再使用ag搜索，便不会再去这些目录下搜索。</p>
 
@@ -1039,12 +1038,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/clojurescript/">
-                        <span class="chip bg-color">clojurescript</span>
-                    </a>
-                    
                     <a href="/tags/electron/">
                         <span class="chip bg-color">electron</span>
+                    </a>
+                    
+                    <a href="/tags/clojurescript/">
+                        <span class="chip bg-color">clojurescript</span>
                     </a>
                     
                 </div>

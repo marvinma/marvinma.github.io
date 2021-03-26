@@ -538,32 +538,32 @@
                 <p>mac系统上安装了mysql server以后，命令行里没有，提示 command not found: mysql<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/8bb66316eb12">简书地址</a></p>
 <span id="more"></span>
 
-<p>mac上玩开发的同志多在使用items的oh-my-zsh这个神奇，不知道的可以看看<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d1c0efe37a43">这篇文章</a>。</p>
+<p>mac上玩开发的同志多在使用items的<code>oh-my-zsh</code>这个神奇，不知道的可以看看<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d1c0efe37a43">这篇文章</a>。</p>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题:"></a>问题:</h2><p>我本地安装的mysql服务已经用了大半年了，今天一用命令行，发现居然没有</p>
-<pre><code>➜  ~ which mysql
+<pre class="line-numbers language-shell"><code class="language-shell">➜  ~ which mysql
 mysql not found
 ➜  ~ whereis mysql
 ➜  ~ mysql
 zsh: command not found: mysql
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>虽然我基本不会用，但是既然知道了，岂能不把它搞好，万一用呢（其实不大可能）。</p>
 <p>还是stackoverflow好使，在<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/35858052/zsh-command-not-found-mysql">这篇文章</a>中很快就找到了答案，而且配置也非常easy，但是毕竟不是自己的，于是就简单记录一下。</p>
 <p>我本地的.bash_profile文件里面最后面已经加了下面的内容了</p>
-<pre><code>export PATH=${PATH}:/usr/local/mysql/bin/
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">export PATH=${PATH}:/usr/local/mysql/bin/
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>但是依然没有，这是前提。</p>
 <h2 id="方案："><a href="#方案：" class="headerlink" title="方案："></a>方案：</h2><p>修改<code>~/.zshrc</code>文件，在最后加入</p>
-<pre><code>export PATH=${PATH}:/usr/local/mysql/bin/
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">export PATH=${PATH}:/usr/local/mysql/bin/
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>然后</p>
-<pre><code>source ~/.zshrc
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">source ~/.zshrc
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>再查看</p>
-<pre><code>➜  ~ mysql --version
+<pre class="line-numbers language-shell"><code class="language-shell">➜  ~ mysql --version
 mysql  Ver 14.14 Distrib 5.7.25, for macos10.14 (x86_64) using  EditLine wrapper
 ➜  ~ mysql -root -p
 Enter password:
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>完。</p>
 
                 

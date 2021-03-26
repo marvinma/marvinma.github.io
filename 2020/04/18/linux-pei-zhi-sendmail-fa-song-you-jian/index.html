@@ -504,7 +504,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    372
+                    354
                 </div>
                 
 
@@ -534,44 +534,61 @@
                 <p>linux服务器配置sendmail在命令行里方便发送邮件<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e663f29f0eca">简书地址</a></p>
 <span id="more"></span>
 
-<h2 id="Ubuntu-安装工具"><a href="#Ubuntu-安装工具" class="headerlink" title="Ubuntu 安装工具"></a>Ubuntu 安装工具</h2><pre><code>apt-get install heirloom-mailx
-</code></pre>
+<h2 id="Ubuntu-安装工具"><a href="#Ubuntu-安装工具" class="headerlink" title="Ubuntu 安装工具"></a>Ubuntu 安装工具</h2><pre class="line-numbers language-shell"><code class="language-shell">apt-get install heirloom-mailx
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h2 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h2><p><code>vim /etc/s-nail.rc</code>在文件最后加入如下配置项：</p>
-<pre><code>set from="mailtest@3vyd.com"
+<pre class="line-numbers language-shell"><code class="language-shell">set from="mailtest@3vyd.com"
 set smtp="smtp.exmail.qq.com"
 set smtp-auth-user="mailtest@3vyd.com"
 set smtp-auth-password="xxxx"
 set smtp-auth=login
-</code></pre>
-<h2 id="测试邮件"><a href="#测试邮件" class="headerlink" title="测试邮件"></a>测试邮件</h2><pre><code>echo "测试的邮件内容" | s-nail  -s "测试的邮件主题" marvin.ma@redcreation.net
-</code></pre>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-015b0f1f48e87cc2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="mail"></p>
-<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>root@hk-server:~# Could not connect: Operation now in progress<br>“/root/dead.letter” 8/209<br>… message not sent</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="测试邮件"><a href="#测试邮件" class="headerlink" title="测试邮件"></a>测试邮件</h2><pre class="line-numbers language-shell"><code class="language-shell">echo "测试的邮件内容" | s-nail  -s "测试的邮件主题" marvin.ma@redcreation.net
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/linux/email-test.png" alt="mail"></p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><pre class="line-numbers language-shell"><code class="language-shell">root@hk-server:~# Could not connect: Operation now in progress
+“/root/dead.letter” 8/209
+… message not sent
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>这里注意！因为是阿里云服务器，可能是25端口被封，得改用465端口，所以配置内容那里要注意将smtp配置加上端口：</p>
-<pre><code>set smtp=smtp.exmail.qq.com:465
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">set smtp=smtp.exmail.qq.com:465
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h2 id="centos"><a href="#centos" class="headerlink" title="centos"></a>centos</h2><ol>
-<li>install Mailx<br>```<br>yum install -y mailx</li>
+<li><p>install Mailx </p>
+<pre class="line-numbers language-shell"><code class="language-shell">yum install -y mailx 
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>Config SMTP Params</p>
+<pre class="line-numbers language-shell"><code class="language-shell">vi /etc/mail.rc
+# Add Gmail SMTP
+set from=yiilib.com_t@gmail.com  #send from mail address
+set smtp=smtp.gmail.com    #SMTP server domain
+set smtp-auth-user=yiilib.com_t  #send account
+set smtp-auth-password=mailBoxPassword  #account password
+set smtp-auth=login     #auth way
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>send test </p>
+<pre class="line-numbers language-shell"><code class="language-shell">echo "mail body" |　mail marvin.ma@redcreation.net -s "test mail subject" -a /root/backup/yiilib.com_tmp.sql
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
 </ol>
-<pre><code>2. Config SMTP Params
-</code></pre>
-<p>vi /etc/mail.rc</p>
-<h1 id="Add-Gmail-SMTP"><a href="#Add-Gmail-SMTP" class="headerlink" title="Add Gmail SMTP"></a>Add Gmail SMTP</h1><p>set from=yiilib.com<a href="mailto:_t@gmail.com">_t@gmail.com</a>  #send from mail address<br>set smtp=smtp.gmail.com    #SMTP server domain<br>set smtp-auth-user=yiilib.com_t  #send account<br>set smtp-auth-password=mailBoxPassword  #account password<br>set smtp-auth=login     #auth way</p>
-<pre><code> 3. send test 
-</code></pre>
-<p>echo “mail body” |　mail <a href="mailto:marvin.ma@redcreation.net">marvin.ma@redcreation.net</a> -s “test mail subject” -a /root/backup/yiilib.com_tmp.sql</p>
-<pre><code>
-## 两种常用配置
-* 腾讯企业邮箱
-</code></pre>
-<p>set from=”<a href="mailto:mailtest@3vyd.com">mailtest@3vyd.com</a>“<br>set smtp=”smtp.exmail.qq.com”<br>set smtp-auth-user=”<a href="mailto:mailtest@3vyd.com">mailtest@3vyd.com</a>“<br>set smtp-auth-password=”xxxx”<br>set smtp-auth=login</p>
-<pre><code>* 163网易邮箱(密码是指客户端授权密码)
-</code></pre>
-<p>set from=”<a href="mailto:chuangkehui@163.com">chuangkehui@163.com</a>“<br>set smtp=”smtp.163.com”<br>set smtp-auth-user=”<a href="mailto:chuangkehui@163.com">chuangkehui@163.com</a>“<br>set smtp-auth-password=”xxxx”<br>set smtp-auth=login</p>
-<pre><code>## 参考
-[Linux发邮件-ubuntu和centos](https://blog.csdn.net/MissEel/article/details/79588808)
-[http://yiilib.com/en/topic/731/Centos+use+Mailx+send+SMTP+Mail](http://yiilib.com/en/topic/731/Centos+use+Mailx+send+SMTP+Mail)
-</code></pre>
+<h2 id="两种常用配置"><a href="#两种常用配置" class="headerlink" title="两种常用配置"></a>两种常用配置</h2><ul>
+<li>腾讯企业邮箱<pre class="line-numbers language-shell"><code class="language-shell">set from="mailtest@3vyd.com"
+set smtp="smtp.exmail.qq.com"
+set smtp-auth-user="mailtest@3vyd.com"
+set smtp-auth-password="xxxx"
+set smtp-auth=login
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>163网易邮箱(密码是指客户端授权密码)<pre class="line-numbers language-shell"><code class="language-shell">set from="chuangkehui@163.com"
+set smtp="smtp.163.com"
+set smtp-auth-user="chuangkehui@163.com"
+set smtp-auth-password="xxxx"
+set smtp-auth=login
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><a target="_blank" rel="noopener" href="https://blog.csdn.net/MissEel/article/details/79588808">Linux发邮件-ubuntu和centos</a><br><a target="_blank" rel="noopener" href="http://yiilib.com/en/topic/731/Centos+use+Mailx+send+SMTP+Mail">http://yiilib.com/en/topic/731/Centos+use+Mailx+send+SMTP+Mail</a></li>
+</ul>
 
                 
             </div>
@@ -1102,8 +1119,8 @@ set smtp-auth=login
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/clojurescript/" class="post-category">
-                                    clojurescript
+                            <a href="/categories/cljs/" class="post-category">
+                                    cljs
                                 </a>
                             
                             
@@ -1113,8 +1130,12 @@ set smtp-auth=login
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/clojurescript/">
-                        <span class="chip bg-color">clojurescript</span>
+                    <a href="/tags/cljs/">
+                        <span class="chip bg-color">cljs</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%A4%9A%E8%AF%AD%E8%A8%80/">
+                        <span class="chip bg-color">多语言</span>
                     </a>
                     
                 </div>

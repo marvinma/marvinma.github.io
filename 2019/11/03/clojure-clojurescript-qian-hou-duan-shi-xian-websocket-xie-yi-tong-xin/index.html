@@ -545,18 +545,29 @@
 
 
 <h2 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h2><p>服务端配置websocket相对来说挺简单，因为我们项目当初new的时候没有加websocket，现在是参考<a target="_blank" rel="noopener" href="http://www.luminusweb.net/docs/websockets.html">luminusweb websocket</a>往里增加关键代码</p>
-<ul>
-<li><ol>
-<li><strong>创建ws-route</strong><br>创建如下route，并跟普通http api route一样加入handler序列中。<br>```clojure<br>(ns alk-wxapi.routes.websockets<br>(:require<br>[alk-wxapi.routes.service.ws-service :refer [ws-handler countdown]]))</li>
+<ol>
+<li><strong>创建ws-route</strong></li>
 </ol>
-</li>
-</ul>
-<p>(defn websocket-routes []<br>  [“/ws”<br>   {:swagger {:tags [“websocket”]}}</p>
-<p>   [“”<br>    {:get {:summary    “websocket 入口”<br>           :parameters {}<br>           :handler    (fn [request]<br>                         (ws-handler request))}}]<br>   ])</p>
-<pre><code>* 2. **创建ws-service**
-即上面require的ws-service，内容如下：
-```clojure
-(ns alk-wxapi.routes.service.ws-service
+<p>创建如下route，并跟普通http api route一样加入handler序列中。</p>
+<pre class="line-numbers language-clojure"><code class="language-clojure">(ns alk-wxapi.routes.websockets
+  (:require
+   [alk-wxapi.routes.service.ws-service :refer [ws-handler countdown]]))
+
+(defn websocket-routes []
+  ["/ws"
+   {:swagger {:tags ["websocket"]}}
+
+   [""
+    {:get {:summary    "websocket 入口"
+           :parameters {}
+           :handler    (fn [request]
+                         (ws-handler request))}}]
+   ])
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li><strong>创建ws-service</strong><br>即上面require的ws-service，内容如下：</li>
+</ol>
+<pre class="line-numbers language-clojure"><code class="language-clojure">(ns alk-wxapi.routes.service.ws-service
   (:require
    [clojure.tools.logging :as log]
    [immutant.web.async :as async]
@@ -592,25 +603,42 @@
 
 (defn ws-handler [request]
   (async/as-channel request websocket-callbacks))
-</code></pre>
-<ul>
-<li><ol start="3">
-<li><strong>测试连接</strong><br>这样再次启动repl，在启动http 接口的同时就在同一端口启动了ws协议的websocket服务，可以用<a target="_blank" rel="noopener" href="https://github.com/websockets/wscat">wscat命令行</a>测试工具或者在<a target="_blank" rel="noopener" href="http://oktools.net/websocket">在线测试</a>工具进行连接测试。<br>```<br>$ wscat -c ws://localhost:3000/api/ws<br>Connected (press CTRL+C to quit)<blockquote>
-</blockquote>
-</li>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="3">
+<li><strong>测试连接</strong><br>这样再次启动repl，在启动http 接口的同时就在同一端口启动了ws协议的websocket服务，可以用<a target="_blank" rel="noopener" href="https://github.com/websockets/wscat">wscat命令行</a>测试工具或者在<a target="_blank" rel="noopener" href="http://oktools.net/websocket">在线测试</a>工具进行连接测试。</li>
 </ol>
-</li>
-</ul>
-<pre><code>## 客户端
-在任意一个页面找个契机开始创建连接，参考[multi-client-ws-immutant](https://github.com/luminus-framework/examples/tree/master/multi-client-ws-immutant)创建时指定消息处理回调函数。
-代码如下：
-* 1. **根目录或者任意目录创建ws连接工具类**
-</code></pre>
-<p>(defn- receive-transit-msg!<br>  [update-fn]<br>  (fn [msg]<br>    (js/clearTimeout clear-time)<br>    (update-fn (cljs.reader/read-string (.-data msg)))))</p>
-<p>(defn- send-transit-msg!<br>  [msg]<br>  (if @ws-chan<br>    (.send @ws-chan msg)<br>    (throw (js/Error. “Websocket is not available!”))))<br>(defn make-websocket! [url receive-handler]<br> (println “attempting to connect websocket”)<br> (if-let [chan (js/WebSocket. url)]<br>   (do<br>     (set! (.-onmessage chan) (receive-transit-msg! receive-handler))<br>     (reset! ws-chan chan)<br>     (println “Websocket connection established with: “ url))<br>   (throw (js/Error. “Websocket connection failed!”))))</p>
-<pre><code>* 2. **在某个页面触发websocket连接**
-```clojure
-(require ' [alk-doc.ws :as ws :refer [webSocketUrl click-one]])
+<pre class="line-numbers language-shell"><code class="language-shell">$ wscat -c ws://localhost:3000/api/ws
+Connected (press CTRL+C to quit)
+>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><p>在任意一个页面找个契机开始创建连接，参考<a target="_blank" rel="noopener" href="https://github.com/luminus-framework/examples/tree/master/multi-client-ws-immutant">multi-client-ws-immutant</a>创建时指定消息处理回调函数。<br>代码如下：</p>
+<ol>
+<li><strong>根目录或者任意目录创建ws连接工具类</strong></li>
+</ol>
+<pre class="line-numbers language-clojure"><code class="language-clojure">(defn- receive-transit-msg!
+  [update-fn]
+  (fn [msg]
+    (js/clearTimeout clear-time)
+    (update-fn (cljs.reader/read-string (.-data msg)))))
+
+(defn- send-transit-msg!
+  [msg]
+  (if @ws-chan
+    (.send @ws-chan msg)
+    (throw (js/Error. "Websocket is not available!"))))
+(defn make-websocket! [url receive-handler]
+ (println "attempting to connect websocket")
+ (if-let [chan (js/WebSocket. url)]
+   (do
+     (set! (.-onmessage chan) (receive-transit-msg! receive-handler))
+     (reset! ws-chan chan)
+     (println "Websocket connection established with: " url))
+   (throw (js/Error. "Websocket connection failed!"))))
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li><strong>在某个页面触发websocket连接</strong></li>
+</ol>
+<pre class="line-numbers language-clojure"><code class="language-clojure">(require ' [alk-doc.ws :as ws :refer [webSocketUrl click-one]])
 
 (defn handler-ws-msg
  “可以根据消息内容或者自定义的类型，进行相应的业务处理”
@@ -618,24 +646,18 @@
  (js/console.info "收到广播消息:" msg))
 
 (ws/make-websocket! webSocketUrl handler-ws-msg)
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>这样就建立了前后端ws通信。</p>
 <h2 id="生产环境上的特殊处理"><a href="#生产环境上的特殊处理" class="headerlink" title="生产环境上的特殊处理"></a>生产环境上的特殊处理</h2><p>但是在生产环境(https+nginx)上要做点特殊处理，这里的处理，服务端和客户端都有。</p>
-<ul>
-<li><ol>
+<ol>
 <li><strong>生产环境多是https的，这就要求页面里面的websocket必须要是<code>wss</code>的，而不能是<code>ws</code>的</strong></li>
 </ol>
-</li>
-</ul>
 <p>因此websocket的连接变成了<code>wss://www.abc.com/api/ws/</code></p>
-<ul>
-<li><ol start="2">
+<ol start="2">
 <li> <strong>服务端nginx配置支持websocket</strong></li>
 </ol>
-</li>
-</ul>
 <p>生产环境服务端的接口使用nginx做了反向代理，不出意外的话，上面的连接即使改成wss也连接不成功，需要nginx的配置如下：</p>
-<pre><code>http {
+<pre class="line-numbers language-conf"><code class="language-conf">http {
     map $http_upgrade $connection_upgrade {
         default upgrade;
         ''      close;
@@ -652,13 +674,10 @@
             proxy_read_timeout 600s; 
         }
   }
-</code></pre>
-<ul>
-<li><ol start="3">
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="3">
 <li><strong>最重要的，客户端加入心跳检测，端口后自动重连</strong></li>
 </ol>
-</li>
-</ul>
 <p>我们的程序是一个jar直接java启动的，这样在连接上后不会自己断开的，但是上面说了，生产环境使用nginx代理的，默认情况下，利用nginx代理websocket的时候，发现客户端和服务器握手成功后，如果在60s时间内没有数据交互，连接就会自动断开。因此上面配置了<code>proxy_read_timeout 600s</code>，也就是10分钟没有通信再断开。<br>这个时间可以长，但我没试过是不是可以无限长。<br>所以最好是在客户端加上心跳检测，断开后有能力自己重连，及时服务器不设置10分钟，60秒钟断开也可以自己重连。<br>终极方案是心跳检测+延长read-timeout时间，客户端的代码：</p>
 <pre class="line-numbers language-klipse-cljs"><code class="language-klipse-cljs">(require '[reagent.core :as reagent :refer [atom]])
 (defonce ws-chan (atom nil))

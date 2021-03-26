@@ -542,16 +542,16 @@
 <p>logback作为默认的日志实现在springboot项目里很多，尤其是有了lombok。</p>
 <p>log打到配置文件里，并且分sql、info、error这些都太easy，随后我会附上我的配置。</p>
 <p>那么怎么用这东西将异常邮件发送给运维人员呢？</p>
-<h4 id="properties配置"><a href="#properties配置" class="headerlink" title="properties配置"></a>properties配置</h4><pre><code>logback.logdir=/opt/chuangke/log/pre/api
-logback.appname=mobileoffice
+<h4 id="properties配置"><a href="#properties配置" class="headerlink" title="properties配置"></a>properties配置</h4><pre class="line-numbers language-java"><code class="language-java">logback<span class="token punctuation">.</span>logdir<span class="token operator">=</span><span class="token operator">/</span>opt<span class="token operator">/</span>chuangke<span class="token operator">/</span>log<span class="token operator">/</span>pre<span class="token operator">/</span>api
+logback<span class="token punctuation">.</span>appname<span class="token operator">=</span>mobileoffice
 
-spring.mail.host=smtp.exmail.qq.com
-spring.mail.username=mailtest@3vyd.com
-spring.mail.password=xxx
-spring.mail.default-encoding=UTF-8
-spring.mail.error.subject=[ERROR] in project name
-spring.mail.error.to=marvin.ma@3vyd.com,303764416@qq.com
-</code></pre>
+spring<span class="token punctuation">.</span>mail<span class="token punctuation">.</span>host<span class="token operator">=</span>smtp<span class="token punctuation">.</span>exmail<span class="token punctuation">.</span>qq<span class="token punctuation">.</span>com
+spring<span class="token punctuation">.</span>mail<span class="token punctuation">.</span>username<span class="token operator">=</span>mailtest<span class="token annotation punctuation">@3vyd</span><span class="token punctuation">.</span>com
+spring<span class="token punctuation">.</span>mail<span class="token punctuation">.</span>password<span class="token operator">=</span>xxx
+spring<span class="token punctuation">.</span>mail<span class="token punctuation">.</span><span class="token keyword">default</span><span class="token operator">-</span>encoding<span class="token operator">=</span>UTF<span class="token operator">-</span><span class="token number">8</span>
+spring<span class="token punctuation">.</span>mail<span class="token punctuation">.</span>error<span class="token punctuation">.</span>subject<span class="token operator">=</span><span class="token punctuation">[</span>ERROR<span class="token punctuation">]</span> in project name
+spring<span class="token punctuation">.</span>mail<span class="token punctuation">.</span>error<span class="token punctuation">.</span>to<span class="token operator">=</span>marvin<span class="token punctuation">.</span>ma<span class="token annotation punctuation">@3vyd</span><span class="token punctuation">.</span>com<span class="token punctuation">,</span><span class="token number">303764416</span><span class="token annotation punctuation">@qq</span><span class="token punctuation">.</span>com
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>多人时，邮箱之间用英文逗号分隔</p>
 <h4 id="logback文件"><a href="#logback文件" class="headerlink" title="logback文件"></a>logback文件</h4><p>跟发送邮件相关的时这几句</p>
 <pre class="line-numbers language-xml"><code class="language-xml">    <span class="token comment" spellcheck="true">&lt;!-- 邮件配置 --></span>
@@ -735,7 +735,7 @@ spring.mail.error.to=marvin.ma@3vyd.com,303764416@qq.com
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>springProfile</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>附上截图<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-bb10c11512892320.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="error"></p>
+<p>附上截图<br><img src="/loading.gif" data-original="/images/java/logback-error.png" alt="error"></p>
 <p>完美！！</p>
 
                 

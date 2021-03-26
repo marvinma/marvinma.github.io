@@ -482,8 +482,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/antd/" class="post-category">
-                                antd
+                            <a href="/categories/%E5%A4%A7%E5%89%8D%E7%AB%AF/" class="post-category">
+                                大前端
                             </a>
                         
                     </div>
@@ -504,7 +504,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    871
+                    861
                 </div>
                 
 
@@ -536,12 +536,12 @@
 
 <p>以前安装ant design pro从github上clone下来，两句话就在浏览器看到登录页面了，现在这个东西越来越臃肿了，我就想要个页面，跑起来给客户看看样子，结果废了老劲了，也不知道都往里面搞了啥。</p>
 <p>今天记录一下吧。<br>参考<a target="_blank" rel="noopener" href="https://pro.ant.design/docs/getting-started-cn">官网</a>教程.<br>选择ant-design-pro,Pro V4，TypeScript，complete.</p>
-<pre><code>$ npm create umi
+<pre class="line-numbers language-shell"><code class="language-shell">$ npm create umi
 ? Select the boilerplate type ant-design-pro
 ? 🧙 Be the first to experience the new umi@3 ? Pro V4
 ? 🤓 Which language do you want to use? TypeScript
 ? 🚀 Do you need all the blocks or a simple scaffold? complete
-&gt; 🙈 complete mode can only use the version of antd@4
+> 🙈 complete mode can only use the version of antd@4
 Cloning into '/Users/marvin/git/opensource/react/antd-pro'...
 remote: Enumerating objects: 564, done.
 remote: Counting objects: 100% (564/564), done.
@@ -549,13 +549,13 @@ remote: Compressing objects: 100% (481/481), done.
 remote: Total 564 (delta 89), reused 318 (delta 62), pack-reused 0
 Receiving objects: 100% (564/564), 461.41 KiB | 435.00 KiB/s, done.
 Resolving deltas: 100% (89/89), done.
-&gt; 🚚 clone success
-&gt; Clean up...
+> 🚚 clone success
+> Clean up...
 ✨ File Generate Done
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>项目创建成功后执行<code>npm install</code>,出个错</p>
-<pre><code>&gt; node-pty@0.10.0-beta9 install /Users/marvin/git/opensource/react/antd-pro/node_modules/node-pty
-&gt; node scripts/install.js
+<pre class="line-numbers language-shell"><code class="language-shell">> node-pty@0.10.0-beta9 install /Users/marvin/git/opensource/react/antd-pro/node_modules/node-pty
+> node scripts/install.js
 
 gyp WARN install got an error, rolling back install
 gyp ERR! configure error
@@ -567,7 +567,7 @@ gyp ERR! stack     at Unpack.end (/Users/marvin/.nvm/versions/node/v14.5.0/lib/n
 gyp ERR! stack     at IncomingMessage.onend (_stream_readable.js:679:10)
 gyp ERR! stack     at Object.onceWrapper (events.js:420:28)
 gyp ERR! stack     at IncomingMessage.emit (events.js:326:22)
-gyp ERR! stack     at IncomingMessage.&lt;anonymous&gt; (/Users/marvin/.nvm/versions/node/v14.5.0/lib/node_modules/npm/node_modules/request/request.js:1000:23)
+gyp ERR! stack     at IncomingMessage.<anonymous> (/Users/marvin/.nvm/versions/node/v14.5.0/lib/node_modules/npm/node_modules/request/request.js:1000:23)
 gyp ERR! stack     at IncomingMessage.emit (events.js:326:22)
 gyp ERR! stack     at TLSSocket.socketCloseListener (_http_client.js:435:11)
 gyp ERR! System Darwin 19.6.0
@@ -576,12 +576,12 @@ gyp ERR! cwd /Users/marvin/git/opensource/react/antd-pro/node_modules/node-pty
 gyp ERR! node -v v14.5.0
 gyp ERR! node-gyp -v v5.1.0
 gyp ERR! not ok
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>查了半天，按照<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a2a2ddeb174c">https://www.jianshu.com/p/a2a2ddeb174c</a><br>的思路，错误变成了下面这个</p>
-<pre><code>$ npm install
+<pre class="line-numbers language-shell"><code class="language-shell">$ npm install
 
-&gt; fsevents@1.2.13 install /Users/marvin/git/opensource/react/antd-pro/node_modules/jest-environment-jsdom-fourteen/node_modules/fsevents
-&gt; node install.js
+> fsevents@1.2.13 install /Users/marvin/git/opensource/react/antd-pro/node_modules/jest-environment-jsdom-fourteen/node_modules/fsevents
+> node install.js
 
 No receipt for 'com.apple.pkg.CLTools_Executables' found at '/'.
 
@@ -601,17 +601,17 @@ gyp ERR! cwd /Users/marvin/git/opensource/react/antd-pro/node_modules/jest-envir
 gyp ERR! node -v v12.8.0
 gyp ERR! node-gyp -v v5.0.3
 gyp ERR! not ok
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在查询错误，终于<a target="_blank" rel="noopener" href="https://juejin.im/post/6844904058076020743">https://juejin.im/post/6844904058076020743</a>上找到了解决方案。</p>
 <h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ol>
-<li>尝试用如下命令进行修复<pre><code>$ xcode-select --install
-</code></pre>
-复制代码系统提示如下信息：<pre><code>xcode-select: error: command line tools are already installed, use "Software Update" to install updates
-</code></pre>
+<li>尝试用如下命令进行修复<pre class="line-numbers language-shell"><code class="language-shell">$ xcode-select --install
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+复制代码系统提示如下信息：<pre class="line-numbers language-shell"><code class="language-shell">xcode-select: error: command line tools are already installed, use "Software Update" to install updates
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 复制代码而事实上并没有所谓的”Software Update”可以更新</li>
-<li>正确姿势<br>一筹莫展之际，找到如下解决方案：<pre><code>$ sudo rm -rf $(xcode-select -print-path)
+<li>正确姿势<br>一筹莫展之际，找到如下解决方案：<pre class="line-numbers language-shell"><code class="language-shell">$ sudo rm -rf $(xcode-select -print-path)
 $ xcode-select --install
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 终于安装成功了。</li>
 </ol>
 

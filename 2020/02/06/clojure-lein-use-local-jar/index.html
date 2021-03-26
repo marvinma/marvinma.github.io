@@ -474,10 +474,6 @@
                                 <span class="chip bg-color">clojure</span>
                             </a>
                         
-                            <a href="/tags/leiningen/">
-                                <span class="chip bg-color">leiningen</span>
-                            </a>
-                        
                     </div>
                     
                 </div>
@@ -541,25 +537,25 @@
 
 <p>用<a target="_blank" rel="noopener" href="https://luminusweb.com/">luminusweb</a>模板创建的clojure web服务端项目如何使用本地的jar。</p>
 <h3 id="我的方案"><a href="#我的方案" class="headerlink" title="我的方案"></a>我的方案</h3><p>将jar放在项目里的某个目录下，推荐resources下，然后在<code>project.clj</code>里加入引用即可。</p>
-<pre><code>:resource-paths ["resources/jars/sheet-clone-0.1.jar"]
-</code></pre>
+<pre class="line-numbers language-clojure"><code class="language-clojure">:resource-paths ["resources/jars/sheet-clone-0.1.jar"]
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>使用的时候像跟调用其他第三方的java sdk一样使用</p>
-<pre><code>(:import (com.alibaba.excel EasyExcel #_ExcelWriter)
+<pre class="line-numbers language-clojure"><code class="language-clojure">(:import (com.alibaba.excel EasyExcel #_ExcelWriter)
            [com.hczt.sheetclone.utils CloneExcelByPoi]
            [org.apache.poi.xssf.usermodel XSSFWorkbook])
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h3 id="其他方案："><a href="#其他方案：" class="headerlink" title="其他方案："></a>其他方案：</h3><p>参考Paul大神的文章<a target="_blank" rel="noopener" href="https://www.pgrs.net/2011/10/30/using-local-jars-with-leiningen/">using-local-jars-with-leiningen</a><br>贴一下主要内容。<br>Create a directory in the project.<br>mkdir maven_repository.<br>Add local jars to this repository.<br>For example, this command adds the jaad-0.8.3.jar file to the maven repository.</p>
-<pre><code>mvn install:install-file -Dfile=jaad-0.8.3.jar -DartifactId=jaad -Dversion=0.8.3 -DgroupId=jaad -Dpackaging=jar -DlocalRepositoryPath=maven_repository
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">mvn install:install-file -Dfile=jaad-0.8.3.jar -DartifactId=jaad -Dversion=0.8.3 -DgroupId=jaad -Dpackaging=jar -DlocalRepositoryPath=maven_repository
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>Add the following to project.clj</p>
-<pre><code>:repositories {"local" ~(str (.toURI (java.io.File. "maven_repository")))}
-</code></pre>
+<pre class="line-numbers language-clojure"><code class="language-clojure">:repositories {"local" ~(str (.toURI (java.io.File. "maven_repository")))}
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>Now a regular lein deps should work</p>
-<pre><code>lein deps
+<pre class="line-numbers language-shell"><code class="language-shell">lein deps
 Downloading: jaad/jaad/0.8.3/jaad-0.8.3.pom from local
 Transferring 0K from local
 [WARNING] *** CHECKSUM FAILED - Error retrieving checksum file for jaad/jaad/0.8.3/jaad-0.8.3.pom - IGNORING
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>The warning can be ignored, since the jar will be checked into the project and not downloaded from the internet.</p>
 
                 
@@ -577,10 +573,6 @@ Transferring 0K from local
                             
                                 <a href="/tags/clojure/">
                                     <span class="chip bg-color">clojure</span>
-                                </a>
-                            
-                                <a href="/tags/leiningen/">
-                                    <span class="chip bg-color">leiningen</span>
                                 </a>
                             
                         </div>
@@ -1084,7 +1076,8 @@ Transferring 0K from local
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            springboot项目提示Resolved [org.springframework.web.HttpMediaTypeNotSupportedException: Content type ‘application/json;chars
+                            springboot项目提示 
+Resolved [org.springframework.web.HttpMediaTypeNotSupportedException: Content type 'application/json;cha
                         
                     </div>
                     <div class="publish-info">

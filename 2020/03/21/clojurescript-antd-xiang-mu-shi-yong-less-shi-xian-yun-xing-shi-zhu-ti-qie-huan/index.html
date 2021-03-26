@@ -508,14 +508,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.3k
+                    1.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    6 分
                 </div>
                 
 
@@ -558,94 +558,93 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 <li><p>vars.less</p>
-<pre class="line-numbers language-js"><code class="language-js">@<span class="token keyword">import</span> <span class="token string">"~antd/lib/style/themes/default.less"</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//引入antd的变量文件，实现变量的覆盖</span>
-@primary<span class="token operator">-</span>color<span class="token punctuation">:</span> #<span class="token number">800019</span><span class="token punctuation">;</span>
-@link<span class="token operator">-</span>color<span class="token punctuation">:</span> #<span class="token number">800019</span><span class="token punctuation">;</span>
-@btn<span class="token operator">-</span>primary<span class="token operator">-</span>bg<span class="token punctuation">:</span>#<span class="token number">800019</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//color.less中加入css原生变量：--PC</span>
-<span class="token punctuation">:</span>root <span class="token punctuation">{</span> 
-  <span class="token operator">--</span>PC<span class="token punctuation">:</span> @primary<span class="token operator">-</span>color<span class="token punctuation">;</span>   
-  <span class="token operator">--</span>BPB<span class="token punctuation">:</span> @btn<span class="token operator">-</span>primary<span class="token operator">-</span>bg<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">@import "~antd/lib/style/themes/default.less"; //引入antd的变量文件，实现变量的覆盖
+@primary-color: #800019;
+@link-color: #800019;
+@btn-primary-bg:#800019;
+//color.less中加入css原生变量：--PC
+:root { 
+  --PC: @primary-color;   
+  --BPB: @btn-primary-bg;
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>项目<strong>根目录</strong>新建<code>color.js</code>文件，内容如下：</p>
-<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'path'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> <span class="token punctuation">{</span> generateTheme<span class="token punctuation">,</span> getLessVars <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'antd-theme-generator'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> options <span class="token operator">=</span> <span class="token punctuation">{</span>
-stylesDir<span class="token punctuation">:</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">'./resources/public/less'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>    <span class="token comment" spellcheck="true">//对应具体位置</span>
-antDir<span class="token punctuation">:</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">'./node_modules/antd'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">//对应具体位置</span>
-varFile<span class="token punctuation">:</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">'./resources/public/less/vars.less'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">//对应具体位置</span>
-mainLessFile<span class="token punctuation">:</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">'./resources/public/less/main.less'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">//对应具体位置</span>
-themeVariables<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-  <span class="token string">'@primary-color'</span><span class="token punctuation">,</span>
-  <span class="token string">'@secondary-color'</span><span class="token punctuation">,</span>
-  <span class="token string">'@text-color'</span><span class="token punctuation">,</span>
-  <span class="token string">'@text-color-secondary'</span><span class="token punctuation">,</span>
-  <span class="token string">'@heading-color'</span><span class="token punctuation">,</span>
-  <span class="token string">'@layout-body-background'</span><span class="token punctuation">,</span>
-  <span class="token string">'@btn-primary-bg'</span><span class="token punctuation">,</span>
-  <span class="token string">'@layout-header-background'</span>
-<span class="token punctuation">]</span><span class="token punctuation">,</span>
-indexFileName<span class="token punctuation">:</span> <span class="token string">'index.html'</span><span class="token punctuation">,</span>
-outputFilePath<span class="token punctuation">:</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">'./resources/public/css/color.less'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span>
-<span class="token function">generateTheme</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>less <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Theme generated successfully'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span>error <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Error'</span><span class="token punctuation">,</span> error<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">const path = require('path');
+const { generateTheme, getLessVars } = require('antd-theme-generator');
+const options = {
+stylesDir: path.join(__dirname, './resources/public/less'),    //对应具体位置
+antDir: path.join(__dirname, './node_modules/antd'), //对应具体位置
+varFile: path.join(__dirname, './resources/public/less/vars.less'), //对应具体位置
+mainLessFile: path.join(__dirname, './resources/public/less/main.less'), //对应具体位置
+themeVariables: [
+  '@primary-color',
+  '@secondary-color',
+  '@text-color',
+  '@text-color-secondary',
+  '@heading-color',
+  '@layout-body-background',
+  '@btn-primary-bg',
+  '@layout-header-background'
+],
+indexFileName: 'index.html',
+outputFilePath: path.join(__dirname, './resources/public/css/color.less'),
+}
+generateTheme(options).then(less => {
+console.log('Theme generated successfully');
+})
+.catch(error => {
+  console.log('Error', error);
+});
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li><p>修改index.html文件，如下<br>```js</p>
-
-
-
-  <title>门店定制系统</title>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <link href="/css/antd.min.css" type="text/css" rel="stylesheet">
-  <link href="/css/redantd.css" type="text/css" rel="stylesheet">
-  <link href="/css/color.less" type="text/css" rel="stylesheet/less">
-
-
-<!--这个代码不能放在最后-->
-<script>
-window.less = {
-  async: false,
-  env: 'production'
-};
-</script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"></script></li>
-</ul>
-<!-- Our JavaScript will modify the DOM inside this element -->
-<div id="app"></div>
-<!-- All our ClojureScript gets compiled into this file -->
-
-<script>
-  document.write("<script type='text/javascript' src='/js/app.js?v="+Math.random()+"' type='text/javascript'><\/script>");
-</script>
-
-
-```
-
-<ul>
-<li>修改<code>package.json</code>，命令前面增加<code>node color</code><pre class="line-numbers language-js"><code class="language-js"><span class="token string">"scripts"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
-  <span class="token string">"start"</span><span class="token punctuation">:</span> <span class="token string">"node color &amp;&amp; shadow-cljs server"</span><span class="token punctuation">,</span>
-  <span class="token string">"build"</span><span class="token punctuation">:</span> <span class="token string">"node color &amp;&amp; shadow-cljs release app"</span>
-<span class="token punctuation">}</span>
+<li><p>修改index.html文件，如下</p>
+<pre class="line-numbers language-html"><code class="language-html"><span class="token doctype">&lt;!DOCTYPE html></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>cn<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>门店定制系统<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>utf-8<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>width<span class="token punctuation">=</span>device-width, initial-scale<span class="token punctuation">=</span>1.0<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>/css/antd.min.css<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text/css<span class="token punctuation">"</span></span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>/css/redantd.css<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text/css<span class="token punctuation">"</span></span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>/css/color.less<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text/css<span class="token punctuation">"</span></span>  <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet/less<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+<span class="token comment" spellcheck="true">&lt;!--这个代码不能放在最后--></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+window<span class="token punctuation">.</span>less <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token keyword">async</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  env<span class="token punctuation">:</span> <span class="token string">'production'</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token comment" spellcheck="true">&lt;!-- Our JavaScript will modify the DOM inside this element --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>app<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token comment" spellcheck="true">&lt;!-- All our ClojureScript gets compiled into this file --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+document<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"&lt;script type='text/javascript' src='/js/app.js?v="</span><span class="token operator">+</span>Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">"' type='text/javascript'>&lt;\/script>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>修改<code>package.json</code>，命令前面增加<code>node color</code></p>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">"scripts": {
+  "start": "node color && shadow-cljs server",
+  "build": "node color && shadow-cljs release app"
+}
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="3-切换测试"><a href="#3-切换测试" class="headerlink" title="3. 切换测试"></a>3. 切换测试</h4>项目运行后页面比如页面有个Button的type=”primary”那它默认是红色的。</li>
+<h4 id="3-切换测试"><a href="#3-切换测试" class="headerlink" title="3. 切换测试"></a>3. 切换测试</h4><p>项目运行后页面比如页面有个Button的type=”primary”那它默认是红色的。</p>
+</li>
 </ul>
 <p>在浏览器的控制台执行如下命令</p>
-<pre class="line-numbers language-js"><code class="language-js">window<span class="token punctuation">.</span>less<span class="token punctuation">.</span><span class="token function">modifyVars</span><span class="token punctuation">(</span>
-    <span class="token punctuation">{</span>
-        <span class="token string">'@primary-color'</span><span class="token punctuation">:</span> <span class="token string">'#722ed1'</span><span class="token punctuation">,</span>
-        <span class="token string">'@link-color'</span><span class="token punctuation">:</span> <span class="token string">'#722ed1'</span><span class="token punctuation">,</span>
-        <span class="token string">'@btn-primary-bg'</span><span class="token punctuation">:</span> <span class="token string">'#722ed1'</span><span class="token punctuation">,</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">)</span>
+<pre class="line-numbers language-JavaScript"><code class="language-JavaScript">window.less.modifyVars(
+    {
+        '@primary-color': '#722ed1',
+        '@link-color': '#722ed1',
+        '@btn-primary-bg': '#722ed1',
+    }
+)
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>会发现颜色变成了酱紫色。</p>
 <p>到此，实现逻辑修改完。</p>
@@ -716,12 +715,11 @@ window.less = {
    (storage/set-current-theme color)
    {:db (assoc-in db [:global :theme] color)}))
 
-
 (rf/reg-sub
  :theme/now-theme
  (fn [db]
    (get-in db [:global :theme])))
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>里面唯一用到的框架外的就是存储localstore和从localstore里拿值，核心代码就两个：</p>
 <pre class="line-numbers language-cljs"><code class="language-cljs">(defn get-local-storage [key]
   (.getItem js/localStorage key))
@@ -1222,8 +1220,8 @@ window.less = {
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/clojurescript/" class="post-category">
-                                    clojurescript
+                            <a href="/categories/cljs/" class="post-category">
+                                    cljs
                                 </a>
                             
                             
@@ -1233,8 +1231,12 @@ window.less = {
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/clojurescript/">
-                        <span class="chip bg-color">clojurescript</span>
+                    <a href="/tags/cljs/">
+                        <span class="chip bg-color">cljs</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%A4%9A%E8%AF%AD%E8%A8%80/">
+                        <span class="chip bg-color">多语言</span>
                     </a>
                     
                 </div>
@@ -1252,9 +1254,9 @@ window.less = {
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="海尔创客汇笔记----安卓上adb的使用笔记">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="海尔创客汇笔记----安卓上adb的使用">
                         
-                        <span class="card-title">海尔创客汇笔记----安卓上adb的使用笔记</span>
+                        <span class="card-title">海尔创客汇笔记----安卓上adb的使用</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1282,16 +1284,12 @@ window.less = {
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/react-native/">
-                        <span class="chip bg-color">react-native</span>
-                    </a>
-                    
                     <a href="/tags/android/">
                         <span class="chip bg-color">android</span>
                     </a>
                     
-                    <a href="/tags/package/">
-                        <span class="chip bg-color">package</span>
+                    <a href="/tags/adb/">
+                        <span class="chip bg-color">adb</span>
                     </a>
                     
                 </div>

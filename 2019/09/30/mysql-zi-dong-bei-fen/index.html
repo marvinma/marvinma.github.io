@@ -508,7 +508,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    427
+                    424
                 </div>
                 
 
@@ -540,7 +540,7 @@
 
 
 <p>脚本文件位置：/opt/chuangke/db/script/mysql_backup.sh<br>db备份文件：/opt/chuangke/db/backup<br>备份脚本：</p>
-<pre><code>#!/bin/bash
+<pre class="line-numbers language-shell"><code class="language-shell">#!/bin/bash
 #==============================================================================
 #TITLE:            mysql_backup.sh
 #DESCRIPTION:      script for automating the daily mysql backups on development computer
@@ -551,7 +551,7 @@
   # 15   9  *    *     *    /Users/[your user name]/scripts/mysql_backup.sh
 
 #RESTORE FROM BACKUP
-  #$ gunzip &lt; [backupfile.sql.gz] | mysql -u [uname] -p[pass] [dbname]
+  #$ gunzip < [backupfile.sql.gz] | mysql -u [uname] -p[pass] [dbname]
 
 #==============================================================================
 # CUSTOM SETTINGS
@@ -609,9 +609,9 @@ function echo_status(){
 
 function backup_database(){
     backup_file="$BACKUP_DIR/$TIMESTAMP.$database.sql.gz" 
-    output+="$database =&gt; $backup_file\n"
+    output+="$database => $backup_file\n"
     echo_status "...backing up $count of $total databases: $database"
-    $(mysqldump $(mysql_login) $database | gzip -9 &gt; $backup_file)
+    $(mysqldump $(mysql_login) $database | gzip -9 > $backup_file)
     printf "path = ${backup_file}"
     #scp copy to other server
     scp $backup_file haieradmin@10.135.26.78:/opt/chuangke/db/backup/
@@ -642,9 +642,9 @@ hr
 backup_databases
 hr
 printf "All backed up!\n\n"
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>添加定时任务</p>
-<pre><code>[root@localhost ~]# crontab [选项]
+<pre class="line-numbers language-shell"><code class="language-shell">[root@localhost ~]# crontab [选项]
 选项:
     -e:    编辑crontab定时任务
     -l:    查询crontab任务
@@ -652,7 +652,7 @@ printf "All backed up!\n\n"
 [root@localhost ~]# crontab -e  # 编辑定时任务
 # 添加如下定时任务，使用脚本的方法，每晚2点执行
 * 2 * * * /opt/chuangke/db/script/mysql_backup.sh
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>

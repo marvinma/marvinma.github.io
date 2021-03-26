@@ -535,9 +535,10 @@
 <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3bbf19cd29da">简书地址</a></p>
 <span id="more"></span>
 
-<p>问题：<br>微信昵称中有表情符号，在获取到微信个人信息保存到mysql时，格式不支持导致保存失败。<br>现象：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-3c59fed9d20e0f01.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/400" alt="微信昵称带表情"></p>
+<p>问题：<br>微信昵称中有表情符号，在获取到微信个人信息保存到mysql时，格式不支持导致保存失败。</p>
+<p>现象：<br><img src="/loading.gif" data-original="/images/mysql/mysql-emojo.png" alt="微信昵称带表情"></p>
 <p>错误：</p>
-<pre><code>Caused by: java.sql.SQLException: Incorrect string value: '\xF0\x9F\x8C\xB2\xE6\x97...' for column 'nick_name' at row 1
+<pre class="line-numbers language-shell"><code class="language-shell">Caused by: java.sql.SQLException: Incorrect string value: '\xF0\x9F\x8C\xB2\xE6\x97...' for column 'nick_name' at row 1
         at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:129) ~[alk-wxapi.jar:na]
         at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:97) ~[alk-wxapi.jar:na]
         at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[alk-wxapi.jar:na]
@@ -545,14 +546,14 @@
         at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1114) ~[alk-wxapi.jar:na]
         at com.mysql.cj.jdbc.ClientPreparedStatement.executeBatchSerially(ClientPreparedStatement.java:854) ~[alk-wxapi.jar:na]
         ... 82 common frames omitted
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>解决思路：<br>1、修改mysql的配置，不外乎server端，客户端，DB<br>2、数据库存base64，base64连图片都能搞，一个表清应该是ok的，只不过需要存储的时候encode，拿出来再decode</p>
 <p>解决方案：<br>果断采用第一种啊，并实践证明，是科学+合理+快捷的方式。<br>修改mysql的配置，配置文件位置各不相同，不再累赘。</p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-7081399688eaea88.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"></p>
+<p><img src="/loading.gif" data-original="/images/mysql/mysqld-utf8.png" alt="mysqld-utf8"></p>
 <p>修改点就一个，mysqld上加个<code>character-set-server = utf8mb4</code>，就这一个而已。</p>
 <p>然后修改数据库、这个表、这个字段的字符集类型为<code>utf8mb4</code>，ok了。</p>
-<p>验证：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-ca6077b6de39a9e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="字段设置"></p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-6c220103c4d59fc2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="存储"></p>
+<p>验证：<br><img src="/loading.gif" data-original="/images/mysql/mysql-column-utf8.png" alt="字段设置"></p>
+<p><img src="/loading.gif" data-original="/images/mysql/mysql-data-emojo.png" alt="存储"></p>
 <blockquote>
 <p>第二种方式也称应用层解决方案</p>
 </blockquote>
@@ -1026,8 +1027,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            clojure中调用java,解决jar包依赖冲突
-简书地址
+                            简书地址
                         
                     </div>
                     <div class="publish-info">

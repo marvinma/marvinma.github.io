@@ -470,8 +470,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/clojurescript/">
-                                <span class="chip bg-color">clojurescript</span>
+                            <a href="/tags/cljs/">
+                                <span class="chip bg-color">cljs</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%A4%9A%E8%AF%AD%E8%A8%80/">
+                                <span class="chip bg-color">多语言</span>
                             </a>
                         
                     </div>
@@ -482,8 +486,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/clojurescript/" class="post-category">
-                                clojurescript
+                            <a href="/categories/cljs/" class="post-category">
+                                cljs
                             </a>
                         
                     </div>
@@ -535,7 +539,8 @@
 <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/97867dd37db5">简书地址</a></p>
 <span id="more"></span>
 
-<h2 id="先看下效果（证明是实践过的）"><a href="#先看下效果（证明是实践过的）" class="headerlink" title="先看下效果（证明是实践过的）"></a>先看下效果（证明是实践过的）</h2><p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-42a6328eeea9558b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="中文"><br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-976728fceac93658.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="英文"></p>
+<h2 id="先看下效果（证明是实践过的）"><a href="#先看下效果（证明是实践过的）" class="headerlink" title="先看下效果（证明是实践过的）"></a>先看下效果（证明是实践过的）</h2><p><img src="/loading.gif" data-original="/images/cljs/i18n-zh-cn.png" alt="中文"></p>
+<p><img src="/loading.gif" data-original="/images/cljs/i18n-en.png" alt="英文"></p>
 <p>国际化方案比较多，页面上的国际化一般比较简单，麻烦的还是数据库的数据的国际化。<br>本地cljs里的国际化采用前端db的atom控制当前语言，所有可见的翻译分为页面部分和数据库部分，最后在通过接口拿到数据库的翻译后跟页面的进行merge。</p>
 <h2 id="方案原理"><a href="#方案原理" class="headerlink" title="方案原理"></a>方案原理</h2><ol>
 <li>将当前用户设定的语言保存在本地localstorage，并且保存在页面db中。</li>
@@ -641,7 +646,7 @@
             [s @lang] s)))
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3-页面文案翻译"><a href="#3-页面文案翻译" class="headerlink" title="3. 页面文案翻译"></a>3. 页面文案翻译</h4><p>上面代码里用到的<code>language-map</code>类似如下结构:</p>
-<pre><code>(def language-map
+<pre class="line-numbers language-clojure"><code class="language-clojure">(def language-map
   { "切换语言"                      {:en-us "Switch language"  :ja-jp "言語を切り替え"}
      "中文"                        {:en-us "Chinese"           :ja-jp "中国語"}
      "英文"                        {:en-us "English"           :ja-jp "英語"}
@@ -649,9 +654,9 @@
      "体验门店"                     {:en-us "Experience Store"  :ja-jp "店を体験する"}
      "返回首页"                     {:en-us "Back to Home"      :ja-jp "ホームを戻す"}}
   )
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="4-数据库返回的文案"><a href="#4-数据库返回的文案" class="headerlink" title="4. 数据库返回的文案"></a>4. 数据库返回的文案</h4><p>即上文中<code>:i18n/db-lang-map</code>这个event从db中获取的对象，从接口获取的存在前端db中数据结构如下：</p>
-<pre><code> [
+<pre class="line-numbers language-clojure"><code class="language-clojure"> [
         {
             "key": "双排六粒",
             "value": {
@@ -674,16 +679,19 @@
             }
         }
 ]
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>这样将数据库中的和页面上的进行merge后使用。<br>当然，我们产品是因为对多个租户，各租户的翻译不同，所以页面上没有往DB里重复保存，采用merge两端的形式。简单的可以只在数据库维护。</p>
 <h2 id="改进点"><a href="#改进点" class="headerlink" title="改进点"></a>改进点</h2><ul>
 <li>页面文案便于扩展新语言<br>当前三个语言，在数据库采用一行保存一个形式<br>```</li>
 </ul>
 <p>+—————-+————–+——+—–+——————-+——-+<br>| Field          | Type         | Null | Key | Default           | Extra |<br>+—————-+————–+——+—–+——————-+——-+<br>| id             | varchar(40)  | NO   | PRI | NULL              |       |<br>| company_id     | varchar(40)  | NO   |     | NULL              |       |<br>| lang_key       | varchar(255) | NO   |     | NULL              |       |<br>| lang_value     | varchar(255) | NO   |     | NULL              |       |<br>| lang           | varchar(40)  | NO   |     | NULL              |       |<br>| delete_flag    | varchar(4)   | YES  |     | 0                 |       |<br>| create_time    | timestamp    | NO   |     | CURRENT_TIMESTAMP |       |<br>| create_user_id | varchar(40)  | YES  |     | NULL              |       |<br>| update_time    | timestamp    | NO   |     | CURRENT_TIMESTAMP |       |<br>| update_user_id | varchar(40)  | YES  |     | NULL              |       |<br>+—————-+————–+——+—–+——————-+——-+</p>
-<pre><code>一个文案的翻译数据如下：
+<pre><code>
+一个文案的翻译数据如下：
+```sql
+INSERT INTO  `t_store_language`(`id`, `company_id`, `lang_key`, `lang_value`, `lang`, `delete_flag`, `create_time`, `create_user_id`, `update_time`, `update_user_id`) VALUES ('611348', '61', '常规(9个工作日)', 'Regular (9 working days)', 'en-us', '0', '2020-04-01 00:00:00', NULL, '2020-04-01 00:00:00', NULL);
+INSERT INTO  `t_store_language`(`id`, `company_id`, `lang_key`, `lang_value`, `lang`, `delete_flag`, `create_time`, `create_user_id`, `update_time`, `update_user_id`) VALUES ('611359', '61', '常规(9个工作日)', '普通（９稼動日）', 'ja-jp', '0', '2020-04-01 00:00:00', NULL, '2020-04-01 00:00:00', NULL);
 </code></pre>
-<p>INSERT INTO  <code>t_store_language</code>(<code>id</code>, <code>company_id</code>, <code>lang_key</code>, <code>lang_value</code>, <code>lang</code>, <code>delete_flag</code>, <code>create_time</code>, <code>create_user_id</code>, <code>update_time</code>, <code>update_user_id</code>) VALUES (‘611348’, ‘61’, ‘常规(9个工作日)’, ‘Regular (9 working days)’, ‘en-us’, ‘0’, ‘2020-04-01 00:00:00’, NULL, ‘2020-04-01 00:00:00’, NULL);<br>INSERT INTO  <code>t_store_language</code>(<code>id</code>, <code>company_id</code>, <code>lang_key</code>, <code>lang_value</code>, <code>lang</code>, <code>delete_flag</code>, <code>create_time</code>, <code>create_user_id</code>, <code>update_time</code>, <code>update_user_id</code>) VALUES (‘611359’, ‘61’, ‘常规(9个工作日)’, ‘普通（９稼動日）’, ‘ja-jp’, ‘0’, ‘2020-04-01 00:00:00’, NULL, ‘2020-04-01 00:00:00’, NULL);</p>
-<p>```<br>这个是便于扩展的，而页面上就不是那样的，如同上面的<code>language-map</code>，如果再增加一门比如韩语的话，需要逐项在原来的数据上修改，不利于扩展。</p>
+<p>这个是便于扩展的，而页面上就不是那样的，如同上面的<code>language-map</code>，如果再增加一门比如韩语的话，需要逐项在原来的数据上修改，不利于扩展。</p>
 <blockquote>
 <p>改进方向：<br>一个语音一个map，最后将多个语言的文案进行合并</p>
 </blockquote>
@@ -702,8 +710,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/clojurescript/">
-                                    <span class="chip bg-color">clojurescript</span>
+                                <a href="/tags/cljs/">
+                                    <span class="chip bg-color">cljs</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%A4%9A%E8%AF%AD%E8%A8%80/">
+                                    <span class="chip bg-color">多语言</span>
                                 </a>
                             
                         </div>

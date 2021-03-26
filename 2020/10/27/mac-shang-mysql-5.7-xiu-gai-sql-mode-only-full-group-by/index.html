@@ -349,7 +349,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/images/mysql/mysql.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -534,21 +534,21 @@
                 <p>Mac上mysql 5.7 修改默认的sql_mode，去除 ONLY_FULL_GROUP_BY限制<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7359f28b41e4">简书地址</a></p>
 <span id="more"></span>
 <p>ONLY_FULL_GROUP_BY是MySQL提供的一个sql_mode，通过这个sql_mode来提供SQL语句GROUP BY合法性的检查，在MySQL的sql_mode是非ONLY_FULL_GROUP_BY语义时。一条select语句，MySQL允许target list中输出的表达式是除聚集函数或group by column以外的表达式，这个表达式的值可能在经过group by操作后变成undefined。</p>
-<h2 id="一般方式"><a href="#一般方式" class="headerlink" title="一般方式"></a>一般方式</h2><h3 id="1、查看sql-mode"><a href="#1、查看sql-mode" class="headerlink" title="1、查看sql_mode"></a>1、查看sql_mode</h3><pre><code>SELECT @@sql_mode;
-</code></pre>
+<h2 id="一般方式"><a href="#一般方式" class="headerlink" title="一般方式"></a>一般方式</h2><h3 id="1、查看sql-mode"><a href="#1、查看sql-mode" class="headerlink" title="1、查看sql_mode"></a>1、查看sql_mode</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> @<span class="token variable">@sql_mode</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>查询出来的值为：</p>
-<pre><code>ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
-</code></pre>
-<h3 id="2、去掉ONLY-FULL-GROUP-BY，重新设置值。"><a href="#2、去掉ONLY-FULL-GROUP-BY，重新设置值。" class="headerlink" title="2、去掉ONLY_FULL_GROUP_BY，重新设置值。"></a>2、去掉ONLY_FULL_GROUP_BY，重新设置值。</h3><pre><code>SET @@global.sql_mode ='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
-</code></pre>
-<h3 id="3、上面是改变了全局sql-mode，对于新建的数据库有效。对于已存在的数据库，则需要在对应的数据下执行："><a href="#3、上面是改变了全局sql-mode，对于新建的数据库有效。对于已存在的数据库，则需要在对应的数据下执行：" class="headerlink" title="3、上面是改变了全局sql_mode，对于新建的数据库有效。对于已存在的数据库，则需要在对应的数据下执行："></a>3、上面是改变了全局sql_mode，对于新建的数据库有效。对于已存在的数据库，则需要在对应的数据下执行：</h3><pre><code>SET sql_mode ='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
-</code></pre>
+<pre class="line-numbers language-sql"><code class="language-sql">ONLY_FULL_GROUP_BY<span class="token punctuation">,</span>STRICT_TRANS_TABLES<span class="token punctuation">,</span>NO_ZERO_IN_DATE<span class="token punctuation">,</span>NO_ZERO_DATE<span class="token punctuation">,</span>ERROR_FOR_DIVISION_BY_ZERO<span class="token punctuation">,</span>NO_AUTO_CREATE_USER<span class="token punctuation">,</span>NO_ENGINE_SUBSTITUTION
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="2、去掉ONLY-FULL-GROUP-BY，重新设置值。"><a href="#2、去掉ONLY-FULL-GROUP-BY，重新设置值。" class="headerlink" title="2、去掉ONLY_FULL_GROUP_BY，重新设置值。"></a>2、去掉ONLY_FULL_GROUP_BY，重新设置值。</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SET</span> @<span class="token variable">@global.sql_mode</span> <span class="token operator">=</span><span class="token string">'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="3、上面是改变了全局sql-mode，对于新建的数据库有效。对于已存在的数据库，则需要在对应的数据下执行："><a href="#3、上面是改变了全局sql-mode，对于新建的数据库有效。对于已存在的数据库，则需要在对应的数据下执行：" class="headerlink" title="3、上面是改变了全局sql_mode，对于新建的数据库有效。对于已存在的数据库，则需要在对应的数据下执行："></a>3、上面是改变了全局sql_mode，对于新建的数据库有效。对于已存在的数据库，则需要在对应的数据下执行：</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SET</span> sql_mode <span class="token operator">=</span><span class="token string">'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>废话半天，但是其实同事和我本地这样设置都没有生效。</p>
 <p>大家都明白，工具里面修改一般是临时的，只有修改配置文件才是永久的，但是比如在同事电脑上参考好几种网络上的说法修改了<code>/etc/my.cnf</code>文件，也还是没有奏效。</p>
 <p>windows 在安装目录下的my.ini 文件<br>Mac 或者Linux 在/ etc/my.cnf 下面应该是<br>总之就是在个人mysql配置文件中修改。</p>
 <h2 id="另一个方式"><a href="#另一个方式" class="headerlink" title="另一个方式"></a>另一个方式</h2><p>最后没办法了，下面的命令却不小心达到了目的，特此记录一下。</p>
-<pre><code>SET @@sql_mode=REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', '');  
-</code></pre>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SET</span> @<span class="token variable">@sql_mode</span><span class="token operator">=</span>REPLACE<span class="token punctuation">(</span>@<span class="token variable">@sql_mode</span><span class="token punctuation">,</span> <span class="token string">'ONLY_FULL_GROUP_BY'</span><span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
                 
             </div>

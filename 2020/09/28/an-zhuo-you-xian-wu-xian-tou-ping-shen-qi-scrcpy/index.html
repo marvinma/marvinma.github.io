@@ -504,7 +504,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    827
+                    824
                 </div>
                 
 
@@ -573,9 +573,9 @@ $ scrcpy
 <li> 手机通过USB连接到PC上，首次连接会弹出是否信任该电脑，点击始终信任即可。</li>
 <li> 运行<code>adb usb</code>查看是否连接成功</li>
 </ol>
-<pre><code>D:\Github_Run\scrcpy-win64-v1.10&gt;adb usb
+<pre class="line-numbers language-shell"><code class="language-shell">D:\Github_Run\scrcpy-win64-v1.10>adb usb
 restarting in USB mode
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ol start="3">
 <li> 运行<code>scrcpy</code>即可。</li>
 </ol>
@@ -586,16 +586,16 @@ restarting in USB mode
 <li> 手机先通过USB与PC相连</li>
 <li> 在PC上运行 adb tcpip 服务端口，如端口为5555</li>
 </ol>
-<pre><code>D:\Github_Run\scrcpy-win64-v1.10&gt;adb tcpip 5555
+<pre class="line-numbers language-shell"><code class="language-shell">D:\Github_Run\scrcpy-win64-v1.10>adb tcpip 5555
 restarting in TCP mode port: 5555
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ol start="4">
 <li> 拔下你的设备，断开USB连接</li>
 <li> 在PC上运行 adb connect 手机IP:服务端口（手机IP可通过手机的<code>状态信息</code>查看，或者登录路由器查看，一般以192.168开头）</li>
 </ol>
-<pre><code>D:\Github_Run\scrcpy-win64-v1.10&gt;adb connect 192.168.0.4:5555
+<pre class="line-numbers language-shell"><code class="language-shell">D:\Github_Run\scrcpy-win64-v1.10>adb connect 192.168.0.4:5555
 connected to 192.168.0.4:5555
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ol start="6">
 <li> 运行scrcpy，在cmd中输入<code>scrcpy.exe</code></li>
 </ol>

@@ -470,8 +470,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/clojurescript/">
-                                <span class="chip bg-color">clojurescript</span>
+                            <a href="/tags/cljs/">
+                                <span class="chip bg-color">cljs</span>
                             </a>
                         
                             <a href="/tags/electron/">
@@ -486,8 +486,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/clojurescript/" class="post-category">
-                                clojurescript
+                            <a href="/categories/cljs/" class="post-category">
+                                cljs
                             </a>
                         
                     </div>
@@ -508,14 +508,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    605
+                    717
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    3 分
                 </div>
                 
 
@@ -573,31 +573,30 @@ writeByDir ${srcpath}
 <pre class="line-numbers language-shell"><code class="language-shell">ssh -p2020 root@*.*.*.* 'bash -s ' < /opt/auto-deploy-scripts/merge_css.sh /opt/site/project/css /opt/site/project/css/main.css
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>在原来的css文件下，将生成一个main.css文件。</p>
-<h3 id="第三步，使用合并的css文件"><a href="#第三步，使用合并的css文件" class="headerlink" title="第三步，使用合并的css文件"></a>第三步，使用合并的css文件</h3><p>```html</p>
-
-
-  <title>平台</title>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1" name="viewport">
-  <link href="https://cdn.bootcss.com/antd/3.18.0/antd.min.css" rel="stylesheet">
 </li>
 </ul>
+<h3 id="第三步，使用合并的css文件"><a href="#第三步，使用合并的css文件" class="headerlink" title="第三步，使用合并的css文件"></a>第三步，使用合并的css文件</h3><pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>cn<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>平台<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>utf-8<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>width<span class="token punctuation">=</span>device-width, initial-scale<span class="token punctuation">=</span>1<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://cdn.bootcss.com/antd/3.18.0/antd.min.css<span class="token punctuation">"</span></span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+<span class="token comment" spellcheck="true">&lt;!-- Our JavaScript will modify the DOM inside this element --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>app<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script language-javascript">
+    document<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"&lt;link rel='stylesheet' type='text/css' href='css/main.css?v="</span><span class="token operator">+</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">"'>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
 
-<!-- Our JavaScript will modify the DOM inside this element -->
-<div id="app"></div>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script language-javascript">
+    document<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"&lt;script type='text/javascript' src='doctorjs/app.js?v="</span><span class="token operator">+</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">"' type='text/javascript'>&lt;\/script>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
 
-<script type="text/javascript">
-    document.write("<link rel='stylesheet' type='text/css' href='css/main.css?v="+new Date().getTime()+"'>");
-</script>
-
-<script type="text/javascript">
-    document.write("<script type='text/javascript' src='doctorjs/app.js?v="+new Date().getTime()+"' type='text/javascript'><\/script>");
-</script>
-
-
-
-
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>经检查，已生效。<br>完！！！</p>
 <p><img src="/loading.gif" data-original="/images/clojure/merge-css.png" alt="css合并后.png"></p>
 <h2 id="遗留问题"><a href="#遗留问题" class="headerlink" title="遗留问题"></a>遗留问题</h2><ul>
@@ -620,8 +619,8 @@ writeByDir ${srcpath}
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/clojurescript/">
-                                    <span class="chip bg-color">clojurescript</span>
+                                <a href="/tags/cljs/">
+                                    <span class="chip bg-color">cljs</span>
                                 </a>
                             
                                 <a href="/tags/electron/">
@@ -1156,12 +1155,12 @@ writeByDir ${srcpath}
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/clojurescript/">
-                        <span class="chip bg-color">clojurescript</span>
-                    </a>
-                    
                     <a href="/tags/electron/">
                         <span class="chip bg-color">electron</span>
+                    </a>
+                    
+                    <a href="/tags/clojurescript/">
+                        <span class="chip bg-color">clojurescript</span>
                     </a>
                     
                 </div>

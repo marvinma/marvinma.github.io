@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>回忆点滴</title>
   
-  <subtitle>没有挫折，就没有壮丽的人生</subtitle>
+  <subtitle>没有挫折，就没有值得吹牛的人生</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://qdhaiqiang.github.io/"/>
-  <updated>2021-03-21T13:55:07.595Z</updated>
+  <updated>2021-03-22T13:48:17.078Z</updated>
   <id>https://qdhaiqiang.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://qdhaiqiang.github.io/2021/03/19/hexo-qie-huan-matery-fei-zhu-liu-zhu-ti/"/>
     <id>https://qdhaiqiang.github.io/2021/03/19/hexo-qie-huan-matery-fei-zhu-liu-zhu-ti/</id>
     <published>2021-03-18T16:31:27.000Z</published>
-    <updated>2021-03-21T13:55:07.595Z</updated>
+    <updated>2021-03-22T13:48:17.078Z</updated>
     
     <summary type="html">
     
@@ -85,7 +85,7 @@
     <link href="https://qdhaiqiang.github.io/2020/10/27/mac-shang-mysql-5.7-xiu-gai-sql-mode-only-full-group-by/"/>
     <id>https://qdhaiqiang.github.io/2020/10/27/mac-shang-mysql-5.7-xiu-gai-sql-mode-only-full-group-by/</id>
     <published>2020-10-27T12:16:51.000Z</published>
-    <updated>2021-03-17T15:27:58.656Z</updated>
+    <updated>2021-03-22T13:52:58.666Z</updated>
     
     <summary type="html">
     
@@ -105,7 +105,7 @@
     <link href="https://qdhaiqiang.github.io/2020/10/01/cheng-xu-yuan-de-macos-huan-jing-er/"/>
     <id>https://qdhaiqiang.github.io/2020/10/01/cheng-xu-yuan-de-macos-huan-jing-er/</id>
     <published>2020-10-01T12:16:51.000Z</published>
-    <updated>2021-03-21T15:22:43.856Z</updated>
+    <updated>2021-03-22T13:56:52.854Z</updated>
     
     <summary type="html">
     
@@ -127,7 +127,7 @@
     <link href="https://qdhaiqiang.github.io/2020/09/29/cheng-xu-yuan-de-macos-huan-jing-yi/"/>
     <id>https://qdhaiqiang.github.io/2020/09/29/cheng-xu-yuan-de-macos-huan-jing-yi/</id>
     <published>2020-09-29T12:16:51.000Z</published>
-    <updated>2021-03-21T15:21:20.135Z</updated>
+    <updated>2021-03-22T13:58:08.502Z</updated>
     
     <summary type="html">
     
@@ -149,7 +149,7 @@
     <link href="https://qdhaiqiang.github.io/2020/09/28/an-zhuo-you-xian-wu-xian-tou-ping-shen-qi-scrcpy/"/>
     <id>https://qdhaiqiang.github.io/2020/09/28/an-zhuo-you-xian-wu-xian-tou-ping-shen-qi-scrcpy/</id>
     <published>2020-09-28T15:23:00.000Z</published>
-    <updated>2021-03-21T13:55:07.597Z</updated>
+    <updated>2021-03-22T13:58:37.311Z</updated>
     
     <summary type="html">
     
@@ -169,7 +169,7 @@
     <link href="https://qdhaiqiang.github.io/2020/09/22/nginx-wen-jian-mu-lu-fu-wu-qi/"/>
     <id>https://qdhaiqiang.github.io/2020/09/22/nginx-wen-jian-mu-lu-fu-wu-qi/</id>
     <published>2020-09-22T15:00:00.000Z</published>
-    <updated>2021-03-21T13:55:07.596Z</updated>
+    <updated>2021-03-22T14:02:31.116Z</updated>
     
     <summary type="html">
     
@@ -189,7 +189,7 @@
     <link href="https://qdhaiqiang.github.io/2020/09/13/websocket-ben-di-diao-shi-html/"/>
     <id>https://qdhaiqiang.github.io/2020/09/13/websocket-ben-di-diao-shi-html/</id>
     <published>2020-09-13T14:00:00.000Z</published>
-    <updated>2021-03-17T15:27:58.762Z</updated>
+    <updated>2021-03-22T14:05:15.001Z</updated>
     
     <summary type="html">
     
@@ -209,7 +209,7 @@
     <link href="https://qdhaiqiang.github.io/2020/08/29/shadow-cljs-hooks-jie-jue-css-yan-chi-jia-zai-dao-zhi-ye-mian-zou-xing-wen-ti/"/>
     <id>https://qdhaiqiang.github.io/2020/08/29/shadow-cljs-hooks-jie-jue-css-yan-chi-jia-zai-dao-zhi-ye-mian-zou-xing-wen-ti/</id>
     <published>2020-08-28T16:31:27.000Z</published>
-    <updated>2021-03-17T15:27:58.753Z</updated>
+    <updated>2021-03-22T14:07:21.731Z</updated>
     
     <summary type="html">
     
@@ -220,7 +220,7 @@
       <category term="cljs" scheme="https://qdhaiqiang.github.io/categories/cljs/"/>
     
     
-      <category term="微信" scheme="https://qdhaiqiang.github.io/tags/%E5%BE%AE%E4%BF%A1/"/>
+      <category term="shadow-cljs" scheme="https://qdhaiqiang.github.io/tags/shadow-cljs/"/>
     
   </entry>
   
@@ -229,7 +229,7 @@
     <link href="https://qdhaiqiang.github.io/2020/08/16/mac-shang-soundflower-obs-wei-xin-gong-zhong-hao-zhi-bo-xiang-mu-zong-jie/"/>
     <id>https://qdhaiqiang.github.io/2020/08/16/mac-shang-soundflower-obs-wei-xin-gong-zhong-hao-zhi-bo-xiang-mu-zong-jie/</id>
     <published>2020-08-16T15:31:27.000Z</published>
-    <updated>2021-03-21T13:55:07.596Z</updated>
+    <updated>2021-03-22T14:11:08.613Z</updated>
     
     <summary type="html">
     
@@ -249,7 +249,7 @@
     <link href="https://qdhaiqiang.github.io/2020/08/09/ant-design-pro-v4-an-zhuang-xin-lu-li-cheng/"/>
     <id>https://qdhaiqiang.github.io/2020/08/09/ant-design-pro-v4-an-zhuang-xin-lu-li-cheng/</id>
     <published>2020-08-09T13:31:27.000Z</published>
-    <updated>2021-03-17T15:27:58.646Z</updated>
+    <updated>2021-03-22T14:12:15.273Z</updated>
     
     <summary type="html">
     
@@ -257,7 +257,7 @@
     
     </summary>
     
-      <category term="antd" scheme="https://qdhaiqiang.github.io/categories/antd/"/>
+      <category term="大前端" scheme="https://qdhaiqiang.github.io/categories/%E5%A4%A7%E5%89%8D%E7%AB%AF/"/>
     
     
       <category term="antd" scheme="https://qdhaiqiang.github.io/tags/antd/"/>
@@ -269,7 +269,7 @@
     <link href="https://qdhaiqiang.github.io/2020/08/06/wei-xin-pei-zhi-ben-di-gong-zhong-hao-kai-fa-huan-jing/"/>
     <id>https://qdhaiqiang.github.io/2020/08/06/wei-xin-pei-zhi-ben-di-gong-zhong-hao-kai-fa-huan-jing/</id>
     <published>2020-08-06T15:31:27.000Z</published>
-    <updated>2021-03-17T15:27:58.769Z</updated>
+    <updated>2021-03-22T14:17:59.949Z</updated>
     
     <summary type="html">
     
@@ -309,7 +309,7 @@
     <link href="https://qdhaiqiang.github.io/2020/06/21/postgressql-shu-ju-ku-postgrest-fu-wu-da-jian/"/>
     <id>https://qdhaiqiang.github.io/2020/06/21/postgressql-shu-ju-ku-postgrest-fu-wu-da-jian/</id>
     <published>2020-06-21T15:15:11.000Z</published>
-    <updated>2021-03-17T15:27:58.751Z</updated>
+    <updated>2021-03-22T14:21:36.118Z</updated>
     
     <summary type="html">
     
@@ -331,7 +331,7 @@
     <link href="https://qdhaiqiang.github.io/2020/06/08/emacs-de-cider-debug-defun-point/"/>
     <id>https://qdhaiqiang.github.io/2020/06/08/emacs-de-cider-debug-defun-point/</id>
     <published>2020-06-08T15:03:45.000Z</published>
-    <updated>2021-03-17T15:27:58.674Z</updated>
+    <updated>2021-03-22T14:22:19.434Z</updated>
     
     <summary type="html">
     
@@ -373,7 +373,7 @@
     <link href="https://qdhaiqiang.github.io/2020/04/18/linux-shell-jian-kong-ying-yong-cun-huo-bing-fa-you-jian-tong-zhi/"/>
     <id>https://qdhaiqiang.github.io/2020/04/18/linux-shell-jian-kong-ying-yong-cun-huo-bing-fa-you-jian-tong-zhi/</id>
     <published>2020-04-18T14:41:04.000Z</published>
-    <updated>2021-03-17T15:27:58.652Z</updated>
+    <updated>2021-03-22T14:24:03.554Z</updated>
     
     <summary type="html">
     
@@ -393,7 +393,7 @@
     <link href="https://qdhaiqiang.github.io/2020/04/18/linux-pei-zhi-sendmail-fa-song-you-jian/"/>
     <id>https://qdhaiqiang.github.io/2020/04/18/linux-pei-zhi-sendmail-fa-song-you-jian/</id>
     <published>2020-04-18T13:41:04.000Z</published>
-    <updated>2021-03-17T15:27:58.655Z</updated>
+    <updated>2021-03-22T14:29:17.560Z</updated>
     
     <summary type="html">
     
@@ -413,7 +413,7 @@
     <link href="https://qdhaiqiang.github.io/2020/04/04/clojurescript-i18n/"/>
     <id>https://qdhaiqiang.github.io/2020/04/04/clojurescript-i18n/</id>
     <published>2020-04-04T14:04:45.000Z</published>
-    <updated>2021-03-17T15:27:58.665Z</updated>
+    <updated>2021-03-22T16:00:12.336Z</updated>
     
     <summary type="html">
     
@@ -422,10 +422,12 @@
     
     </summary>
     
-      <category term="clojurescript" scheme="https://qdhaiqiang.github.io/categories/clojurescript/"/>
+      <category term="cljs" scheme="https://qdhaiqiang.github.io/categories/cljs/"/>
     
     
-      <category term="clojurescript" scheme="https://qdhaiqiang.github.io/tags/clojurescript/"/>
+      <category term="cljs" scheme="https://qdhaiqiang.github.io/tags/cljs/"/>
+    
+      <category term="多语言" scheme="https://qdhaiqiang.github.io/tags/%E5%A4%9A%E8%AF%AD%E8%A8%80/"/>
     
   </entry>
   

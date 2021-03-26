@@ -508,7 +508,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    926
+                    917
                 </div>
                 
 
@@ -543,62 +543,62 @@
 <p>如果打的是jar包，我通常会用nohup启动，比如生产环境的一些db、redis、第三方secret等不会配置到项目里，今天要记录的便是用nohup java -jar 启动jar包时如何加载环境变量配置的问题。</p>
 <p>java语言开发的jar包启动时可以按照如下方式加启动参数。</p>
 <h3 id="方式一：-DpropName-propValue"><a href="#方式一：-DpropName-propValue" class="headerlink" title="方式一：-DpropName=propValue"></a>方式一：-DpropName=propValue</h3><p>这种方式应该很快都能找到</p>
-<pre><code>-DpropName=propValue
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">-DpropName=propValue
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>比如：</p>
-<pre><code>java -jar -DdatabaseUrl="mysql://localhost:3306/pdb?user=root&amp;password=root"  -Dapp.key="123" -Dapp.secret="xxx"  demo.jar
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">java -jar -DdatabaseUrl="mysql://localhost:3306/pdb?user=root&password=root"  -Dapp.key="123" -Dapp.secret="xxx"  demo.jar
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>多个参数也可以。</p>
-<h3 id="方式二：参数直接跟在命令后面，多个参数之间用空格隔开"><a href="#方式二：参数直接跟在命令后面，多个参数之间用空格隔开" class="headerlink" title="方式二：参数直接跟在命令后面，多个参数之间用空格隔开"></a>方式二：参数直接跟在命令后面，多个参数之间用空格隔开</h3><pre><code>java -jar demo.jar JOURNAL_TREENODE_DATA-20190404174502.txt processType=1
-</code></pre>
+<h3 id="方式二：参数直接跟在命令后面，多个参数之间用空格隔开"><a href="#方式二：参数直接跟在命令后面，多个参数之间用空格隔开" class="headerlink" title="方式二：参数直接跟在命令后面，多个参数之间用空格隔开"></a>方式二：参数直接跟在命令后面，多个参数之间用空格隔开</h3><pre class="line-numbers language-shell"><code class="language-shell">java -jar demo.jar JOURNAL_TREENODE_DATA-20190404174502.txt processType=1
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>这种方式参数就是jar包里主启动类中main方法的args参数，按顺序来</p>
-<h3 id="方式三：使用springboot的方式，–propName-propValue方式"><a href="#方式三：使用springboot的方式，–propName-propValue方式" class="headerlink" title="方式三：使用springboot的方式，–propName=propValue方式"></a>方式三：使用springboot的方式，–propName=propValue方式</h3><pre><code>java -jar demo.jar  --spring.profiles.active=dev  --server.port=8181
-</code></pre>
+<h3 id="方式三：使用springboot的方式，–propName-propValue方式"><a href="#方式三：使用springboot的方式，–propName-propValue方式" class="headerlink" title="方式三：使用springboot的方式，–propName=propValue方式"></a>方式三：使用springboot的方式，–propName=propValue方式</h3><pre class="line-numbers language-shell"><code class="language-shell">java -jar demo.jar  --spring.profiles.active=dev  --server.port=8181
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><strong>注意：</strong><br>运行jar包时指定端口：java -jar xxx.jar –server.port=8088<br>若命令行传入的server.port没有作用，服务仍然使用8081端口启动，原因是spring-cloud-config会覆盖命令行传入的参数，这是有意为之，</p>
 <p>办法是在web-prod.yml中做点小改动，让“配置”变得“可配置”：加一对花括符</p>
-<pre><code>server.port={port:8081}
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">server.port={port:8081}
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h2 id="用clojure编写的jar里有惊喜"><a href="#用clojure编写的jar里有惊喜" class="headerlink" title="用clojure编写的jar里有惊喜"></a>用clojure编写的jar里有惊喜</h2><p>在clojure上面的配置就变得诡异了，猜猜下面的配置能不能生效呢？</p>
-<pre><code>java -jar -Ddatabase-url="mysql://localhost:3306/pdb?user=root&amp;password=root"  -Dapp.key="123" -Dapp.secret="xxx"  demo.jar
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">java -jar -Ddatabase-url="mysql://localhost:3306/pdb?user=root&password=root"  -Dapp.key="123" -Dapp.secret="xxx"  demo.jar
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>如果你用<code>cider-conect</code>通过nrepl的端口连接上你的服务，你会发现，这个配置导致<code>database-url</code>的值确实已经改了，但是后面两个没有。</p>
 <p>究其原因，我们java从classpath里获取参数使用的是properties形式的，也就是json的格式。这不难理解，spring有它的办法，clojure当然也有自己的方式。</p>
-<pre><code>"app": {
-    "key": "123",
-    "secret":"xxx"
-}
-</code></pre>
+<pre class="line-numbers language-json"><code class="language-json"><span class="token property">"app"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"key"</span><span class="token operator">:</span> <span class="token string">"123"</span><span class="token punctuation">,</span>
+    <span class="token property">"secret"</span><span class="token operator">:</span><span class="token string">"xxx"</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>虽然json和我们的edn里map是很像的，但是毕竟是不同，于是要分析下现在的edn里的配置信息他是怎么读取的呢？</p>
 <h3 id="代码里的env"><a href="#代码里的env" class="headerlink" title="代码里的env"></a>代码里的env</h3><p>在<code>config</code>这个namespace里找到了env</p>
-<pre><code>(defstate env
+<pre class="line-numbers language-clojure"><code class="language-clojure">(defstate env
   :start
   (load-config
    :merge
    [(args)
     (source/from-system-props)
     (source/from-env)]))
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="cprop加载配置"><a href="#cprop加载配置" class="headerlink" title="cprop加载配置"></a>cprop加载配置</h3><p><code>cprop.source</code>这个文件就是用来加载edn文件的</p>
-<pre><code>(defn- env-&gt;path [k]
-  (k-&gt;path k "_" #"__"))
+<pre class="line-numbers language-clojure"><code class="language-clojure">(defn- env->path [k]
+  (k->path k "_" #"__"))
 
 (defn read-system-env
   ([]
    (read-system-env {}))
   ([opts]
-   (-&gt;&gt; (System/getenv)
-        (map (fn [[k v]] [(env-&gt;path k)
-                          (str-&gt;value v opts)]))
+   (->> (System/getenv)
+        (map (fn [[k v]] [(env->path k)
+                          (str->value v opts)]))
         (into {}))))
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>从获取的过程看，应该是会把<code>_</code>做为单元节点断开，因此需要改成这样</p>
-<pre><code>java -jar -Ddatabase-url="mysql://localhost:3306/pdb?user=root&amp;password=root"  -Dapp_key="123" -Dapp_secret="xxx"  demo.jar
-</code></pre>
+<pre class="line-numbers language-clojure"><code class="language-clojure">java -jar -Ddatabase-url="mysql://localhost:3306/pdb?user=root&password=root"  -Dapp_key="123" -Dapp_secret="xxx"  demo.jar
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>对应到edn里应该是</p>
-<pre><code>{:app
+<pre class="line-numbers language-clojure"><code class="language-clojure">{:app
     {:key "123"
      :secret "xxx"}}
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>如果仔细看看<a target="_blank" rel="noopener" href="https://github.com/tolitius/cprop#loading-config">cprop</a>这个库就不难理解了。<br>cprop加载配置文件的顺序是 :</p>
 <blockquote>
 <p>By default cprop will merge all configurations it can find in the following order:<br>classpath resource config<br>file on a file system (pointed by a conf system property or by (load-config :file <path>))<br>custom configurations, maps from various sources, etc.<br>System properties<br>ENV variables</path></p>
@@ -1083,7 +1083,8 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            springboot项目提示Resolved [org.springframework.web.HttpMediaTypeNotSupportedException: Content type ‘application/json;chars
+                            springboot项目提示 
+Resolved [org.springframework.web.HttpMediaTypeNotSupportedException: Content type 'application/json;cha
                         
                     </div>
                     <div class="publish-info">

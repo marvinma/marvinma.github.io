@@ -540,41 +540,41 @@
 
 <p>环境：ubuntu</p>
 <h2 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h2><p>postgresql是又一款开源的关系数据库，经常有人拿来跟mysql进行对比，比如<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20010554">PostgreSQL 与 MySQL 相比，优势何在？</a>，上网搜了下，还真不少。本人了解太少，不做评论，老板要求用用咱就用，又可以学东西了（又有坑要踩了），学无止境…。</p>
-<h2 id="postgresSql"><a href="#postgresSql" class="headerlink" title="postgresSql"></a>postgresSql</h2><h4 id="1-安装服务"><a href="#1-安装服务" class="headerlink" title="1.安装服务"></a>1.安装服务</h4><pre><code>sudo apt update
+<h2 id="postgresSql"><a href="#postgresSql" class="headerlink" title="postgresSql"></a>postgresSql</h2><h4 id="1-安装服务"><a href="#1-安装服务" class="headerlink" title="1.安装服务"></a>1.安装服务</h4><pre class="line-numbers language-shell"><code class="language-shell">sudo apt update
 sudo apt install postgresql postgresql-contrib
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="2-进入服务"><a href="#2-进入服务" class="headerlink" title="2.进入服务"></a>2.进入服务</h4><p>上一步安装完成后，执行如下命令启动服务：</p>
-<pre><code>service postgresql status
+<pre class="line-numbers language-shell"><code class="language-shell">service postgresql status
 service postgresql start
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>默认情况下，PostgreSQL 会创建一个拥有所权限的特殊用户 postgres。要实际使用 PostgreSQL，你必须先登录该账户：</p>
-<pre><code>sudo su postgres
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">sudo su postgres
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>你的提示符会更改为类似于以下的内容：</p>
-<pre><code>postgres@ubuntu-VirtualBox:/home/ubuntu$ 
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">postgres@ubuntu-VirtualBox:/home/ubuntu$ 
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>现在，使用 psql 来启动 PostgreSQL Shell：</p>
-<pre><code>psql
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">psql
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>你应该会看到如下提示符：</p>
-<pre><code>postgress=#
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">postgress=#
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>要查看现有的所有表，输入如下命令：</p>
-<pre><code>\l
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">\l
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>你可以输入 \q 以退出，输入 ? 获取帮助。其他更多命令参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/ifucking/article/details/80005241">PostgreSQL命令行常用命令psql</a></p>
 <h4 id="3-修改postgres数据库用户的密码"><a href="#3-修改postgres数据库用户的密码" class="headerlink" title="3.修改postgres数据库用户的密码"></a>3.修改postgres数据库用户的密码</h4><ol>
-<li>打开客户端工具（psql）<pre><code>sudo -u postgres psql  (或者分两步： sudo -u postgres -i; psql)
-</code></pre>
+<li>打开客户端工具（psql）<pre class="line-numbers language-shell"><code class="language-shell">sudo -u postgres psql  (或者分两步： sudo -u postgres -i; psql)
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 其中，<code>sudo -u postgres </code>是使用postgres 用户登录的意思</li>
 </ol>
 <p>PostgreSQL数据默认会创建一个postgres的数据库用户作为数据库的管理员，密码是随机的，创建用户：</p>
-<pre><code>postgres=# 
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">postgres=# 
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><code>postgres=# </code>为PostgreSQL下的命令提示符，–注意最后的分号；</p>
 <ol start="2">
-<li>退出PostgreSQL psql客户端<pre><code>postgres=# \q
-</code></pre>
+<li>退出PostgreSQL psql客户端<pre class="line-numbers language-shell"><code class="language-shell">postgres=# \q
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 </ol>
 <ol start="4">
@@ -582,17 +582,17 @@ service postgresql start
 </ol>
 <ul>
 <li><p>切换到root用户</p>
-<pre><code>su root  
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">su root  
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 <li><p>删除PostgreSQL用户密码</p>
-<pre><code>sudo passwd -d postgres
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">sudo passwd -d postgres
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>passwd -d 是清空指定用户密码的意思</p>
 </li>
 <li><p>设置PostgreSQL系统用户的密码</p>
-<pre><code>sudo -u postgres passwd
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">sudo -u postgres passwd
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>按照提示，输入两次新密码</p>
 </li>
 </ul>
@@ -600,15 +600,15 @@ service postgresql start
 <p>重新输入新的 UNIX 密码</p>
 <p>passwd：已成功更新密码</p>
 <ol start="5">
-<li>修改PostgresSQL数据库配置实现远程访问<pre><code>vi /etc/postgresql/9.5/main/postgresql.conf
-</code></pre>
-监听任何地址访问，修改连接权限<pre><code>#listen_addresses = 'localhost' 改为 listen_addresses = '*' (uncomment it)
-</code></pre>
-启用密码验证<pre><code>#password_encryption = on 改为 password_encryption = on (uncomment it)
+<li>修改PostgresSQL数据库配置实现远程访问<pre class="line-numbers language-shell"><code class="language-shell">vi /etc/postgresql/9.5/main/postgresql.conf
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+监听任何地址访问，修改连接权限<pre class="line-numbers language-shell"><code class="language-shell">#listen_addresses = 'localhost' 改为 listen_addresses = '*' (uncomment it)
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+启用密码验证<pre class="line-numbers language-shell"><code class="language-shell">#password_encryption = on 改为 password_encryption = on (uncomment it)
 vi /etc/postgresql/9.6/main/pg_hba.conf
-</code></pre>
-在文档末尾加上以下内容<pre><code>host all all 0.0.0.0 0.0.0.0 md5
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+在文档末尾加上以下内容<pre class="line-numbers language-shell"><code class="language-shell">host all all 0.0.0.0 0.0.0.0 md5
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 </ol>
 <p>创建用户、数据库，授权</p>
@@ -618,26 +618,26 @@ postgres=# GRANT ALL PRIVILEGES ON DATABASE traindb to lizy;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>postgresql的教程，目前刚上手，推荐：</p>
 <h2 id="postgrest服务"><a href="#postgrest服务" class="headerlink" title="postgrest服务"></a>postgrest服务</h2><p>使用源码下载安装的方式</p>
-<h4 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h4><pre><code># download from https://github.com/PostgREST/postgrest/releases/latest
+<h4 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h4><pre class="line-numbers language-shell"><code class="language-shell"># download from https://github.com/PostgREST/postgrest/releases/latest
 # 下载后进行解压
 curl https://github.com/PostgREST/postgrest/releases/download/v7.0.1/postgrest-v7.0.1-linux-x64-static.tar.xz
 tar xfJ postgrest-v7.0.1-linux-x64-static.tar.xz
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>解压文件只有一个名为<code>postgrest</code>的可执行脚本。</p>
 <h4 id="2-运行postgrest服务"><a href="#2-运行postgrest服务" class="headerlink" title="2.运行postgrest服务"></a>2.运行postgrest服务</h4><p>运行postgrest是需要指定一个conf文件，文件名可以随意，比如<code>tutorial.conf</code>,内容如下：</p>
-<pre><code>db-uri = "postgres://training:training_plat@localhost:5432/traindb"
+<pre class="line-numbers language-conf"><code class="language-conf">db-uri = "postgres://training:training_plat@localhost:5432/traindb"
 db-schema = "testapp_db, basic_auth,global_info"
 db-anon-role = "training"
 jwt-secret = "MqQx7uwtxH3JjphNvRzgeQMkNjDt5JzfpqWwNHrQ13c="
 log_statement = "all"
 server-port = 3032
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>如果不指定<code>server-port</code>,则默认的端口是3000。<br>有了配置文件后在解压后的目录执行</p>
-<pre><code>./postgrest tutorial.conf
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">./postgrest tutorial.conf
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>推荐：总是在解压目录执行可执行脚本，写路径还是麻烦了些，可以将此脚本加入环境变量<code>/usr/local/bin</code>下，这样任意目录都可以执行该命令。</p>
 <h2 id="一个简单用来启动postgrest的脚本"><a href="#一个简单用来启动postgrest的脚本" class="headerlink" title="一个简单用来启动postgrest的脚本"></a>一个简单用来启动postgrest的脚本</h2><p>作用：修改了数据库以后，需要重启postgrest服务，接口才能生效，在jenkins上可以执行脚本重启，脚本内容如下：</p>
-<pre><code>#!/bin/bash
+<pre class="line-numbers language-shell"><code class="language-shell">#!/bin/bash
 #获取第1个参数，conf文件，路径+文件名
 #获取第2个参数，postgrest服务的log目录
 config_file=$1
@@ -652,11 +652,11 @@ then
    kill -9 $pid
 fi
 
-nohup postgrest ${config_file} &gt; ${log_dir}nohup.log 2&gt;&amp;1 &amp;
+nohup postgrest ${config_file} > ${log_dir}nohup.log 2>&1 &
 
 echo "================== server restart end ======================="
-</code></pre>
-<p>顺便，推荐一款mac的数据库连接客户端<code>Dbeaver</code>尤其是看postgresql的表关联关系还是很不错的。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-626ca2075400acf6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="ER图"></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>顺便，推荐一款mac的数据库连接客户端<code>Dbeaver</code>尤其是看postgresql的表关联关系还是很不错的。<br><img src="/loading.gif" data-original="/images/mysql/ER.png" alt="ER图"></p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tanql/p/10444512.html">Install Postgresql on Ubuntu</a><br><a target="_blank" rel="noopener" href="http://postgrest.org/">PostgREST官网</a></p>
 
                 

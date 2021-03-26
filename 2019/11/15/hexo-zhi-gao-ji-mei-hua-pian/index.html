@@ -504,7 +504,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    527
+                    525
                 </div>
                 
 
@@ -538,11 +538,11 @@
 
 <p>参考原文地址：<a target="_blank" rel="noopener" href="https://blog.dfface.com/2019/60aa2e39.html">hexo建站记</a></p>
 <h2 id="主动推送到百度"><a href="#主动推送到百度" class="headerlink" title="主动推送到百度"></a>主动推送到百度</h2><p>参考<a target="_blank" rel="noopener" href="https://hui-wang.info/2016/10/23/Hexo%E6%8F%92%E4%BB%B6%E4%B9%8B%E7%99%BE%E5%BA%A6%E4%B8%BB%E5%8A%A8%E6%8F%90%E4%BA%A4%E9%93%BE%E6%8E%A5/">Hexo插件之百度主动提交链接</a><br>安装hexo-baidu-url-submit插件：</p>
-<pre><code>npm install hexo-baidu-url-submit --save
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">npm install hexo-baidu-url-submit --save
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>该插件在github上：<a target="_blank" rel="noopener" href="https://github.com/huiwang/hexo-baidu-url-submit">hexo-baidu-url-submit</a></p>
 <p>在根目录的配置文件中增加baidu_url_submit字段，更改deploy字段</p>
-<pre><code>baidu_url_submit:
+<pre class="line-numbers language-conf"><code class="language-conf">baidu_url_submit:
   count: 1000 ## 提交最新的一个链接
   host: alili.tech ## 在百度站长平台中注册的域名
   token: xxxxx ## 请注意这是您的秘钥， 所以请不要把博客源代码发布在公众仓库里!
@@ -557,16 +557,16 @@ deploy:
     branch: master
 - type: baidu_url_submitter # 百度
 - type: baidu_xz_url_submitter # 百度熊掌号
-</code></pre>
-<p>熊掌号的id和token，请看图：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-c4db864e04c84584.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="hexo-baidu.png"></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>熊掌号的id和token，请看图：<br><img src="/loading.gif" data-original="/images/tools/hexo-baidu.png" alt="hexo-baidu.png"></p>
 <p>然后在主题中开启:</p>
-<pre><code># Enable baidu push so that the blog will push the url to baidu automatically which is very helpful for SEO
+<pre class="line-numbers language-conf"><code class="language-conf"># Enable baidu push so that the blog will push the url to baidu automatically which is very helpful for SEO
 baidu_push: true
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h2 id="自动换背景"><a href="#自动换背景" class="headerlink" title="自动换背景"></a>自动换背景</h2><p>参考：<a target="_blank" rel="noopener" href="https://theme-next.org/docs/advanced-settings">injects</a><br>首先写入：source/_data/auto-bg.styl:</p>
-<pre><code>// 背景更换设置，原来：background:url(https://source.unsplash.com/random/1600x900);
+<pre class="line-numbers language-conf"><code class="language-conf">// 背景更换设置，原来：background:url(https://source.unsplash.com/random/1600x900);
 body {
-    background:url("https://img.xjh.me/random_img.php?type=bg&amp;ctype=nature&amp;return=302");
+    background:url("https://img.xjh.me/random_img.php?type=bg&ctype=nature&return=302");
     background-repeat: no-repeat;
     -webkit-background-size:100%;
     background-size:cover;
@@ -610,9 +610,9 @@ body {
   -o-user-select:none; /* Opera私有属性 */
   user-select:none; /* CSS3属性 */
 }
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>然后在_config.yml中注释：</p>
-<pre><code>custom_file_path:
+<pre class="line-numbers language-conf"><code class="language-conf">custom_file_path:
   #head: source/_data/head.swig
   #header: source/_data/header.swig
   #sidebar: source/_data/sidebar.swig
@@ -623,7 +623,7 @@ body {
   #variable: source/_data/variables.styl
   #mixin: source/_data/mixins.styl
   style: source/_data/auto-bg.styl
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>

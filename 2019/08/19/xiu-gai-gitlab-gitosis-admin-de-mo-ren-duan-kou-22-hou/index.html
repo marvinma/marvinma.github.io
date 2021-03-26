@@ -538,14 +538,14 @@
 <p>以<a target="_blank" rel="noopener" href="https://old.calculate-linux.org/main/en/gitosis">gitosis-admin</a>作为git代码库管理工具后，修改了默认的22端口，此时ssh的连接自然拿不到代码，怎么办呢？</p>
 <p>在本地.ssh的目录下创建一个<code>config</code>文件，没有扩展名哦。</p>
 <p>内容如下:</p>
-<pre><code>host 106.14.1.1
+<pre class="line-numbers language-conf"><code class="language-conf">host 106.14.1.1
 hostname 106.14.1.1
 port 2093
 
 host git.server.com
 hostname git.server.com
 port 2093
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>这就是连接到hostname的2093端口的意思。</p>
 <p>添加了本配置就可以访问git服务器了。</p>
 

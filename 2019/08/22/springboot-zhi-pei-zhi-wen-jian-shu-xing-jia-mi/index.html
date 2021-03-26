@@ -508,7 +508,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    979
+                    971
                 </div>
                 
 
@@ -540,37 +540,37 @@
 
 <p>写这篇的目的不是为了创新，而是备忘，最近学习clojure，java基本上已经放下了，但是曾今用过的东西如果不记录一下，以后用起来估计连查什么关键字都不知道了，因此在主页上做个笔记。</p>
 <p>原来我们写的springboot的配置文件大概是这样的</p>
-<pre><code>spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/test?useUnicode=true&amp;useSSL=false
-    username: root
-    password: 123456
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java">spring<span class="token operator">:</span>
+  datasource<span class="token operator">:</span>
+    url<span class="token operator">:</span> jdbc<span class="token operator">:</span>mysql<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>localhost<span class="token operator">:</span><span class="token number">3306</span><span class="token operator">/</span>test<span class="token operator">?</span>useUnicode<span class="token operator">=</span><span class="token boolean">true</span><span class="token operator">&amp;</span>useSSL<span class="token operator">=</span><span class="token boolean">false</span>
+    username<span class="token operator">:</span> root
+    password<span class="token operator">:</span> <span class="token number">123456</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>怎么看也是赤裸裸的，大概你也想过要是能加密就好了，如果只是想想的话，肯定不会自己加密，这里就介绍个非常方便易用的加密工具jasypt。</p>
 <h3 id="常规使用"><a href="#常规使用" class="headerlink" title="常规使用"></a>常规使用</h3><p>在springboot中引入依赖</p>
-<pre><code> &lt;dependency&gt;
-        &lt;groupId&gt;com.github.ulisesbocchio&lt;/groupId&gt;
-        &lt;artifactId&gt;jasypt-spring-boot-starter&lt;/artifactId&gt;
-        &lt;version&gt;2.1.1&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java"> <span class="token operator">&lt;</span>dependency<span class="token operator">></span>
+        <span class="token operator">&lt;</span>groupId<span class="token operator">></span>com<span class="token punctuation">.</span>github<span class="token punctuation">.</span>ulisesbocchio<span class="token operator">&lt;</span><span class="token operator">/</span>groupId<span class="token operator">></span>
+        <span class="token operator">&lt;</span>artifactId<span class="token operator">></span>jasypt<span class="token operator">-</span>spring<span class="token operator">-</span>boot<span class="token operator">-</span>starter<span class="token operator">&lt;</span><span class="token operator">/</span>artifactId<span class="token operator">></span>
+        <span class="token operator">&lt;</span>version<span class="token operator">></span><span class="token number">2.1</span><span class="token punctuation">.</span><span class="token number">1</span><span class="token operator">&lt;</span><span class="token operator">/</span>version<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>dependency<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>修改后的配置文件</p>
-<pre><code>spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/test?useUnicode=true&amp;zeroDateTimeBehavior=convertToNull&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=GMT%2B8&amp;tinyInt1isBit=false
-    # 对应用户名 root ，密码 123456
-    username: ENC[KHRM9dKY8KykzzYbt8rRZQ==]
-    password: ENC[RWmQMxlcukotJAb36PrKSA==]
+<pre class="line-numbers language-java"><code class="language-java">spring<span class="token operator">:</span>
+  datasource<span class="token operator">:</span>
+    url<span class="token operator">:</span> jdbc<span class="token operator">:</span>mysql<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>localhost<span class="token operator">:</span><span class="token number">3306</span><span class="token operator">/</span>test<span class="token operator">?</span>useUnicode<span class="token operator">=</span><span class="token boolean">true</span><span class="token operator">&amp;</span>zeroDateTimeBehavior<span class="token operator">=</span>convertToNull<span class="token operator">&amp;</span>characterEncoding<span class="token operator">=</span>utf<span class="token operator">-</span><span class="token number">8</span><span class="token operator">&amp;</span>useSSL<span class="token operator">=</span><span class="token boolean">false</span><span class="token operator">&amp;</span>serverTimezone<span class="token operator">=</span>GMT<span class="token operator">%</span>2B8<span class="token operator">&amp;</span>tinyInt1isBit<span class="token operator">=</span><span class="token boolean">false</span>
+    # 对应用户名 root ，密码 <span class="token number">123456</span>
+    username<span class="token operator">:</span> ENC<span class="token punctuation">[</span>KHRM9dKY8KykzzYbt8rRZQ<span class="token operator">==</span><span class="token punctuation">]</span>
+    password<span class="token operator">:</span> ENC<span class="token punctuation">[</span>RWmQMxlcukotJAb36PrKSA<span class="token operator">==</span><span class="token punctuation">]</span>
 
-jasypt:
-  encryptor:
+jasypt<span class="token operator">:</span>
+  encryptor<span class="token operator">:</span>
     # 任意的随机字符串均可
-    password: SBPstLlrFzXW01Okb62R95qvpj4J83Dn
-    property:
-      # 自定义属性规则，默认前缀是“ENC(”，后缀为“)”
-      prefix: "ENC["
-      suffix: "]"
-</code></pre>
+    password<span class="token operator">:</span> SBPstLlrFzXW01Okb62R95qvpj4J83Dn
+    property<span class="token operator">:</span>
+      # 自定义属性规则，默认前缀是“<span class="token function">ENC</span><span class="token punctuation">(</span>”，后缀为“<span class="token punctuation">)</span>”
+      prefix<span class="token operator">:</span> <span class="token string">"ENC["</span>
+      suffix<span class="token operator">:</span> <span class="token string">"]"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>这里只加密了用户名和密码，其实所有属性，报过jdbc的url也是可以用同样的方式加密的。<br>留意到上面这段配置的用户名和密码是 ENC[xxx] 这种格式的，其中 ENC[] 是自定义配置的，这也是 Jasypt 能正常识别待解密数据的规则，那其中的加密串又是从哪来的呢？<br>当然是运算出来的。最简单的配置，开发者只需要再补充完 jasypt.encryptor.password=xxx 属性即可（同上，还支持使用 DER、PEM 这种证书的 private/public keys 加解密方式），具体的生成代码在下方：</p>
 <pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Slf4j</span>
 <span class="token annotation punctuation">@SpringBootApplication</span>
@@ -603,52 +603,54 @@ jasypt:
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在开发环境要切换jdbc，或者看看密码到底是啥，为啥报jdbc链接错误时，可以用这个</p>
-<pre><code>import lombok.extern.slf4j.Slf4j;
-import org.jasypt.encryption.StringEncryptor;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> lombok<span class="token punctuation">.</span>extern<span class="token punctuation">.</span>slf4j<span class="token punctuation">.</span>Slf4j<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>jasypt<span class="token punctuation">.</span>encryption<span class="token punctuation">.</span>StringEncryptor<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>junit<span class="token punctuation">.</span>Test<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>junit<span class="token punctuation">.</span>runner<span class="token punctuation">.</span>RunWith<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>beans<span class="token punctuation">.</span>factory<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Autowired<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>boot<span class="token punctuation">.</span>test<span class="token punctuation">.</span>context<span class="token punctuation">.</span>SpringBootTest<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>test<span class="token punctuation">.</span>context<span class="token punctuation">.</span>junit4<span class="token punctuation">.</span>SpringRunner<span class="token punctuation">;</span>
 
-import javax.annotation.Resource;
-import java.util.List;
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Resource<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>List<span class="token punctuation">;</span>
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = MobileOfficeApplication.class)
-@Slf4j
-public class MobileOfficeApplicationTests {
-    //@Test
-    public void te(){
-        System.out.println(userService.encodePwd());
-    }
+<span class="token annotation punctuation">@RunWith</span><span class="token punctuation">(</span>SpringRunner<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@SpringBootTest</span><span class="token punctuation">(</span>classes <span class="token operator">=</span> MobileOfficeApplication<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Slf4j</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MobileOfficeApplicationTests</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">te</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>userService<span class="token punctuation">.</span><span class="token function">encodePwd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    @Autowired
-    private StringEncryptor stringEncryptor;
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> StringEncryptor stringEncryptor<span class="token punctuation">;</span>
 
-    @Test
-    public void contextLoads() {
-    }
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">contextLoads</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
 
-    @Test
-    public void testEncrypt() {
-        System.out.println("=====================================");
-        System.out.println("key1:" + stringEncryptor.encrypt("jdbc:p6spy:mysql://127.0.0.1:3306/chuangke?characterEncoding=utf-8&amp;useSSL=false&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Hongkong&amp;autoReconnect=true\n"));
-        System.out.println("key2:" + stringEncryptor.encrypt("root"));
-        System.out.println("key3:" + stringEncryptor.encrypt("root"));
-        System.out.println("=====================================");
-    }
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">testEncrypt</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"====================================="</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"key1:"</span> <span class="token operator">+</span> stringEncryptor<span class="token punctuation">.</span><span class="token function">encrypt</span><span class="token punctuation">(</span><span class="token string">"jdbc:p6spy:mysql://127.0.0.1:3306/chuangke?characterEncoding=utf-8&amp;useSSL=false&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Hongkong&amp;autoReconnect=true\n"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"key2:"</span> <span class="token operator">+</span> stringEncryptor<span class="token punctuation">.</span><span class="token function">encrypt</span><span class="token punctuation">(</span><span class="token string">"root"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"key3:"</span> <span class="token operator">+</span> stringEncryptor<span class="token punctuation">.</span><span class="token function">encrypt</span><span class="token punctuation">(</span><span class="token string">"root"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"====================================="</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-}
-</code></pre>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h2><p>上面的例子是将password设置在与密文一起的配置文件中，这样方便是方便，但是有密码，有密文，知道加密算法，谁也可以解密呀（安全是相对的，其实这个已经很不错了），那有么有更安全的方式呢？<br>当然有！！！！<br>有两种办法:</p>
 <ul>
-<li>部署时设置password<br>为了防止salt(盐)泄露,反解出密码.可以在项目部署的时候使用命令传入salt(盐)值<pre><code>java -jar -Djasypt.encryptor.password=G0CvDz7oJn6 xxx.jar
-</code></pre>
-</li>
+<li>部署时设置password<br>为了防止salt(盐)泄露,反解出密码.可以在项目部署的时候使用命令传入salt(盐)值</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell">java -jar -Djasypt.encryptor.password=G0CvDz7oJn6 xxx.jar
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
 <li>将password配置到服务器的环境变量里</li>
 </ul>
-<pre><code># 打开/etc/profile文件
+<pre class="line-numbers language-shell"><code class="language-shell"># 打开/etc/profile文件
 vim /etc/profile
 
 #文件末尾插入
@@ -659,7 +661,7 @@ source /etc/profile
 
 #运行 
 java -jar -Djasypt.encryptor.password=${JASYPT_PASSWORD} xxx.jar
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/cc97187e9a8f">还将密码明文写在配置文件？试试 Jasypt Spring Boot</a></p>
 
                 

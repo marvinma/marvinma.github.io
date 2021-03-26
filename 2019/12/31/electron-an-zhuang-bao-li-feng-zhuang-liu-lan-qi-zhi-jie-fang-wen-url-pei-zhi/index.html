@@ -470,12 +470,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/clojurescript/">
-                                <span class="chip bg-color">clojurescript</span>
-                            </a>
-                        
                             <a href="/tags/electron/">
                                 <span class="chip bg-color">electron</span>
+                            </a>
+                        
+                            <a href="/tags/clojurescript/">
+                                <span class="chip bg-color">clojurescript</span>
                             </a>
                         
                     </div>
@@ -508,7 +508,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    809
+                    802
                 </div>
                 
 
@@ -549,79 +549,79 @@
 </blockquote>
 <p>这篇说明一下直接运行URL的配置和注意事项。</p>
 <h3 id="1-下载electron的压缩包"><a href="#1-下载electron的压缩包" class="headerlink" title="1. 下载electron的压缩包"></a>1. 下载electron的压缩包</h3><p><a target="_blank" rel="noopener" href="https://electronjs.org/releases/stable">https://electronjs.org/releases/stable</a></p>
-<p>下载解压，内部目录大概如此<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-55d7933d05ae87ae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="electron"></p>
+<p>下载解压，内部目录大概如此<br><img src="/loading.gif" data-original="/images/fontend/electron-dir.png" alt="electron压缩包文件结构"></p>
 <p>主要运行时文件就是<code>resources/default_app.asar</code></p>
-<h3 id="2-安装asar包解压缩命令"><a href="#2-安装asar包解压缩命令" class="headerlink" title="2. 安装asar包解压缩命令"></a>2. 安装<code>asar</code>包解压缩命令</h3><pre><code>yum install -g asar
-</code></pre>
+<h3 id="2-安装asar包解压缩命令"><a href="#2-安装asar包解压缩命令" class="headerlink" title="2. 安装asar包解压缩命令"></a>2. 安装<code>asar</code>包解压缩命令</h3><pre class="line-numbers language-shell"><code class="language-shell">yum install -g asar
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>两个命令(asar –help)：</p>
-<pre><code>asar pack app default_app.asar    
-asar extract|e &lt;archive&gt; &lt;dest&gt;   
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">asar pack app default_app.asar    
+asar extract|e <archive> <dest>   
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>其他命令自行百度。</p>
 <h3 id="3-核心文件"><a href="#3-核心文件" class="headerlink" title="3.核心文件"></a>3.核心文件</h3><p>核心文件就是打包成<code>resources/default_app.asar</code>所需要的文件。在<code>electron</code>的项目目录下，创建一个文件夹<code>app</code> ，里面新建两个文件。</p>
-<h4 id="3-1-main-js"><a href="#3-1-main-js" class="headerlink" title="3.1 main.js"></a>3.1 main.js</h4><pre><code>// app 模块是为了控制整个应用的生命周期设计的。
-// BrowserWindow 类让你有创建一个浏览器窗口的权力。
-const {app, BrowserWindow, Menu, ipcMain} = require('electron');
-const nativeImage = require('electron').nativeImage;
-var overlay = nativeImage.createFromPath('icon.png');
+<h4 id="3-1-main-js"><a href="#3-1-main-js" class="headerlink" title="3.1 main.js"></a>3.1 main.js</h4><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// app 模块是为了控制整个应用的生命周期设计的。</span>
+<span class="token comment" spellcheck="true">// BrowserWindow 类让你有创建一个浏览器窗口的权力。</span>
+<span class="token keyword">const</span> <span class="token punctuation">{</span>app<span class="token punctuation">,</span> BrowserWindow<span class="token punctuation">,</span> Menu<span class="token punctuation">,</span> ipcMain<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'electron'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> nativeImage <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'electron'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>nativeImage<span class="token punctuation">;</span>
+<span class="token keyword">var</span> overlay <span class="token operator">=</span> nativeImage<span class="token punctuation">.</span><span class="token function">createFromPath</span><span class="token punctuation">(</span><span class="token string">'icon.png'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-const mainWindowURL = 'https://www.baidu.com';
+<span class="token keyword">const</span> mainWindowURL <span class="token operator">=</span> <span class="token string">'https://www.baidu.com'</span><span class="token punctuation">;</span>
 
-let mainWindow;
+<span class="token keyword">let</span> mainWindow<span class="token punctuation">;</span>
 
-//api:https://wizardforcel.gitbooks.io/electron-doc/content/api/browser-window.html
-function createWindow () {
-    console.log("createWindow......"); 
-      mainWindow = new BrowserWindow({
-      // fullscreen: true,
-      maximizable: true, //支持最大化
-      show: false,   //为了让初始化窗口显示无闪烁，先关闭显示，等待加载完成后再显示。
-      // icon: "https://medical.3vyd.com/alk/prod/pc/icon/icon.ico"
-    })
+<span class="token comment" spellcheck="true">//api:https://wizardforcel.gitbooks.io/electron-doc/content/api/browser-window.html</span>
+<span class="token keyword">function</span> createWindow <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"createWindow......"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+      mainWindow <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BrowserWindow</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// fullscreen: true,</span>
+      maximizable<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">//支持最大化</span>
+      show<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>   <span class="token comment" spellcheck="true">//为了让初始化窗口显示无闪烁，先关闭显示，等待加载完成后再显示。</span>
+      <span class="token comment" spellcheck="true">// icon: "https://medical.3vyd.com/alk/prod/pc/icon/icon.ico"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
-    // Emitted when the window is closed.
-    mainWindow.on('closed', function () {
-      console.log("closed......"); 
-      mainWindow = null;
-    })
-    // mainWindow.once('ready-to-show', () =&gt; {    //开启这个以后点击了图片虽然没有白屏，但是会感觉不到点了没点
-    mainWindow.maximize();    //打开时最大化打开，不是全屏，保留状态栏
-    // })
+    <span class="token comment" spellcheck="true">// Emitted when the window is closed.</span>
+    mainWindow<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'closed'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"closed......"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+      mainWindow <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true">// mainWindow.once('ready-to-show', () => {    //开启这个以后点击了图片虽然没有白屏，但是会感觉不到点了没点</span>
+    mainWindow<span class="token punctuation">.</span><span class="token function">maximize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//打开时最大化打开，不是全屏，保留状态栏</span>
+    <span class="token comment" spellcheck="true">// })</span>
 
-  // mainWindow.setOverlayIcon(overlay, "医敏")
-  mainWindow.setTitle("过敏性疾病高端用户平台");
-  mainWindow.setAutoHideMenuBar(true);//自动隐藏菜单
-  mainWindow.loadURL(mainWindowURL);
-  // app.commandLine.appendSwitch("--disable-http-cache")   禁用缓存
-  // mainWindow.webContents.openDevTools({mode:'bottom'});
-  mainWindow.show();
-}
+  <span class="token comment" spellcheck="true">// mainWindow.setOverlayIcon(overlay, "医敏")</span>
+  mainWindow<span class="token punctuation">.</span><span class="token function">setTitle</span><span class="token punctuation">(</span><span class="token string">"过敏性疾病高端用户平台"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  mainWindow<span class="token punctuation">.</span><span class="token function">setAutoHideMenuBar</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//自动隐藏菜单</span>
+  mainWindow<span class="token punctuation">.</span><span class="token function">loadURL</span><span class="token punctuation">(</span>mainWindowURL<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">// app.commandLine.appendSwitch("--disable-http-cache")   禁用缓存</span>
+  <span class="token comment" spellcheck="true">// mainWindow.webContents.openDevTools({mode:'bottom'});</span>
+  mainWindow<span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-app.on('ready', function() {
-  console.log("ready......");
-  createWindow();
-});
+app<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'ready'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"ready......"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">createWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-// Quit when all windows are closed.
-app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-})
-</code></pre>
-<h4 id="3-2-package-json"><a href="#3-2-package-json" class="headerlink" title="3.2 package.json"></a>3.2 package.json</h4><pre><code>{
-  "name": "electron",
-  "productName": "Electron",
-  "main": "main.js"
-}
-</code></pre>
+<span class="token comment" spellcheck="true">// Quit when all windows are closed.</span>
+app<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'window-all-closed'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// On OS X it is common for applications and their menu bar</span>
+  <span class="token comment" spellcheck="true">// to stay active until the user quits explicitly with Cmd + Q</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>platform <span class="token operator">!==</span> <span class="token string">'darwin'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    app<span class="token punctuation">.</span><span class="token function">quit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="3-2-package-json"><a href="#3-2-package-json" class="headerlink" title="3.2 package.json"></a>3.2 package.json</h4><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token punctuation">{</span>
+  <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"electron"</span><span class="token punctuation">,</span>
+  <span class="token string">"productName"</span><span class="token punctuation">:</span> <span class="token string">"Electron"</span><span class="token punctuation">,</span>
+  <span class="token string">"main"</span><span class="token punctuation">:</span> <span class="token string">"main.js"</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>注意：</strong><code>productName</code>的值千万不需要改。</p>
 <h4 id="4-打包"><a href="#4-打包" class="headerlink" title="4. 打包"></a>4. 打包</h4><p>在<code>electron/resources</code>目录下执行：</p>
-<pre><code>rm -rf default_app.asar
+<pre class="line-numbers language-shell"><code class="language-shell">rm -rf default_app.asar
 asar pack app default_app.asar
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>也就是用自己心大的asar文件替换原来旧的。</p>
 <h4 id="5-测试"><a href="#5-测试" class="headerlink" title="5. 测试"></a>5. 测试</h4><p>在windows上访问该exe应用，一般应该没有问题打开百度的。</p>
 <h2 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h2><ol>
@@ -652,12 +652,12 @@ asar pack app default_app.asar
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/clojurescript/">
-                                    <span class="chip bg-color">clojurescript</span>
-                                </a>
-                            
                                 <a href="/tags/electron/">
                                     <span class="chip bg-color">electron</span>
+                                </a>
+                            
+                                <a href="/tags/clojurescript/">
+                                    <span class="chip bg-color">clojurescript</span>
                                 </a>
                             
                         </div>
@@ -1123,8 +1123,8 @@ asar pack app default_app.asar
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/clojurescript/" class="post-category">
-                                    clojurescript
+                            <a href="/categories/cljs/" class="post-category">
+                                    cljs
                                 </a>
                             
                             
@@ -1134,8 +1134,8 @@ asar pack app default_app.asar
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/clojurescript/">
-                        <span class="chip bg-color">clojurescript</span>
+                    <a href="/tags/cljs/">
+                        <span class="chip bg-color">cljs</span>
                     </a>
                     
                     <a href="/tags/electron/">
@@ -1188,12 +1188,12 @@ asar pack app default_app.asar
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/clojurescript/">
-                        <span class="chip bg-color">clojurescript</span>
-                    </a>
-                    
                     <a href="/tags/electron/">
                         <span class="chip bg-color">electron</span>
+                    </a>
+                    
+                    <a href="/tags/clojurescript/">
+                        <span class="chip bg-color">clojurescript</span>
                     </a>
                     
                 </div>

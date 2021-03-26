@@ -470,8 +470,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E5%BE%AE%E4%BF%A1/">
-                                <span class="chip bg-color">微信</span>
+                            <a href="/tags/shadow-cljs/">
+                                <span class="chip bg-color">shadow-cljs</span>
                             </a>
                         
                     </div>
@@ -535,7 +535,7 @@
 <span id="more"></span>
 
 <h2 id="现状"><a href="#现状" class="headerlink" title="现状"></a>现状</h2><p>我司使用shadow-cljs编译clojure script代码，考虑到大家都编辑一个css文件的话，冲突比较严重，并且代码也没有模块化，所以每个模块有自己的样式文件，目前都是在自己业务模块或者component里引入自己的css文件，结构基本是这样的：</p>
-<pre class="line-numbers language-clojure"><code class="language-clojure">(defn login-main []
+<pre class="line-numbers language-cljs"><code class="language-cljs">(defn login-main []
   [:div
    [:link {:rel "stylesheet" :href "/css/login.css" }]
    [:div "登录组件样式"]])
@@ -548,9 +548,9 @@
 </ul>
 <p>痛点</p>
 <ul>
-<li>一条足以致命，那就是产品体验不好，css加载延迟，几乎每个页面都出现如下一个瞬间。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-c1571f59ff4e79be.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="定制"></li>
+<li>一条足以致命，那就是产品体验不好，css加载延迟，几乎每个页面都出现如下一个瞬间。<br><img src="/loading.gif" data-original="/images/cljs/css-error1.png" alt="定制"></li>
 </ul>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-5497b1a6f46b1c32.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="订单"></p>
+<p><img src="/loading.gif" data-original="/images/cljs/css-error2.png" alt="订单"></p>
 <p>是的，你看的没有错，浏览确实没有加载完，网络好的话这个页面瞬间就过了，但是万一碰上不好的，那就尴尬了，并且有时候还出现过最后样式就没有出来的情况。</p>
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>不能让组件渲染时才去加载css，所以link这个方案pass掉。<br>那么只能将css在<code>index.html</code>里引入，不管用不用得到，都先加载出来，让浏览器先缓存下来备用。</p>
 <h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><ol>
@@ -558,50 +558,71 @@
 <li>在系统运行时将所有自定义的css合并到一个样式文件，在<code>index.html</code>中引用。</li>
 </ol>
 <p>其中第二点，在部署时可以使用脚本处理，但是在本地开发时就比较不便，不过好在shadow-cljs提供了<a target="_blank" rel="noopener" href="https://shadow-cljs.github.io/docs/UsersGuide.html#build-hooks">build-hooks</a>神器。加载配置中，让我们代码编译时做了这个合并css文件的工作。具体的配置是在根目录的<code>shadow-cljs.edn</code>中加入如下配置:</p>
-<pre><code>{...
+<pre class="line-numbers language-cljs"><code class="language-cljs">{...
  :builds
  {:app {:target ...
            :build-hooks [(utils.hooks/watch-resource)]
         ...}}}}
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>这个hooks的全部代码如下:</p>
-<pre><code>(ns utils.hooks
+<pre class="line-numbers language-cljs"><code class="language-cljs">(ns utils.hooks
   (:require [clojure.java.shell :as shell]))
 
 (defn watch-resource
   {:shadow.build/stage :flush}
-  [build-state &amp; args]
+  [build-state & args]
   (future
     (prn "configure completed")
     (let [dir (System/getProperty "user.dir")]
       (clojure.java.shell/with-sh-dir (str dir "/src/cljs/utils")
         (clojure.java.shell/sh "mergecss.sh" (str dir "/resources/public/css") (str dir "/resources/public/css/style.css")))))
   build-state)
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>如果参考，shadow-cljs官方对<a target="_blank" rel="noopener" href="https://shadow-cljs.github.io/docs/UsersGuide.html#build-hooks">build-hooks</a>的说明，不难理解。解释两个东西</p>
 <ol>
 <li><code>(System/getProperty "user.dir")</code>，这个是获取当前项目的工作目录，也就是项目跟目录，注意不是git根目录。有了这个，想获取什么目录或者文件，手到擒来。</li>
-<li>hooks里还调用了一个脚本文件<code>mergecss.sh</code>,这个文件的作用是把开发团队自己写的所有css的内容copy到同一个<code>style.css</code>文件中去，第一个参数是要处理的目录(会向下遍历目录)，第二个参数是要写入的目标文件，附上脚本代码：<br>```shell<br>#!/bin/bash<br>#获取第一个参数,目标目录<br>srcpath=$1<br>#第二个参数，输出文件<br>target_file=$2</li>
+<li>hooks里还调用了一个脚本文件<code>mergecss.sh</code>,这个文件的作用是把开发团队自己写的所有css的内容copy到同一个<code>style.css</code>文件中去，第一个参数是要处理的目录(会向下遍历目录)，第二个参数是要写入的目标文件，附上脚本代码：</li>
 </ol>
-<p>#先删除原目标文件<br>rm -rf ${target_file};</p>
-<p>function writeByDir(){<br>    for file in $1/*<br>      do<br>        if test -f $file; then<br>      #_echo $(basename $file)<br>          if [[ $(basename $file) = “antd.min.css” ]] || [[ $(basename $file) = “slick.min.css” ]] || [[ $(basename $file) = “slick-theme.min.css” ]]; then<br>            echo “uncopy css :”$(basename $file)<br>          else<br>            cat “$file” &gt;&gt; “${target_file}”<br>              echo “” &gt;&gt; “${target_file}”<br>          fi<br>        else<br>          writeByDir $file<br>       fi<br>    done<br>}<br>writeByDir ${srcpath}</p>
-<pre><code>&gt;此处由衷感慨下，repl真好用，clojure.java.shell这个库的使用，及最后钩子内容好不好使全靠这个工具调试。否则的话，修改hooks就要频繁启动shadow-cljs项目，并且如果hooks函数有错误的没有任何报错信息，只是钩子函数不执行。
+<pre class="line-numbers language-shell"><code class="language-shell">#!/bin/bash
+#获取第一个参数,目标目录
+srcpath=$1
+#第二个参数，输出文件
+target_file=$2
+#先删除原目标文件
+rm -rf ${target_file};
 
-这样本地开发的css文件也能及时写入到`style.css`里，在`index.html`引用这个文件，妥了。
-</code></pre>
- <link rel="stylesheet" href="/css/style.css" type="text/css">
-```
-## 一顿操作猛如虎，定睛一看原地杵
-以上操作还是不够完美，
- 
-1. 加上hook后，在本地修改自己的css后，钩子不执行，改的代码不会自己写入目标文件。
-方案一：在9630端口上手动触发compile，强制flush。
-方案二：开发过程中可以在cljs文件里link自己的样式文件，达到高效开发，link段落不用提交。
- 
-2. 为了开发时不冲突，更新gitignore，生成的css不用commit到项目里，release环境在持续集成时执行该hook的操作，调用服务器的脚本文件。
-
-<ol start="3">
-<li>样式文件没有hash，纯copy，只为解决css加载延迟导致的页面丑陋。</li>
+function writeByDir(){
+    for file in $1/*
+      do
+        if test -f $file; then
+      #_echo $(basename $file)
+          if [[ $(basename $file) = "antd.min.css" ]] || [[ $(basename $file) = "slick.min.css" ]] || [[ $(basename $file) = "slick-theme.min.css" ]]; then
+            echo "uncopy css :"$(basename $file)
+          else
+            cat "$file" >> "${target_file}"
+              echo "" >> "${target_file}"
+          fi
+        else
+          writeByDir $file
+       fi
+    done
+}
+writeByDir ${srcpath}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>此处由衷感慨下，repl真好用，clojure.java.shell这个库的使用，及最后钩子内容好不好使全靠这个工具调试。否则的话，修改hooks就要频繁启动shadow-cljs项目，并且如果hooks函数有错误的没有任何报错信息，只是钩子函数不执行。</p>
+</blockquote>
+<p>这样本地开发的css文件也能及时写入到<code>style.css</code>里，在<code>index.html</code>引用这个文件，妥了。</p>
+<pre class="line-numbers language-html"><code class="language-html"> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>/css/style.css<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text/css<span class="token punctuation">"</span></span> <span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="一顿操作猛如虎，定睛一看原地杵"><a href="#一顿操作猛如虎，定睛一看原地杵" class="headerlink" title="一顿操作猛如虎，定睛一看原地杵"></a>一顿操作猛如虎，定睛一看原地杵</h2><p>以上操作还是不够完美，</p>
+<ol>
+<li><p>加上hook后，在本地修改自己的css后，钩子不执行，改的代码不会自己写入目标文件。<br>方案一：在9630端口上手动触发compile，强制flush。<br>方案二：开发过程中可以在cljs文件里link自己的样式文件，达到高效开发，link段落不用提交。</p>
+</li>
+<li><p>为了开发时不冲突，更新gitignore，生成的css不用commit到项目里，release环境在持续集成时执行该hook的操作，调用服务器的脚本文件。</p>
+</li>
+<li><p>样式文件没有hash，纯copy，只为解决css加载延迟导致的页面丑陋。</p>
+</li>
 </ol>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/sirfenygu/article/details/47025083">https://blog.csdn.net/sirfenygu/article/details/47025083</a></li>
@@ -620,8 +641,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E5%BE%AE%E4%BF%A1/">
-                                    <span class="chip bg-color">微信</span>
+                                <a href="/tags/shadow-cljs/">
+                                    <span class="chip bg-color">shadow-cljs</span>
                                 </a>
                             
                         </div>

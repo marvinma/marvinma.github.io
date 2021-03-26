@@ -470,10 +470,6 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/clojure/">
-                                <span class="chip bg-color">clojure</span>
-                            </a>
-                        
                             <a href="/tags/cljs/">
                                 <span class="chip bg-color">cljs</span>
                             </a>
@@ -486,8 +482,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/clojure/" class="post-category">
-                                clojure
+                            <a href="/categories/cljs/" class="post-category">
+                                cljs
                             </a>
                         
                     </div>
@@ -787,10 +783,10 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>大神在<a target="_blank" rel="noopener" href="https://blog.3vyd.com/blog/posts-output/2019-07-20-4clojure/">4clojure</a>博客上也有js操作DOM和引入highcharts的使用的例子。<br>更多交互的操作参考<a target="_blank" rel="noopener" href="https://www.spacjer.com/blog/2014/09/12/clojurescript-javascript-interop/">ClojureScript: JavaScript Interop</a> 和<br><a target="_blank" rel="noopener" href="https://lwhorton.github.io/2018/10/20/clojurescript-interop-with-javascript.html">Clojurescript interop with javascript</a></p>
 <h2 id="用figwheel编译工程，启动服务"><a href="#用figwheel编译工程，启动服务" class="headerlink" title="用figwheel编译工程，启动服务"></a>用figwheel编译工程，启动服务</h2><p>三步启动 figwheel：<a target="_blank" rel="noopener" href="https://github.com/bhauman/lein-figwheel/wiki/Using-the-Figwheel-REPL-within-NRepl">Using the Figwheel REPL within nREPL</a><br>在emacs里启动cider-jack-in-cljs<br>选择figwheel</p>
-<pre><code>(use 'figwheel-sidecar.repl-api)
+<pre class="line-numbers language-shell"><code class="language-shell">(use 'figwheel-sidecar.repl-api)
 (start-figwheel!)
 (cljs-repl)
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>在alk项目里的示例：</p>
 <pre class="line-numbers language-shell"><code class="language-shell">user> (use 'figwheel-sidecar.repl-api)
 nil
@@ -887,10 +883,6 @@ cljs.user>
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/clojure/">
-                                    <span class="chip bg-color">clojure</span>
-                                </a>
                             
                                 <a href="/tags/cljs/">
                                     <span class="chip bg-color">cljs</span>

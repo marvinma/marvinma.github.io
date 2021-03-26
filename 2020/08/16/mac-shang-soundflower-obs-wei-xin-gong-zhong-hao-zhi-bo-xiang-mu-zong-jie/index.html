@@ -554,14 +554,14 @@
 <blockquote>
 <p>clojure.core/slurp<br>读取一个文件的全部内容，并以字符串形式返回</p>
 </blockquote>
-<pre class="line-numbers language-clj"><code class="language-clj">(comment
+<pre class="line-numbers language-clojure"><code class="language-clojure">(comment
   (slurp "files/file-test.txt" :encoding "UTF-8")
   ;; => "a txt file line1\na txt file line2\n这是中文字符"
   )
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="spit-写函数"><a href="#spit-写函数" class="headerlink" title="spit 写函数"></a>spit 写函数</h4><p>clojure.core/spit [file-path content &amp; options]<br>file-path：为文件路径；<br>content：为要写入文件的内容，所有的内容都会被转为String类型写入。<br>options：一些设置参数，常见的有：</p>
 <p>:append true/false；当为true是，内容会从文件后面写入，如果要换行写入，需要在内容后面加入\n换行符，当为false时，会擦掉文件原有的内容。<br>:encoding “UTF-8”或”GBK”等。 默认是UTF-8.<br>spit函数会先打开文件，再将内容写入，再关闭文件。<br>spit都是以字符串形式写入。</p>
-<pre class="line-numbers language-clj"><code class="language-clj">(comment
+<pre class="line-numbers language-clojure"><code class="language-clojure">(comment
   (spit "files/file-test.txt" "新增文件内容\n" :append false :encoding "GBK")
   (slurp "files/file-test.txt" :encoding "GBK")
   ;; => "新增文件内容\n"
@@ -584,8 +584,8 @@
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="websocket"><a href="#websocket" class="headerlink" title="websocket"></a>websocket</h2><p>clojure使用两个库，不附源码。<br><a target="_blank" rel="noopener" href="https://github.com/ptaoussanis/sente">https://github.com/ptaoussanis/sente</a><br><a target="_blank" rel="noopener" href="https://github.com/ptaoussanis/timbre">https://github.com/ptaoussanis/timbre</a></p>
 <h2 id="mac上使用OBS做直播"><a href="#mac上使用OBS做直播" class="headerlink" title="mac上使用OBS做直播"></a>mac上使用OBS做直播</h2><p>我们的方案是把腾讯会议的会议内容做一定的背景、头像的裁剪处理后用OBS studio软件把流推出去，然后在客户端用m3u8的格式拉取播放。</p>
-<p>为什么单独提一下这个，因为mac上能把麦克风的声音播出去，但是桌面的声音拨不出去。换句话说，你用网易云音乐，想只把这个软件的声音用OBS播出去，是不可以的，于是借助soundFlower这款软件可以实现，在腾讯会议上选择soundflower (64ch)这个通道。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-4c0676502c8378d6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>OBS里设置也选择soundflower (64ch)<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-e9541b0fff6ca3c4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>可以只将腾讯会议的声音播出去。</p>
+<p>为什么单独提一下这个，因为mac上能把麦克风的声音播出去，但是桌面的声音拨不出去。换句话说，你用网易云音乐，想只把这个软件的声音用OBS播出去，是不可以的，于是借助soundFlower这款软件可以实现，在腾讯会议上选择soundflower (64ch)这个通道。<br><img src="/loading.gif" data-original="/images/fontend/soundflower1.png" alt="出入口选择soundflower"></p>
+<p>OBS里设置也选择soundflower (64ch)<br><img src="/loading.gif" data-original="/images/fontend/soundflower2.png" alt="OBS里设置soundflower"><br>可以只将腾讯会议的声音播出去。</p>
 <p>然而，这样有产生个新问题，腾讯会议的声音都被OBS拨出去了，自己的电脑端却听不见了，于是参考<br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av32168478/">在MacOS上利用OBS+Soundflower内录声音与直播</a>这个教程配置了聚合输入和混合输出，相当于将一个声音进行了扩展，这样才妥当了。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/linux2_scdn/article/details/52575659">clojure实战——IO（1）</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av32168478/">在MacOS上利用OBS+Soundflower内录声音与直播</a></p>
 
@@ -1079,8 +1079,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%BE%AE%E4%BF%A1/">
-                        <span class="chip bg-color">微信</span>
+                    <a href="/tags/shadow-cljs/">
+                        <span class="chip bg-color">shadow-cljs</span>
                     </a>
                     
                 </div>
@@ -1117,8 +1117,8 @@
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/antd/" class="post-category">
-                                    antd
+                            <a href="/categories/%E5%A4%A7%E5%89%8D%E7%AB%AF/" class="post-category">
+                                    大前端
                                 </a>
                             
                             

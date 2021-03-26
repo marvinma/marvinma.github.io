@@ -504,7 +504,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    873
+                    865
                 </div>
                 
 
@@ -583,14 +583,26 @@
 (map inc [1 2 3])
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="常用的一些函数的使用体会"><a href="#常用的一些函数的使用体会" class="headerlink" title="常用的一些函数的使用体会"></a>常用的一些函数的使用体会</h4><ol>
-<li>map<br>```clojure<h1 id="map-遍历list，格式化list里map的key对应的value"><a href="#map-遍历list，格式化list里map的key对应的value" class="headerlink" title="map  遍历list，格式化list里map的key对应的value"></a>map  遍历list，格式化list里map的key对应的value</h1>(require ‘[clj-time.format :as f])<br>=&gt; nil<br>(def custom-formatter (f/formatter “yyyyMMdd”))<br>=&gt; #’user/custom-formatter<br>(defn convert-format [d] (f/unparse custom-formatter (f/parse (f/formatter :date-hour-minute-second ) d)))<br>=&gt; #’user/convert-format<br>(map (fn [m] (assoc m :create-time (convert-format (:create-time m))) )<br>  [{:id 1<pre><code>:create-time "2019-04-17T14:47:24"}
-</code></pre>
-   {<pre><code>:id 2
-:create-time "2019-04-17T14:47:44"}])
-</code></pre>
-=&gt; ({:id 1, :create-time “20190417”} {:id 2, :create-time “20190417”})</li>
+<li>map</li>
 </ol>
-<h1 id="再写一个"><a href="#再写一个" class="headerlink" title="再写一个"></a>再写一个</h1><pre class="line-numbers language-clojure"><code class="language-clojure">(map (fn [m] (assoc m
+<pre class="line-numbers language-clojure"><code class="language-clojure">;;map  遍历list，格式化list里map的key对应的value
+(require '[clj-time.format :as f])
+=> nil
+(def custom-formatter (f/formatter "yyyyMMdd"))
+=> #'user/custom-formatter
+(defn convert-format [d] (f/unparse custom-formatter (f/parse (f/formatter :date-hour-minute-second ) d)))
+=> #'user/convert-format
+(map (fn [m] (assoc m :create-time (convert-format (:create-time m))) )
+     [{:id 1
+       :create-time "2019-04-17T14:47:24"}
+      {
+       :id 2
+       :create-time "2019-04-17T14:47:44"}])
+=> ({:id 1, :create-time "20190417"} {:id 2, :create-time "20190417"})
+
+;;再写一个
+```clojure
+(map (fn [m] (assoc m
                :office-name (format "%s-%s" (:office-id m) (:office-name m))))
      
   [{
@@ -610,8 +622,10 @@
 =>
 ({:office-id "1", :office-name "1-耳鼻喉科", :hospital-id "1", :create-time "2019-04-17T14:47:24", :deleted 0}
  {:office-id "2", :office-name "2-变态反应科", :hospital-id "1", :create-time "2019-04-17T14:47:44", :deleted 0})
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>2、date、timestamp、string</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>date、timestamp、string</li>
+</ol>
 <pre class="line-numbers language-clojure"><code class="language-clojure">(import '[java.text SimpleDateFormat]) 
 (import '[java.sql Timestamp]) 
 
@@ -623,23 +637,26 @@
 (defn date2timestamp [date] 
 (.getTime (.parse (SimpleDateFormat. "MM/dd/yyyy") date)))
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>3、conj<br>4、seq<br>5、when-let<br>6、comp<br>就是对参数从右到左组合执行所有函数，如下面的函数： </p>
-<pre class="line-numbers language-clojure"><code class="language-clojure">((comp f1 f2 .. fn) arg1 arg2 .. argn)  
+<ol start="3">
+<li>conj</li>
+<li>seq</li>
+<li>when-let</li>
+<li>comp<br>就是对参数从右到左组合执行所有函数，如下面的函数： <pre class="line-numbers language-clojure"><code class="language-clojure">((comp f1 f2 .. fn) arg1 arg2 .. argn)  
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>可以转变为：</p>
-<pre class="line-numbers language-clojure"><code class="language-clojure">(f1 (f2 (.. (fn arg1 arg2 .. argn))))  
+可以转变为：<pre class="line-numbers language-clojure"><code class="language-clojure">(f1 (f2 (.. (fn arg1 arg2 .. argn))))  
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>举例</p>
-<pre class="line-numbers language-clojure"><code class="language-clojure">((comp str +) 8 8 8)   
+举例<pre class="line-numbers language-clojure"><code class="language-clojure">((comp str +) 8 8 8)   
 ;;=> "24"
 (filter (comp not zero?) [0 1 0 2 0 3 0 4])
 ;;=> (1 2 3 4)
 (map
-   (comp - (partial + 3) (partial * 2))
-       [1 2 3 4])
+(comp - (partial + 3) (partial * 2))
+    [1 2 3 4])
 ;;=>  (-5 -7 -9 -11)
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>7、partial<br>形如：<code>((partial  f  arg1 arg2 .. argn)  arga argb .. argz)  </code><br>就是执行：<br>(f  arg1 arg2 .. argn  arga argb .. argz)<br>注意：偏函数的第一个参数是一个函数，后面至少有1个其他参数<br>partial函数称为“偏函数”或者“部分完整函数”，因为它是不完整的，定义也用def而不是defn。 </p>
+</li>
+<li>partial<br>形如：<code>((partial  f  arg1 arg2 .. argn)  arga argb .. argz)  </code><br>就是执行：<br>(f  arg1 arg2 .. argn  arga argb .. argz)<br>注意：偏函数的第一个参数是一个函数，后面至少有1个其他参数<br>partial函数称为“偏函数”或者“部分完整函数”，因为它是不完整的，定义也用def而不是defn。 </li>
+</ol>
 <pre class="line-numbers language-clojure"><code class="language-clojure">user=> (def hundred-times (partial * 100))
 #'user/hundred-times
 
@@ -649,8 +666,13 @@ user=> (hundred-times 5)
 user=> (hundred-times 4 5 6)
 12000
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>8、reduce<br>9、apply</p>
-<h4 id="函数间对比使用"><a href="#函数间对比使用" class="headerlink" title="函数间对比使用"></a>函数间对比使用</h4><p>1、assoc vs update-in vs assoc-in<br>说法不一，详情参考<a target="_blank" rel="noopener" href="http://www.bertschneider.de/2011/01/11/Assoc-vs-Update/">Assoc-vs-Update/</a><br>assoc，只允许更新数据结构的第一层。处理数据的性能最高，几乎是assoc-in的两倍。<br>assoc-in 和update-in 可以使用路径表达式改变数据结构的内层。<br>如果新的值不依赖旧值，assoc-in就可以满足需求，不需要使用update-in;在有依赖关系时，使用update-in</p>
+<ol start="8">
+<li>reduce</li>
+<li>apply</li>
+</ol>
+<h4 id="函数间对比使用"><a href="#函数间对比使用" class="headerlink" title="函数间对比使用"></a>函数间对比使用</h4><ol>
+<li>assoc vs update-in vs assoc-in<br>说法不一，详情参考<a target="_blank" rel="noopener" href="http://www.bertschneider.de/2011/01/11/Assoc-vs-Update/">Assoc-vs-Update/</a><br>assoc，只允许更新数据结构的第一层。处理数据的性能最高，几乎是assoc-in的两倍。<br>assoc-in 和update-in 可以使用路径表达式改变数据结构的内层。<br>如果新的值不依赖旧值，assoc-in就可以满足需求，不需要使用update-in;在有依赖关系时，使用update-in</li>
+</ol>
 <pre class="line-numbers language-clojure"><code class="language-clojure">(defrecord Person [fname lname address]）
 (defrecourd Address [street city state zip])
 

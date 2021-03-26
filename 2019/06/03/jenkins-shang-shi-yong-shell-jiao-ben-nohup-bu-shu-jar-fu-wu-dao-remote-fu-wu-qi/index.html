@@ -544,17 +544,17 @@
 <span id="more"></span>
 
 <p>先贴一下，我的jenkins里最后核心配置</p>
-<pre><code>#停止服务，备份jar
-ssh -p 22 root@0.0.0.0 'bash -s ' &lt; /opt/auto-deploy-scripts/remove_jar.sh /opt/jar/ alk-wxapi-test.jar
+<pre class="line-numbers language-shell"><code class="language-shell">#停止服务，备份jar
+ssh -p 22 root@0.0.0.0 'bash -s ' < /opt/auto-deploy-scripts/remove_jar.sh /opt/jar/ alk-wxapi-test.jar
 
 #copy jar
 scp -P22 /mnt/jenkins/workspace/alk_api_test_auto_deploy/target/uberjar/alk-wxapi-test.jar root@0.0.0.0:/opt/jar/
 
 #重启服务
-ssh -p 22 root@0.0.0.0 'bash -s' &lt; /opt/auto-deploy-scripts/start_jar.sh /usr/local/jdk1.8.0_212 /opt/jar/ alk-wxapi-test.jar
-</code></pre>
+ssh -p 22 root@0.0.0.0 'bash -s' < /opt/auto-deploy-scripts/start_jar.sh /usr/local/jdk1.8.0_212 /opt/jar/ alk-wxapi-test.jar
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>remove_jar.sh脚本：</p>
-<pre><code>#!/bin/bash
+<pre class="line-numbers language-shell"><code class="language-shell">#!/bin/bash
 #获取第一个参数,jar包路径,先备份,再发布
 jar_path=$1
 #!编译好的jar包名称
@@ -596,9 +596,9 @@ fi
 
 echo "================== jar backup end ======================="
 fi
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>start_jar.sh脚本内容：</p>
-<pre><code>#!启动应用
+<pre class="line-numbers language-shell"><code class="language-shell">#!启动应用
 #!stop.sh
 #!/bin/bash
 echo "================== startup start ======================="
@@ -620,18 +620,18 @@ echo "授予当前用户权限"
 #chmod 777 $file
 echo "执行....."
 cd $jar_path
-nohup java -jar $file &gt; ${jar_path}/log/nohup.log 2&gt;&amp;1 &amp;
-echo "启动jar的命令: nohup java -jar $file &gt; ${jar_path}log/nohup.log 2&gt;&amp;1 &amp; "
+nohup java -jar $file > ${jar_path}/log/nohup.log 2>&1 &
+echo "启动jar的命令: nohup java -jar $file > ${jar_path}log/nohup.log 2>&1 & "
 echo "================== startup end ======================="
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>remove_jar.sh</code>和<code>start_jar.sh</code>在jenkins服务器上，需要将这两个shell在0.0.0.0（不能暴露）的远端去执行<br>没错，客官您一眼就看出来了，觉得简单的不值一提吧，先别着急，对搜这个问题的小菜鸡来说这里面也是大有文章，听我一一道来。</p>
 <p>1、第一个问题：ps -ef|grep xxx.jar查到多余的pid<br>现象：在0.0.0.0上行<code>ps -ef | grep alk-wxapi-test.jar | grep -v grep | awk '{print $2}'</code>只能查到一个pid，但是把这句话放到shell脚本里，在本地使用命令上远端执行，就会找到3个pid，而且kill 时提示失败的错误。<br>现在已经知道原因了，但是当时确实是个问题。<br>已经解决不方便复现了，因此就描述一下就行了。<br>原因：shell里的这个命令也是通过bash在远程执行的，所以找到的别的<em>无关紧要</em>的pid其实是bash，因此在grep是除了排除grep本身(<code>grep -v grep</code>)外还要排除bash（<code>grep -v bash</code>）<br>最后命令是：</p>
-<pre><code>pid=`ps -aux | grep $jar_name | grep -v bash |grep -v grep | awk '{print $2}'`
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">pid=`ps -aux | grep $jar_name | grep -v bash |grep -v grep | awk '{print $2}'`
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>2、远程执行脚本，里面有nohup java -jar,发生错误：<code>nohup: failed to run command ‘java’: No such file or directory</code><br>这是因为nohup时java环境变量没有读到，处理方式就是在nohup执行前加入</p>
-<pre><code>export JAVA_HOME=/usr/local/java/jdk1.8.0_151
+<pre class="line-numbers language-shell"><code class="language-shell">export JAVA_HOME=/usr/local/java/jdk1.8.0_151
 export PATH=$JAVA_HOME/bin:$PATH
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>3、其他思路</p>
 <ul>
 <li>将jar的服务配置成服务器的一个service，使用systemctl停止、启动等。</li>

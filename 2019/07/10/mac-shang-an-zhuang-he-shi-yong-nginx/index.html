@@ -508,7 +508,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    798
+                    780
                 </div>
                 
 
@@ -540,33 +540,62 @@
 <span id="more"></span>
 
 <h2 id="nginx安装"><a href="#nginx安装" class="headerlink" title="nginx安装"></a>nginx安装</h2><p>在mac系统上，基本上所有软件都可以用brew(brew 又叫Homebrew，brew类似CentOS系统下的Yum软件包管理工具，能在Mac中方便的安装软件或者卸载软件 )这个神器搞定，这也是我一枚穷屌丝为啥非要舍弃国民青睐的windows系统，而费劲巴拉的非要玩黑苹果的原因。<br>言归正传，</p>
-<pre><code>brew search nginx             # brew 查询Nginx
+<pre class="line-numbers language-shell"><code class="language-shell">brew search nginx             # brew 查询Nginx
 
 brew install nginx            # brew 安装Nginx
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>安装完成后，可在终端输通过 brew list nginx 来显示nginx安装路径：</p>
 <ul>
 <li>通过brew install安装应用会在/usr/local/Cellar/目录下；</li>
 <li>某些应用会自动创建软链接放在 /usr/bin 或者 /usr/sbin，同时也可能将整个文件夹放在/usr/local</li>
-<li>可以使用 brew list 软件名 (比如 brew list Nginx)确定Nginx安装位置。<br>```<br>➜  ~ brew list nginx<br>/usr/local/Cellar/nginx/1.17.1/.bottle/etc/ (15 files)<br>/usr/local/Cellar/nginx/1.17.1/bin/nginx<br>/usr/local/Cellar/nginx/1.17.1/homebrew.mxcl.nginx.plist<br>/usr/local/Cellar/nginx/1.17.1/html -&gt; ../../../var/www<br>/usr/local/Cellar/nginx/1.17.1/share/man/man8/nginx.8<br>/usr/local/Cellar/nginx/1.17.1/share/nginx/ (2 files)<br>➜  ~ ll /usr/local/Cellar/nginx/1.17.1<br>total 624</li>
+<li>可以使用 brew list 软件名 (比如 brew list Nginx)确定Nginx安装位置。</li>
 </ul>
-<p>-rw-r–r–  1 mahaiqiang  staff   290K  6 25 20:19 CHANGES<br>-rw-r–r–  1 mahaiqiang  staff   678B  7 10 18:57 INSTALL_RECEIPT.json<br>-rw-r–r–  1 mahaiqiang  staff   1.4K  6 25 20:19 LICENSE<br>-rw-r–r–  1 mahaiqiang  staff    49B  6 25 20:19 README<br>drwxr-xr-x  3 mahaiqiang  staff   102B  6 25 20:19 bin<br>-rw-r–r–  1 mahaiqiang  staff   571B  7 10 18:57 homebrew.mxcl.nginx.plist<br>lrwxr-xr-x  1 mahaiqiang  staff    16B  7 10 18:57 html -&gt; ../../../var/www<br>drwxr-xr-x  4 mahaiqiang  staff   136B  6 25 20:19 share<br>➜  ~</p>
-<h1 id="Nginx-www目录"><a href="#Nginx-www目录" class="headerlink" title="Nginx www目录"></a>Nginx www目录</h1><p>➜  ~ cd /usr/local/Cellar/nginx/1.17.1<br>➜  1.17.1 ll ../../../var/www<br>total 16<br>-rw-r–r–  1 mahaiqiang  staff   494B  6 25 20:19 50x.html<br>-rw-r–r–  1 mahaiqiang  staff   612B  6 25 20:19 index.html<br>➜  1.17.1 pwd<br>/usr/local/Cellar/nginx/1.17.1<br>➜</p>
-<h1 id="寻找Nginx-配置文件"><a href="#寻找Nginx-配置文件" class="headerlink" title="寻找Nginx 配置文件"></a>寻找Nginx 配置文件</h1><p>➜  ~ find /usr/ -name “nginx.conf”<br>/usr//local/Cellar/nginx/1.17.1/.bottle/etc/nginx/nginx.conf<br>/usr//local/etc/nginx/nginx.conf<br>find: /usr//local/mysql-5.7.25-macos10.14-x86_64/data: Permission denied<br>find: /usr//local/mysql-5.7.25-macos10.14-x86_64/keyring: Permission denied<br>find: /usr//sbin/authserver: Permission denied<br>➜  ~</p>
-<pre><code>执行`nginx`命令启动
-![nginx](https://upload-images.jianshu.io/upload_images/4109786-3e9c85ed0139e8e3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800)
-
-## 使用
-一下指名配置文件位置信息，更多使用参考[Linux 上我常用的几种nginx配置](https://www.jianshu.com/p/a6472181e6be)
-
-#### 1、配置文件位置
-</code></pre>
-<p>/usr/local/etc/nginx/nginx.conf</p>
-<pre><code>#### 2、软连接
-</code></pre>
-<p>$ which nginx<br>/usr/local/bin/nginx</p>
-<h1 id="usr-bin-nginx-提示没权限，直接用-usr-local-bin-nginx"><a href="#usr-bin-nginx-提示没权限，直接用-usr-local-bin-nginx" class="headerlink" title="/usr/bin/nginx 提示没权限，直接用 /usr/local/bin/nginx"></a>/usr/bin/nginx 提示没权限，直接用 /usr/local/bin/nginx</h1><p>$ ln -s  /usr/local/sbin/nginx /usr/local/bin/nginx</p>
-<p>```</p>
+<pre class="line-numbers language-shell"><code class="language-shell">➜  ~ brew list nginx
+/usr/local/Cellar/nginx/1.17.1/.bottle/etc/ (15 files)
+/usr/local/Cellar/nginx/1.17.1/bin/nginx
+/usr/local/Cellar/nginx/1.17.1/homebrew.mxcl.nginx.plist
+/usr/local/Cellar/nginx/1.17.1/html -> ../../../var/www
+/usr/local/Cellar/nginx/1.17.1/share/man/man8/nginx.8
+/usr/local/Cellar/nginx/1.17.1/share/nginx/ (2 files)
+➜  ~ ll /usr/local/Cellar/nginx/1.17.1
+total 624
+-rw-r--r--  1 mahaiqiang  staff   290K  6 25 20:19 CHANGES
+-rw-r--r--  1 mahaiqiang  staff   678B  7 10 18:57 INSTALL_RECEIPT.json
+-rw-r--r--  1 mahaiqiang  staff   1.4K  6 25 20:19 LICENSE
+-rw-r--r--  1 mahaiqiang  staff    49B  6 25 20:19 README
+drwxr-xr-x  3 mahaiqiang  staff   102B  6 25 20:19 bin
+-rw-r--r--  1 mahaiqiang  staff   571B  7 10 18:57 homebrew.mxcl.nginx.plist
+lrwxr-xr-x  1 mahaiqiang  staff    16B  7 10 18:57 html -> ../../../var/www
+drwxr-xr-x  4 mahaiqiang  staff   136B  6 25 20:19 share
+➜  ~
+# Nginx www目录
+➜  ~ cd /usr/local/Cellar/nginx/1.17.1
+➜  1.17.1 ll ../../../var/www
+total 16
+-rw-r--r--  1 mahaiqiang  staff   494B  6 25 20:19 50x.html
+-rw-r--r--  1 mahaiqiang  staff   612B  6 25 20:19 index.html
+➜  1.17.1 pwd
+/usr/local/Cellar/nginx/1.17.1
+➜
+# 寻找Nginx 配置文件
+➜  ~ find /usr/ -name "nginx.conf"
+/usr//local/Cellar/nginx/1.17.1/.bottle/etc/nginx/nginx.conf
+/usr//local/etc/nginx/nginx.conf
+find: /usr//local/mysql-5.7.25-macos10.14-x86_64/data: Permission denied
+find: /usr//local/mysql-5.7.25-macos10.14-x86_64/keyring: Permission denied
+find: /usr//sbin/authserver: Permission denied
+➜  ~
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>执行<code>nginx</code>命令启动<br><img src="/loading.gif" data-original="/images/nginx/nginx-8080.png" alt="nginx"></p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>一下指名配置文件位置信息，更多使用参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a6472181e6be">Linux 上我常用的几种nginx配置</a></p>
+<h4 id="1、配置文件位置"><a href="#1、配置文件位置" class="headerlink" title="1、配置文件位置"></a>1、配置文件位置</h4><pre class="line-numbers language-shell"><code class="language-shell">/usr/local/etc/nginx/nginx.conf
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="2、软连接"><a href="#2、软连接" class="headerlink" title="2、软连接"></a>2、软连接</h4><pre class="line-numbers language-shell"><code class="language-shell">$ which nginx
+/usr/local/bin/nginx
+ 
+# /usr/bin/nginx 提示没权限，直接用 /usr/local/bin/nginx
+$ ln -s  /usr/local/sbin/nginx /usr/local/bin/nginx
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3、Nginx-隐藏版本号"><a href="#3、Nginx-隐藏版本号" class="headerlink" title="3、Nginx 隐藏版本号"></a>3、Nginx 隐藏版本号</h4><p>nginx 配置文件里增加&nbsp;server_tokens off;<br>server_tokens作用域是http server location语句块<br>server_tokens默认值是on，表示显示版本信息，设置server_tokens值是off，就可以在所有地方隐藏nginx的版本信息。<br>隐藏了 Nginx 版本号后，重启Nginx即可</p>
 <h4 id="4、多文件配置"><a href="#4、多文件配置" class="headerlink" title="4、多文件配置"></a>4、多文件配置</h4><p>细心的你打开nginx.config会发现文件最后一行是这句</p>
 <blockquote>

@@ -508,7 +508,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    525
+                    495
                 </div>
                 
 
@@ -540,7 +540,7 @@
 <span id="more"></span>
 
 <h2 id="原方案"><a href="#原方案" class="headerlink" title="原方案"></a>原方案</h2><p>前端有个config.cljs文件，定义了一个domain的函数，指定api接口的base-url，本地开发、测试、生产分别修改成不同地址。类似这样吧：</p>
-<pre><code>(ns &lt;&lt;project-ns&gt;&gt;.config)
+<pre class="line-numbers language-clojure"><code class="language-clojure">(ns <<project-ns>>.config)
 
 ;; 测试环境
 #_(def domain "https://test.url.com")
@@ -550,17 +550,17 @@
 
 ;;开发环境
 (def domain "http://localhost:3000")
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>很显然，这个不是长久之计，又不智能，部署时还要修改地址，容易忘记，并且还有时会把修改提交上去。尤其是没有持续集成工具帮助做部署工作的时候。~</p>
 <h2 id="当前方案"><a href="#当前方案" class="headerlink" title="当前方案"></a>当前方案</h2><p><a target="_blank" rel="noopener" href="https://shadow-cljs.github.io/docs/UsersGuide.html">shadow-cljs用户指南</a>我没有通读，但是从目录看也有<a target="_blank" rel="noopener" href="https://shadow-cljs.github.io/docs/UsersGuide.html#shadow-env">环境变量</a>章节看，也有方案。</p>
 <p>采用<a target="_blank" rel="noopener" href="https://github.com/shadow-cljs/shadow-cljs.github.io/blob/master/docs/build-config.adoc#closure-defines">closure-defines</a>的方案，指定多个build id,在不同的build中传入环境变量。</p>
-<pre><code>(ns &lt;&lt;project-ns&gt;&gt;.config)
+<pre class="line-numbers language-clojure"><code class="language-clojure">(ns <<project-ns>>.config)
 
 ;;此处的变量需要修改的请在项目跟目录的shadow-cljs.edn中修改
 (goog-define domain "http://localhost:3000")
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>shadow-cljs.edn</code>配置大概这样</p>
-<pre><code>:builds
+<pre class="line-numbers language-clojure"><code class="language-clojure">:builds
 {:app
   {:target :browser
    :output-dir "target/cljsbuild/public/dev/js"
@@ -571,22 +571,22 @@
     :ignore-warnings true
     :preloads [re-frisk.preload]}
    :closure-defines {"re_frame.trace.trace_enabled_QMARK_" true}
-   :dev  {:closure-defines {&lt;&lt;project-ns&gt;&gt;.config/domain "http://localhost:3000"}}}
+   :dev  {:closure-defines {<<project-ns>>.config/domain "http://localhost:3000"}}}
 
   :test-app
   {:target :browser
    :output-dir "target/cljsbuild/public/test/js"
    :asset-path "/js"
    :modules {:app {:entries [YOUR-APP.app]}}
-   :release {:closure-defines {&lt;&lt;project-ns&gt;&gt;.config/domain "https://test.url.com"}}}
+   :release {:closure-defines {<<project-ns>>.config/domain "https://test.url.com"}}}
 
   :prod-app
   {:target :browser
    :output-dir "target/cljsbuild/public/prod/js"
    :asset-path "/js"
    :modules {:app {:entries [YOUR-APP.app]}}
-   :release {:closure-defines {&lt;&lt;project-ns&gt;&gt;.config/domain "https://prod.url.com"}}}}
-</code></pre>
+   :release {:closure-defines {<<project-ns>>.config/domain "https://prod.url.com"}}}}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="好处"><a href="#好处" class="headerlink" title="好处"></a>好处</h4><ul>
 <li>可以定义多个变量，比如从多个api地址</li>
 <li>可以配置无限多个</li>
@@ -1140,8 +1140,8 @@
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/clojurescript/" class="post-category">
-                                    clojurescript
+                            <a href="/categories/cljs/" class="post-category">
+                                    cljs
                                 </a>
                             
                             
@@ -1151,8 +1151,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/clojurescript/">
-                        <span class="chip bg-color">clojurescript</span>
+                    <a href="/tags/cljs/">
+                        <span class="chip bg-color">cljs</span>
                     </a>
                     
                     <a href="/tags/electron/">

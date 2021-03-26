@@ -540,11 +540,12 @@
 <span id="more"></span>
 
 <p>如今的开发感觉已经离不开微信了，虽然相关的文章已经比微信官网还要多了，但是别人家的再好也是别人家的，自己走一遍还是挺有意义的。</p>
-<p>如果是开发环境，还没有审核的微信公众号，那自然是不能发送模板消息的，只能获取到微信用户信息。需要申请个测试的公众号，<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login&amp;token=1447200436&amp;lang=zh_CN">官网</a>免费申请。申请好以后，需要在”网页服务”-&gt;”网页账号”里配置一下oauth2.0的授权回调地址。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-64c898f6af86aec8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="测试号"></p>
+<p>如果是开发环境，还没有审核的微信公众号，那自然是不能发送模板消息的，只能获取到微信用户信息。需要申请个测试的公众号，<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login&amp;token=1447200436&amp;lang=zh_CN">官网</a>免费申请。申请好以后，需要在”网页服务”-&gt;”网页账号”里配置一下oauth2.0的授权回调地址。</p>
+<p><img src="/loading.gif" data-original="/images/fontend/weixin-mp-test.png" alt="测试号"></p>
 <p>后面的操作就跟下面我正式的开发者平台一样了。</p>
 <p>作为前端小白，有机会从零开始申请公众号，开发公众号，自然要学到什么记录什么。<br>本篇记录下开发环境怎么获取openid并且发送模板消息的。</p>
 <p>参考<br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140842">微信网页开发授权官方文档</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jilu/p/6123447.html">微信公众平台，微信网页授权，redirect_uri参数错误，解决方法</a></p>
-<h2 id="获取微信用户信息"><a href="#获取微信用户信息" class="headerlink" title="获取微信用户信息"></a>获取微信用户信息</h2><p>1、关注微信公众号<br> 2、绑定微信号称为网页开发者<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-9d171d42c63604c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"><br> 3、修改微信网页授权<br>关于网页授权回调域名的说明</p>
+<h2 id="获取微信用户信息"><a href="#获取微信用户信息" class="headerlink" title="获取微信用户信息"></a>获取微信用户信息</h2><p>1、关注微信公众号<br>2、绑定微信号称为网页开发者<br><img src="/loading.gif" data-original="/images/fontend/weixin-mp-setting.png" alt="设置开发者"><br> 3、修改微信网页授权<br>关于网页授权回调域名的说明</p>
 <ul>
 <li><p>在微信公众号请求用户网页授权之前，开发者需要先到公众平台官网中的“开发 - 接口权限 - 网页服务 - 网页帐号 - 网页授权获取用户基本信息”的配置选项中，修改授权回调域名。请注意，这里填写的是域名（是一个字符串），而不是URL，因此请勿加 http:// 等协议头； </p>
 </li>
@@ -553,33 +554,36 @@
 <li><p>如果公众号登录授权给了第三方开发者来进行管理，则不必做任何设置，由第三方代替公众号实现网页授权即可。</p>
 </li>
 </ul>
-<p>先配置服务器，保证根域名下可以访问到微信提供的测试文件。<br>如果您没有可用的域名，或许<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4f008e2b7622">这篇文章</a>可以祝您一臂之力。<br>配置好以后是这样的：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-d3d3df2af87655de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"><br>配置授权域名<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-d6d9e9d9782cc4db.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"><br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-8a7f93f5c7a4e6fe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"></p>
+<p>先配置服务器，保证根域名下可以访问到微信提供的测试文件。<br>如果您没有可用的域名，或许<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4f008e2b7622">这篇文章</a>可以祝您一臂之力。<br>配置好以后是这样的：<br><img src="/loading.gif" data-original="/images/fontend/weixin-mp-success.png" alt="配置好授权后"><br>配置授权域名<br><img src="/loading.gif" data-original="/images/fontend/weixin-mp-set-host.png" alt="设置授权域名"></p>
+<p><img src="/loading.gif" data-original="/images/fontend/weixin-mp-set-host-ok.png" alt="设置好授权域名"></p>
 <ul>
-<li>注意：这一步如果是tomcat做的容器，将txt文件放在tomcat/webapps/ROOT/下即可。<br>  如果用的nginx转发的，将文件放在根目录即可。<br>比如：nginx如下：<pre><code>  location / {
-      root   /opt/site/alk-patient;
-      index  index.html index.htm;
-      try_files $uri $uri/ /index.html;
-  }
-</code></pre>
-<img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-39b2cd54e7c21c2a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="目录"><br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-5e57386772808c06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>如果这一步没有配置，域名是加不上去的。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-e4dcaffbbb6cc76e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"></li>
+<li>注意：这一步如果是tomcat做的容器，将txt文件放在tomcat/webapps/ROOT/下即可。<br>  如果用的nginx转发的，将文件放在根目录即可。<br>比如：nginx如下：<pre class="line-numbers language-nginx"><code class="language-nginx">  <span class="token keyword">location</span> <span class="token operator">/</span> <span class="token punctuation">{</span>
+      <span class="token keyword">root</span>   <span class="token operator">/</span>opt<span class="token operator">/</span>site<span class="token operator">/</span>alk<span class="token operator">-</span>patient<span class="token punctuation">;</span>
+      <span class="token keyword">index</span>  <span class="token keyword">index</span><span class="token punctuation">.</span>html <span class="token keyword">index</span><span class="token punctuation">.</span>htm<span class="token punctuation">;</span>
+      <span class="token keyword">try_files</span> <span class="token variable">$uri</span> <span class="token variable">$uri</span><span class="token operator">/</span> <span class="token operator">/</span><span class="token keyword">index</span><span class="token punctuation">.</span>html<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<img src="/loading.gif" data-original="/images/fontend/nginx-site-dir.png" alt="nginx代理网站目录"></li>
 </ul>
+<p><img src="/loading.gif" data-original="/images/fontend/weixin-mp-host-set-ok.png" alt="域名访问设置成功"></p>
+<p>如果这一步没有配置，域名是加不上去的。<br><img src="/loading.gif" data-original="/images/fontend/weixin-mp-set-host-error.png" alt="无法配置授权域名"></p>
 <blockquote>
 <p>这一步要是有问题不会配，只能说这位后台适合去买庆丰包子。</p>
 </blockquote>
 <p>4、获取code<br>回调url要用urlencode处理，比如我的回调地址是https%3a%2f%2fxhapp.3vyd.com%2fMP_verify_5J1FbKvfyqtzU26N.txt<br>设置在微信api里如下<br><code>https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&amp;redirect_uri=https%3a%2f%2fxhapp.3vyd.com%2fMP_verify_5J1FbKvfyqtzU26N.txt&amp;response_type=code&amp;scope=snsapi_userinfo&amp;state=123#wechat_redirect</code></p>
-<p>将该URL用微信开发者工具访问后<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-99516cf76e2dc795.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"></p>
-<p>同意授权，跳转成功后，想要的code在url里<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-54cebbeead99d0d8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="code"></p>
+<p>将该URL用微信开发者工具访问后<br><img src="/loading.gif" data-original="/images/fontend/weixin-mp-devtool.png" alt="微信开发者工具打开授权页面"></p>
+<p>同意授权，跳转成功后，想要的code在url里<br><img src="/loading.gif" data-original="/images/fontend/weixin-mp-redirect-url.png" alt="授权完成"></p>
 <p>5、获取微信用户信息<br>获取到了code以后，调用服务端的接口，获取用户信息：</p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-6f49dc7016b29733.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="user-info"><br>服务端看<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1433747234">微信官网API</a>，出问题概率太小，不再贴代码。粘一下服务端打出来的log：</p>
-<pre><code>=============== REQUEST START ===============
+<p><img src="/loading.gif" data-original="/images/fontend/weixin-mp-get-user-info.png" alt="获取到微信用户信息"><br>服务端看<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1433747234">微信官网API</a>，出问题概率太小，不再贴代码。粘一下服务端打出来的log：</p>
+<pre class="line-numbers language-shell"><code class="language-shell">=============== REQUEST START ===============
  request-id:d0ae146d-86fa-4dfb-8224-f0f90b234e4a
  request-uri: /api/public/weixin/authorized/001g4LGs0ns6xf1qaPGs0kS1Hs0g4LG4
  request-method: :get
  request-query: 
  request-body:  
-2019-06-22 15:54:16,796 [XNIO-1 task-2] INFO  alk-wxapi.routes.weixin - 请求微信access-token的 url: %s https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&amp;secret=SECRET&amp;code=001g4LGs0ns6xf1qaPGs0kS1Hs0g4LG4&amp;grant_type=authorization_code 
+2019-06-22 15:54:16,796 [XNIO-1 task-2] INFO  alk-wxapi.routes.weixin - 请求微信access-token的 url: %s https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=001g4LGs0ns6xf1qaPGs0kS1Hs0g4LG4&grant_type=authorization_code 
 2019-06-22 15:54:17,056 [XNIO-1 task-2] INFO  alk-wxapi.routes.weixin - ====== 请求微信access-token返回结果 ===== :  {:access_token 22_laqOVUrxrg5URkqS18gzDqdvgsHlkl5tXxBU6pbaqI9kIqdAdDVMk7zw0gMmoUlR2F1uQnhyzfdlmyixsP3qLA, :expires_in 7200, :refresh_token 22_eHVuzmK9VGxgQsxQV0qwCx9eNoECv7506YXsaXQH9LxEMifD5KwXkTRKAG2WxdlIkj9ZthbSC2wFbtaYGfNClg, :openid oIzsW5sck7l9kmtwDb66_RAvdepY, :scope snsapi_userinfo} 
-2019-06-22 15:54:17,057 [XNIO-1 task-2] INFO  alk-wxapi.routes.weixin - 请求微信用户信息的 url: %s https://api.weixin.qq.com/sns/userinfo?access_token=22_laqOVUrxrg5URkqS18gzDqdvgsHlkl5tXxBU6pbaqI9kIqdAdDVMk7zw0gMmoUlR2F1uQnhyzfdlmyixsP3qLA&amp;openid=oIzsW5sck7l9kmtwDb66_RAvdepYlang=zh_CN 
+2019-06-22 15:54:17,057 [XNIO-1 task-2] INFO  alk-wxapi.routes.weixin - 请求微信用户信息的 url: %s https://api.weixin.qq.com/sns/userinfo?access_token=22_laqOVUrxrg5URkqS18gzDqdvgsHlkl5tXxBU6pbaqI9kIqdAdDVMk7zw0gMmoUlR2F1uQnhyzfdlmyixsP3qLA&openid=oIzsW5sck7l9kmtwDb66_RAvdepYlang=zh_CN 
 2019-06-22 15:54:17,256 [XNIO-1 task-2] INFO  alk-wxapi.routes.weixin - ====== 请求微信用户信息user-info返回结果 ===== :  {:sex 1, :nickname 马海强, :city Qingdao, :headimgurl http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLqxGWwK3lTGAffuGickR7V1VjAiawaAicIsoxGGAD0yWf2toLUZGAiaFHwS8QDMvZ2vLW3QJloKTnIPQ/132, :openid oIzsW5sck7l9kmtwDb66_RAvdepY, :language zh_CN, :province Shandong, :country CN, :privilege []} 
 2019-06-22 15:54:38,673 [XNIO-1 task-2] INFO  jdbc.sqlonly - SELECT * FROM `t_patient` p WHERE p.`deleted` = FALSE AND p.`openid` = 'oIzsW5sck7l9kmtwDb66_RAvdepY'; 
  
@@ -593,21 +597,21 @@ NULL, NOW(), 20);
  request-id:d0ae146d-86fa-4dfb-8224-f0f90b234e4a 
 2019-06-22 15:54:38,853 [XNIO-1 task-2] INFO  alk-wxapi.middleware.log-interceptor - 
 =============== response END ===============
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>到此，获得用户信息。</p>
 <h2 id="公众平台配置模板消息"><a href="#公众平台配置模板消息" class="headerlink" title="公众平台配置模板消息"></a>公众平台配置模板消息</h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1433751277">官方文档</a></p>
-<p>1、从模板库中选择适合自己的模板，添加称为自己的模板，获取的模板id<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-e505ab8839cbd8b2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="模板"></p>
-<p>2、查看模板消息详情，确认字段内容<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-6328bfe48f0867c4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="模板详情"></p>
-<p>3、公众号里基本配置-&gt;IP白名单配置<a target="_blank" rel="noopener" href="https://ip.cn/">当前网络外网地址</a>IP<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-b52438e65fb14ab5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"></p>
+<p>1、从模板库中选择适合自己的模板，添加称为自己的模板，获取的模板id<br><img src="/loading.gif" data-original="/images/fontend/weixin-mp-template-message1.png" alt="模板"></p>
+<p>2、查看模板消息详情，确认字段内容<br><img src="/loading.gif" data-original="/images/fontend/weixin-mp-template-message2.png" alt="模板详情"></p>
+<p>3、公众号里基本配置-&gt;IP白名单配置<a target="_blank" rel="noopener" href="https://ip.cn/">当前网络外网地址</a>IP<br><img src="/loading.gif" data-original="/images/fontend/weixin-mp-template-message3.png" alt="设置ip白名单"></p>
 <p>4、postman调用发消息</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140183">获取access_token</a></li>
 </ul>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-75003257103769cc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"></p>
+<p><img src="/loading.gif" data-original="/images/fontend/weixin-mp-template-message-gettoken.png" alt="获取access token"></p>
 <ul>
-<li>发送模板消息<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-4c2d80b0a3cb2482.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"></li>
+<li>发送模板消息<br><img src="/loading.gif" data-original="/images/fontend/weixin-mp-template-message5.png" alt="发送模板消息"></li>
 </ul>
-<p>收到的消息<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-09da06a747079972.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/200" alt="收到消息"></p>
+<p>收到的消息<br><img src="/loading.gif" data-original="/images/fontend/weixin-mp-template-message6.png" alt="收到消息"></p>
 <p>完美！<br>收关！</p>
 
                 

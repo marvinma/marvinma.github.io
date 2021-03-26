@@ -504,7 +504,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    720
+                    714
                 </div>
                 
 
@@ -541,13 +541,12 @@
 <p>下载<a target="_blank" rel="noopener" href="https://github.com/qdhaiqiang/px2vw-emacs-plugin/blob/master/px2vw.el">px2vw.el</a>到本地<code>~/emacs.d/lisp/</code>目录下。</p>
 <p>或在<code>~/emacs.d/lisp/</code>自件一个名为<code>px2vw.el</code>文件，将代码复制进去，保存。</p>
 <p>在<code>~/.emacs.d/custom.el</code>文件里添加如下代码：</p>
-<pre><code>
-(require 'px-to-vw-vh)
-(global-set-key (kbd "C-c w") 'px-&gt;vw)
-</code></pre>
+<pre class="line-numbers language-clojure"><code class="language-clojure">(require 'px-to-vw-vh)
+(global-set-key (kbd "C-c w") 'px->vw)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>如果这个操作很常用的话，也可以定义一个更简洁的快捷键，比如<code>F9</code>，那就将上面的第二行换成</p>
-<pre><code>(global-set-key [f9] 'px-&gt;vw)
-</code></pre>
+<pre class="line-numbers language-clojure"><code class="language-clojure">(global-set-key [f9] 'px->vw)
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>重启emacs。</p>
 <h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>在px代码出，按下你设置的快捷键，将执行绑定的函数，这会把比如<code>200px;</code>换算成<code>13.8889vw</code>保留了4位小数点，替换掉原来的以px为单位的代码。</p>
 <h3 id="局限说明"><a href="#局限说明" class="headerlink" title="局限说明"></a>局限说明</h3><ol>
@@ -555,8 +554,7 @@
 <li>鉴于vh很少用到，因此还没有做适应，需要的时候手动计算下。</li>
 </ol>
 <h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><p><a target="_blank" rel="noopener" href="https://emacsist.github.io/2018/01/03/%E6%9D%8E%E6%9D%80%E7%9A%84elisp%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">李杀的Elisp学习笔记</a><br><a target="_blank" rel="noopener" href="https://www.gnu.org/software/emacs/manual/html_node/elisp/">Emacs Lisp</a></p>
-<h2 id="px2vw-el附件"><a href="#px2vw-el附件" class="headerlink" title="px2vw.el附件"></a>px2vw.el附件</h2><pre><code>
-(defvar viewpoint-width 1440) 
+<h2 id="px2vw-el附件"><a href="#px2vw-el附件" class="headerlink" title="px2vw.el附件"></a>px2vw.el附件</h2><pre class="line-numbers language-clojure"><code class="language-clojure">(defvar viewpoint-width 1440) 
 (defvar viewpoint-height 900) 
 
 (defun kill-thing-at-point (thing)
@@ -577,7 +575,7 @@
 (defun convert-to-vh (px-v)
   (format "%.2f" (/ (float (* (string-to-number px-v) 100)) viewpoint-height )))
 
-(defun px-&gt;vw ()
+(defun px->vw ()
   "Convert word at point (or selected region) from px to vw."
   (interactive)
   (let* ((char (if (use-region-p)
@@ -592,12 +590,12 @@
         (insert (concat (convert-to-vw px-v) "vw")))
       (print "there's no px value to converting")))))
 
-;;(global-set-key (kbd "C-c w") 'px-&gt;vw)
-;;(global-set-key [f9] 'px-&gt;vw)
+;;(global-set-key (kbd "C-c w") 'px->vw)
+;;(global-set-key [f9] 'px->vw)
 (provide 'px2vw)
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="大神加强版"><a href="#大神加强版" class="headerlink" title="大神加强版"></a>大神加强版</h2><p>上面的plugin不支持整个文件或者选中区域一次性操作是个硬伤。大神版优化的同时，同时解决了这个问题。<br>写的代码有长又烂的原因只有一个，那就是学的太浅。</p>
-<pre><code>(defun k-test (string &amp;optional posBegin posEnd)
+<pre class="line-numbers language-clojure"><code class="language-clojure">(defun k-test (string &optional posBegin posEnd)
   "支持当前段落和选中区域（region）."
   (interactive
    (if (use-region-p)
@@ -617,7 +615,7 @@
                        1400.0))))
       (replace-match (concat vw-digit  "vw") t nil)
       )))
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1157,8 +1155,8 @@
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/clojurescript/" class="post-category">
-                                    clojurescript
+                            <a href="/categories/cljs/" class="post-category">
+                                    cljs
                                 </a>
                             
                             
@@ -1172,8 +1170,8 @@
                         <span class="chip bg-color">clojure</span>
                     </a>
                     
-                    <a href="/tags/clojurescript/">
-                        <span class="chip bg-color">clojurescript</span>
+                    <a href="/tags/cljs/">
+                        <span class="chip bg-color">cljs</span>
                     </a>
                     
                 </div>

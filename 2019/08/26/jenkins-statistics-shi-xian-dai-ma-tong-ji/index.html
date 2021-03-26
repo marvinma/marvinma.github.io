@@ -540,15 +540,15 @@
 <span id="more"></span>
 <p>一个不错的代码统计插件<a target="_blank" rel="noopener" href="http://gitstats.sourceforge.net/">statistics</a></p>
 <h3 id="安装statistics"><a href="#安装statistics" class="headerlink" title="安装statistics"></a>安装statistics</h3><p>需要先在收集代码的服务器上搭建statistics，具体步骤上面链接有。<br>我是centos系统，因此只需一句命令：</p>
-<pre><code>yum install gitstats
-</code></pre>
-<h3 id="jenkins配置"><a href="#jenkins配置" class="headerlink" title="jenkins配置"></a>jenkins配置</h3><pre><code>#执行脚本
+<pre class="line-numbers language-shell"><code class="language-shell">yum install gitstats
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="jenkins配置"><a href="#jenkins配置" class="headerlink" title="jenkins配置"></a>jenkins配置</h3><pre class="line-numbers language-shell"><code class="language-shell">#执行脚本
 echo "git stats start"
 /opt/auto-deploy-scripts/code_statistics.sh questionnaire master
 echo "git stats end"
 echo "review address:http://10.138.46.76:8888/questionnaire/"
-</code></pre>
-<h3 id="收集脚本code-statistics-sh"><a href="#收集脚本code-statistics-sh" class="headerlink" title="收集脚本code_statistics.sh"></a>收集脚本code_statistics.sh</h3><pre><code>[root@1169CKT questionnaire]# vi /opt/auto-deploy-scripts/code_statistics.sh
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="收集脚本code-statistics-sh"><a href="#收集脚本code-statistics-sh" class="headerlink" title="收集脚本code_statistics.sh"></a>收集脚本code_statistics.sh</h3><pre class="line-numbers language-shell"><code class="language-shell">[root@1169CKT questionnaire]# vi /opt/auto-deploy-scripts/code_statistics.sh
 
 #!/bin/bash
 
@@ -583,7 +583,7 @@ else
    echo "Deploy success!"
 
 fi
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
 <p>关于脚本的一点解释</p>
 <ul>
@@ -593,7 +593,7 @@ fi
 <li>gitstats项目的目录下执行<code>gitstats</code>脚本的第一个参数是要统计的项目，第二个参数是统计文件存放的目录</li>
 </ul>
 </blockquote>
-<h3 id="nginx-配置"><a href="#nginx-配置" class="headerlink" title="nginx 配置"></a>nginx 配置</h3><pre><code>server {
+<h3 id="nginx-配置"><a href="#nginx-配置" class="headerlink" title="nginx 配置"></a>nginx 配置</h3><pre class="line-numbers language-shell"><code class="language-shell">server {
         listen       8888;
         server_name  localhost;
 
@@ -630,12 +630,12 @@ fi
             root   html;
         }
 }
-</code></pre>
-<p>来个截图<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-14819a9f2bc8b9eb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"></p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-3e48c0172dc2e7d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"></p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-14d0df1a8c273c03.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>来个截图<br><img src="/loading.gif" data-original="/images/tools/gitstats1.png" alt="gitstats1"></p>
+<p><img src="/loading.gif" data-original="/images/tools/gitstats2.png" alt="gitstats2"></p>
+<p><img src="/loading.gif" data-original="/images/tools/gitstats3.png" alt="gitstats3"></p>
 <h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>配置的nginx要能在浏览器访问，需要保证centos的防火墙配置哟。</p>
-<pre><code>开启端口
+<pre class="line-numbers language-shell"><code class="language-shell">开启端口
 
 
 [root@centos7 ~]# firewall-cmd --zone=public --add-port=80/tcp --permanent
@@ -651,7 +651,7 @@ fi
 查询有哪些端口是开启的:
 
 [root@centos7 ~]# firewall-cmd --list-port
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1137,8 +1137,8 @@ fi
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/clojure/" class="post-category">
-                                    clojure
+                            <a href="/categories/cljs/" class="post-category">
+                                    cljs
                                 </a>
                             
                             
@@ -1147,10 +1147,6 @@ fi
                 </div>
                 
                 <div class="card-action article-tags">
-                    
-                    <a href="/tags/clojure/">
-                        <span class="chip bg-color">clojure</span>
-                    </a>
                     
                     <a href="/tags/cljs/">
                         <span class="chip bg-color">cljs</span>

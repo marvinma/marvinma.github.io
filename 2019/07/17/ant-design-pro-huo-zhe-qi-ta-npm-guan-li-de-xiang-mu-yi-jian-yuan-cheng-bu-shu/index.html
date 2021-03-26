@@ -537,16 +537,16 @@
 
 <p>听起来title有点绕，其实目的很简单，就是本地一条简单命令，实现将项目打包并上传到服务器这么个功能。</p>
 <p>具体实现</p>
-<p>在项目根目录的package.json文件中找到scripts，相信你能看到不少命令，start、build等等，在此处增加一条命令，内容大概如下：</p>
-<pre><code> "dist": "npm run build &amp;&amp; rsync -p22 -avz --delete-after dist/ root@x.x.x.x:/opt/site/test/antd-pro",
-</code></pre>
+<p>在项目根目录的<code>package.json</code>文件中找到scripts，相信你能看到不少命令，start、build等等，在此处增加一条命令，内容大概如下：</p>
+<pre class="line-numbers language-json"><code class="language-json"> <span class="token property">"dist"</span><span class="token operator">:</span> <span class="token string">"npm run build &amp;&amp; rsync -p22 -avz --delete-after dist/ root@x.x.x.x:/opt/site/test/antd-pro"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>其他更多命令，在后面拼接 多个&amp;&amp;就可以。</p>
 <p>运行：</p>
-<pre><code>yarn dist
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">yarn dist
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>或者</p>
-<pre><code>npm run dist
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">npm run dist
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>解释：<br>这句话会先执行<code>npm run build </code>然后再将dist目录下的所有文件拷贝到目标服务器，当然需要您配好本地到服务器的免密登录。</p>
 
                 

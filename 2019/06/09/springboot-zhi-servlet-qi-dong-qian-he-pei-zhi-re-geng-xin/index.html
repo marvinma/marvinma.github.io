@@ -553,58 +553,58 @@
 <p>1、默认配置存储在DB中<br>2、容器启动后，将从DB中查询到的数据，创建出一个配置文件。<br>3、修改配置时修改DB中的数据，同时使用配置热更新，修改配置文件中的值。</p>
 </blockquote>
 <p>很明显重点是<code>容器启动后读取DB中的数据</code>，本文使用方案二，上源码：</p>
-<h4 id="系统属性table"><a href="#系统属性table" class="headerlink" title="系统属性table"></a>系统属性table</h4><pre><code>import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
+<h4 id="系统属性table"><a href="#系统属性table" class="headerlink" title="系统属性table"></a>系统属性table</h4><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> javax<span class="token punctuation">.</span>persistence<span class="token punctuation">.</span>Entity<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>persistence<span class="token punctuation">.</span>GeneratedValue<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>persistence<span class="token punctuation">.</span>Id<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>persistence<span class="token punctuation">.</span>Inheritance<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>persistence<span class="token punctuation">.</span>InheritanceType<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>persistence<span class="token punctuation">.</span>Table<span class="token punctuation">;</span>
 
-import org.hibernate.annotations.GenericGenerator;
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>hibernate<span class="token punctuation">.</span>annotations<span class="token punctuation">.</span>GenericGenerator<span class="token punctuation">;</span>
 
-import lombok.Data;
-import lombok.ToString;
+<span class="token keyword">import</span> lombok<span class="token punctuation">.</span>Data<span class="token punctuation">;</span>
+<span class="token keyword">import</span> lombok<span class="token punctuation">.</span>ToString<span class="token punctuation">;</span>
 
-/**
+<span class="token comment" spellcheck="true">/**
  * 配置文件数据表
  *
- */
-@ToString
-@Data
-@Entity
-@Table(name = "t_sys_config")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class SysConfig {
+ */</span>
+<span class="token annotation punctuation">@ToString</span>
+<span class="token annotation punctuation">@Data</span>
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"t_sys_config"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Inheritance</span><span class="token punctuation">(</span>strategy <span class="token operator">=</span> InheritanceType<span class="token punctuation">.</span>SINGLE_TABLE<span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SysConfig</span> <span class="token punctuation">{</span>
     
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 主键
-     */
-    @Id
-    @GenericGenerator(name = "snowFlakeId", strategy = "com.hczt.haier.commoncenter.jpa.SnowflakeIdentifierGenerator")
-    @GeneratedValue(generator = "snowFlakeId")
-    private Long id;
+     */</span>
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token annotation punctuation">@GenericGenerator</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"snowFlakeId"</span><span class="token punctuation">,</span> strategy <span class="token operator">=</span> <span class="token string">"com.hczt.haier.commoncenter.jpa.SnowflakeIdentifierGenerator"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@GeneratedValue</span><span class="token punctuation">(</span>generator <span class="token operator">=</span> <span class="token string">"snowFlakeId"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> Long id<span class="token punctuation">;</span>
     
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 属性编码
-     */
-    private String code;
+     */</span>
+    <span class="token keyword">private</span> String code<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 属性值
-     */
-    private String value;
+     */</span>
+    <span class="token keyword">private</span> String value<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 属性名称
-     */
-    private String name;
+     */</span>
+    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 属性描述
-     */
-    private String description;
-}
-</code></pre>
+     */</span>
+    <span class="token keyword">private</span> String description<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="加载SystemConfig"><a href="#加载SystemConfig" class="headerlink" title="加载SystemConfig"></a>加载SystemConfig</h4><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Map<span class="token punctuation">;</span>
 <span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Properties<span class="token punctuation">;</span>
 <span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>regex<span class="token punctuation">.</span>Pattern<span class="token punctuation">;</span>
@@ -692,7 +692,7 @@ public class SysConfig {
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>里面的SysConfigService及不打了，直接调用了Jpa的Repository而已。</p>
-<p><code>@PostConstruct</code>注解正是为解决<code>容器启动后干啥</code>而生，与其相配的是<code>@PreDestroy</code>容器销毁前干点啥。<br>被@PostConstruct修饰的方法会在服务器加载Servlet的时候运行，并且只会被服务器执行一次。PostConstruct在构造函数之后执行，init（）方法之前执行。PreDestroy（）方法在destroy（）方法知性之后执行<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-443313a54fbdce02.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="postconstruct"><br>另外，spring中Constructor、@Autowired、@PostConstruct的顺序其实从依赖注入的字面意思就可以知道，要将对象p注入到对象a，那么首先就必须得生成对象a和对象p，才能执行注入。<br>所以，如果一个类A中有个成员变量p被@Autowried注解，那么@Autowired注入是发生在A的构造方法执行完之后的。如果想在生成对象时完成某些初始化操作，而偏偏这些初始化操作又依赖于依赖注入，那么久无法在构造函数中实现。为此，可以使用@PostConstruct注解一个方法来完成初始化，@PostConstruct注解的方法将会在依赖注入完成后被自动调用。</p>
+<p><code>@PostConstruct</code>注解正是为解决<code>容器启动后干啥</code>而生，与其相配的是<code>@PreDestroy</code>容器销毁前干点啥。<br>被@PostConstruct修饰的方法会在服务器加载Servlet的时候运行，并且只会被服务器执行一次。PostConstruct在构造函数之后执行，init（）方法之前执行。PreDestroy（）方法在destroy（）方法知性之后执行<br><img src="/loading.gif" data-original="/images/java/servlet.png" alt="postconstruct"><br>另外，spring中Constructor、@Autowired、@PostConstruct的顺序其实从依赖注入的字面意思就可以知道，要将对象p注入到对象a，那么首先就必须得生成对象a和对象p，才能执行注入。<br>所以，如果一个类A中有个成员变量p被@Autowried注解，那么@Autowired注入是发生在A的构造方法执行完之后的。如果想在生成对象时完成某些初始化操作，而偏偏这些初始化操作又依赖于依赖注入，那么久无法在构造函数中实现。为此，可以使用@PostConstruct注解一个方法来完成初始化，@PostConstruct注解的方法将会在依赖注入完成后被自动调用。</p>
 <h4 id="定义属性刷新监听器"><a href="#定义属性刷新监听器" class="headerlink" title="定义属性刷新监听器"></a>定义属性刷新监听器</h4><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>beans<span class="token punctuation">.</span>factory<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Autowired<span class="token punctuation">;</span>
 <span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>cloud<span class="token punctuation">.</span>context<span class="token punctuation">.</span>scope<span class="token punctuation">.</span>refresh<span class="token punctuation">.</span>RefreshScopeRefreshedEvent<span class="token punctuation">;</span>
 <span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Configuration<span class="token punctuation">;</span>
@@ -724,53 +724,53 @@ public class SysConfig {
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>启动配置热更新</p>
-<pre><code>    /**
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token comment" spellcheck="true">/**
      * 短信发送接口（采用redis channel 实现 pub/sub 模式）
      * @param ipInfo  客户端ip信息
      * @param appInfo 请求应用信息
      * @param msgInfo 短信发送信息
      * @return
-     */
-    @RefreshScope
-    @PostMapping(value="/send")
-    public RtnResult&lt;String&gt; sendSmsCodeChannel(IpInfo ipInfo,
-                                                AppInfo appInfo,
-                                                @Validated @RequestBody MsgInfo msgInfo,
-                                                @Value("${smsCode.limitCount}") Long smsLimitCount) {
-        log.info("应用【{}】IP地址【{}】采用Redis Channel方式请求短信发送接口，请求参数为【{}】",
-                appInfo.getAppId(),ipInfo.getIpAddress(), msgInfo);
+     */</span>
+    <span class="token annotation punctuation">@RefreshScope</span>
+    <span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span>value<span class="token operator">=</span><span class="token string">"/send"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> RtnResult<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">sendSmsCodeChannel</span><span class="token punctuation">(</span>IpInfo ipInfo<span class="token punctuation">,</span>
+                                                AppInfo appInfo<span class="token punctuation">,</span>
+                                                <span class="token annotation punctuation">@Validated</span> <span class="token annotation punctuation">@RequestBody</span> MsgInfo msgInfo<span class="token punctuation">,</span>
+                                                <span class="token annotation punctuation">@Value</span><span class="token punctuation">(</span><span class="token string">"${smsCode.limitCount}"</span><span class="token punctuation">)</span> Long smsLimitCount<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"应用【{}】IP地址【{}】采用Redis Channel方式请求短信发送接口，请求参数为【{}】"</span><span class="token punctuation">,</span>
+                appInfo<span class="token punctuation">.</span><span class="token function">getAppId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>ipInfo<span class="token punctuation">.</span><span class="token function">getIpAddress</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> msgInfo<span class="token punctuation">)</span><span class="token punctuation">;</span>
         
-        // 判断短信发送次数是否超限（每应用每天每手机号）
-        if(checkSmsCountOver(appInfo, msgInfo,smsLimitCount)) {
-            return RtnResult.error(SmsCodeMsg.SMS_COUNT_OVER.fillArgs(msgInfo.getMobile()));
-        }
+        <span class="token comment" spellcheck="true">// 判断短信发送次数是否超限（每应用每天每手机号）</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">checkSmsCountOver</span><span class="token punctuation">(</span>appInfo<span class="token punctuation">,</span> msgInfo<span class="token punctuation">,</span>smsLimitCount<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> RtnResult<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>SmsCodeMsg<span class="token punctuation">.</span>SMS_COUNT_OVER<span class="token punctuation">.</span><span class="token function">fillArgs</span><span class="token punctuation">(</span>msgInfo<span class="token punctuation">.</span><span class="token function">getMobile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-        long start = System.currentTimeMillis();
+        <span class="token keyword">long</span> start <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         
-        // 组装发送队列条件
-        AsyncSmsInfo asyncSmsInfo = new AsyncSmsInfo();
-        asyncSmsInfo.setAppId(appInfo.getAppId());
-        asyncSmsInfo.setAppName(appInfo.getAppName());
-        asyncSmsInfo.setMobileSign(appInfo.getMobileSign());
-        asyncSmsInfo.setSmsCodeExpire(appInfo.getSmsCodeExpire());
-        asyncSmsInfo.setSmsCodeLength(appInfo.getSmsCodeLength());
-        asyncSmsInfo.setMobile(msgInfo.getMobile());
-        asyncSmsInfo.setContent(msgInfo.getContent());
-        asyncSmsInfo.setIpAddress(ipInfo.getIpAddress());
-        asyncSmsInfo.setInvokeTime(new Date());
+        <span class="token comment" spellcheck="true">// 组装发送队列条件</span>
+        AsyncSmsInfo asyncSmsInfo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AsyncSmsInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        asyncSmsInfo<span class="token punctuation">.</span><span class="token function">setAppId</span><span class="token punctuation">(</span>appInfo<span class="token punctuation">.</span><span class="token function">getAppId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        asyncSmsInfo<span class="token punctuation">.</span><span class="token function">setAppName</span><span class="token punctuation">(</span>appInfo<span class="token punctuation">.</span><span class="token function">getAppName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        asyncSmsInfo<span class="token punctuation">.</span><span class="token function">setMobileSign</span><span class="token punctuation">(</span>appInfo<span class="token punctuation">.</span><span class="token function">getMobileSign</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        asyncSmsInfo<span class="token punctuation">.</span><span class="token function">setSmsCodeExpire</span><span class="token punctuation">(</span>appInfo<span class="token punctuation">.</span><span class="token function">getSmsCodeExpire</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        asyncSmsInfo<span class="token punctuation">.</span><span class="token function">setSmsCodeLength</span><span class="token punctuation">(</span>appInfo<span class="token punctuation">.</span><span class="token function">getSmsCodeLength</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        asyncSmsInfo<span class="token punctuation">.</span><span class="token function">setMobile</span><span class="token punctuation">(</span>msgInfo<span class="token punctuation">.</span><span class="token function">getMobile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        asyncSmsInfo<span class="token punctuation">.</span><span class="token function">setContent</span><span class="token punctuation">(</span>msgInfo<span class="token punctuation">.</span><span class="token function">getContent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        asyncSmsInfo<span class="token punctuation">.</span><span class="token function">setIpAddress</span><span class="token punctuation">(</span>ipInfo<span class="token punctuation">.</span><span class="token function">getIpAddress</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        asyncSmsInfo<span class="token punctuation">.</span><span class="token function">setInvokeTime</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         
-        try {
-            // 异步发送短信，将信息推送到Redis消息服务队列
-            publisherService.pushSms(asyncSmsInfo);
-        } catch (BizException e) {
-            return RtnResult.error(SmsCodeMsg.SMS_PUBLISH_ERROR);
-        }
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 异步发送短信，将信息推送到Redis消息服务队列</span>
+            publisherService<span class="token punctuation">.</span><span class="token function">pushSms</span><span class="token punctuation">(</span>asyncSmsInfo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">BizException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> RtnResult<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>SmsCodeMsg<span class="token punctuation">.</span>SMS_PUBLISH_ERROR<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
         
-        long end = System.currentTimeMillis();
-        log.info("应用【{}】IP地址【{}】采用Redis Channel方式请求短信发送接口，请求参数为【{}】完成，执行时间为【{}】ms", appInfo.getAppId(),ipInfo.getIpAddress(), msgInfo, end-start);
-        return RtnResult.success(StringUtils.EMPTY);
-    }
-</code></pre>
+        <span class="token keyword">long</span> end <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"应用【{}】IP地址【{}】采用Redis Channel方式请求短信发送接口，请求参数为【{}】完成，执行时间为【{}】ms"</span><span class="token punctuation">,</span> appInfo<span class="token punctuation">.</span><span class="token function">getAppId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>ipInfo<span class="token punctuation">.</span><span class="token function">getIpAddress</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> msgInfo<span class="token punctuation">,</span> end<span class="token operator">-</span>start<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> RtnResult<span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span>StringUtils<span class="token punctuation">.</span>EMPTY<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>文中提到的redis channel发送消息模式不是重点，不在讲解使用的是redisTemplate的convertAndSend方法，有需要时自行查阅。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/98cf7d8b9ec3">@PostConstruct</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/zzzgd_666/article/details/84322947">SpringCloud配置热更新@RefreshScope,以及没有出现/refresh的动态刷新地址,访问404的解决办法</a></p>
 

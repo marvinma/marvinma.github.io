@@ -504,14 +504,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    985
+                    635
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    2 分
                 </div>
                 
 
@@ -543,15 +543,14 @@
 <li><p>每次执行判断一下接口返回的数据量，以邮件形式发送给相关人员</p>
 </li>
 </ol>
-<h2 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h2><pre><code>#!/bin/bash
-
+<h2 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h2><pre class="line-numbers language-shell"><code class="language-shell">#!/bin/bash
 
 var1=$1
 webUrls=(
-"http://sso1169sjdptest.haier.net/fx_app/common/inter?fresh=1&amp;dataType=rrs_fxapp_for_leader&amp;params=period_date::${var1}"
-"http://sso1169sjdptest.haier.net/fx_app/common/inter?fresh=1&amp;dataType=rrs_fxapp_m_wl_gongm_result_info_view&amp;params=period_date::${var1}"
-"http://sso1169sjdptest.haier.net/fx_app/common/inter?fresh=1&amp;dataType=rrs_fxapp_m_wl_lianq_result_info_view&amp;params=period_date::${var1}"
-"http://sso1169sjdptest.haier.net/fx_app/common/inter?fresh=1&amp;dataType=rrs_fxapp_for_soldier_mall_score&amp;params=period_date::${var1}"
+"http://sso1169sjdptest.haier.net/fx_app/common/inter?fresh=1&dataType=rrs_fxapp_for_leader&params=period_date::${var1}"
+"http://sso1169sjdptest.haier.net/fx_app/common/inter?fresh=1&dataType=rrs_fxapp_m_wl_gongm_result_info_view&params=period_date::${var1}"
+"http://sso1169sjdptest.haier.net/fx_app/common/inter?fresh=1&dataType=rrs_fxapp_m_wl_lianq_result_info_view&params=period_date::${var1}"
+"http://sso1169sjdptest.haier.net/fx_app/common/inter?fresh=1&dataType=rrs_fxapp_for_soldier_mall_score&params=period_date::${var1}"
 )
 declare -a name
 
@@ -568,7 +567,7 @@ check_http(){
 function httpRequest()
 {
     echo  "日期参数：${var1}"
-    for ((i=0; i&lt;${#webUrls[@]}; i++))
+    for ((i=0; i<${#webUrls[@]}; i++))
     do
         echo "顺序：${i}，请求：${webUrls[i]}"
         res=$(curl -m 5 -s ${webUrls[i]} | jq '.data' | jq 'length')
@@ -583,53 +582,53 @@ httpRequest "$@"
 emailContent="链接数据接口：${name[0]}      中心数据接口：${name[1]}      链群数据接口：${name[2]}     评分数据接口：${name[3]}"
 
 echo "${emailContent}" | mail -s '4个指标接口当前的数据通知' marvin.ma@redcreation.net,zhangsan@163.com
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="收到的邮件："><a href="#收到的邮件：" class="headerlink" title="收到的邮件："></a>收到的邮件：</h2><p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-dcac1c6ef2dffc2d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="email"></p>
-<h2 id="知识储备"><a href="#知识储备" class="headerlink" title="知识储备"></a>知识储备</h2><h4 id="获取当前时间："><a href="#获取当前时间：" class="headerlink" title="获取当前时间："></a>获取当前时间：</h4><pre><code>time=$(date "+%Y%m%d-%H%M%S")
+<h2 id="知识储备"><a href="#知识储备" class="headerlink" title="知识储备"></a>知识储备</h2><h4 id="获取当前时间："><a href="#获取当前时间：" class="headerlink" title="获取当前时间："></a>获取当前时间：</h4><pre class="line-numbers language-shell"><code class="language-shell">time=$(date "+%Y%m%d-%H%M%S")
 time2=$(date "+%Y-%m-%d %H:%M:%S")
 echo "${time}"
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>昨天:</p>
-<pre><code>echo $(date +"%Y-%m-%d" -d "-1day")
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">echo $(date +"%Y-%m-%d" -d "-1day")
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>其他参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/liu0808/article/details/79899139">shell date 获取昨天日期</a></p>
-<h4 id="curl-到json内容"><a href="#curl-到json内容" class="headerlink" title="curl 到json内容:"></a>curl 到json内容:</h4><pre><code>#使用curl命令检查http服务器的状态
+<h4 id="curl-到json内容"><a href="#curl-到json内容" class="headerlink" title="curl 到json内容:"></a>curl 到json内容:</h4><pre class="line-numbers language-shell"><code class="language-shell">#使用curl命令检查http服务器的状态
 #-m设置curl不管访问成功或失败，最大消耗的时间为5秒，5秒连接服未响应则视为无法连接
 #-s设置静默连接，不显示连接时的连接速度、时间消耗等信息
 #-o将curl下载的页面内容导出到/dev/null(默认会在屏幕显示页面内容)
 #-w设置curl命令需要显示的内容%{http_code}，指定curl返回服务器的状态码
 res=$(curl  -s "https://www.baidu.com")
 echo  $res
-</code></pre>
-<h4 id="接收参数："><a href="#接收参数：" class="headerlink" title="接收参数："></a>接收参数：</h4><pre><code>#!/bin/bash
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="接收参数："><a href="#接收参数：" class="headerlink" title="接收参数："></a>接收参数：</h4><pre class="line-numbers language-shell"><code class="language-shell">#!/bin/bash
 # 必须写绝对路径，不然crontab不执行，因为找不到路径
 log=/opt/jc/task.log
 var1=$1
 test()
 {
     time=$(date "+%Y-%m-%d %H:%M:%S")
-    echo "${time} do something, set var1 = ${var1}" &gt;&gt; $log
+    echo "${time} do something, set var1 = ${var1}" >> $log
 }
 test
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>测试定时任务</p>
-<pre><code>vi /etc/crontab
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">vi /etc/crontab
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>添加一行，每2分钟执行一次</p>
-<pre><code>*/2 * * * * root /opt/jc/curl.sh hahaha
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">*/2 * * * * root /opt/jc/curl.sh hahaha
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>为了完成这个需求，我的crontab的内容如下</p>
-<pre><code>10 7 * * * root /opt/jc/curl.sh $(date +"%Y%m%d" -d "-1day")
+<pre class="line-numbers language-shell"><code class="language-shell">10 7 * * * root /opt/jc/curl.sh $(date +"%Y%m%d" -d "-1day")
 10 12,16 * * * root /opt/jc/curl.sh $(date "+%Y%m%d")
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="shell处理json数据工具—–jq"><a href="#shell处理json数据工具—–jq" class="headerlink" title="shell处理json数据工具—–jq"></a>shell处理json数据工具—–jq</h4><p>获取接口返回的数据中<code>data</code>的值数组大小</p>
-<pre><code>res=$(curl -m 5 -s ${webUrls[i]}  |  jq '.data'  |  jq 'length')
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">res=$(curl -m 5 -s ${webUrls[i]}  |  jq '.data'  |  jq 'length')
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>其他jq的用法参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/lurenjiashuo/p/bash-json-jq.html">shell脚本处理JSON数据工具jq</a></p>
 <h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ol>
 <li><p>脚本不执行不知道为啥<br>方案：先用如下命令看看crontab服务是否正常，不正常的进行安装。</p>
-<pre><code>service crond status
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">service crond status
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>没有安装的话先安装。</p>
 </li>
 <li><p>定时任务出错<br>出错的情况会有邮件通知，位置在<code>/var/mail/root</code>中，可以查看脚本执行失败的原因</p>

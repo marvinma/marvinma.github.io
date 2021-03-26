@@ -504,7 +504,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    257
+                    228
                 </div>
                 
 
@@ -536,20 +536,20 @@
 <span id="more"></span>
 
 <h2 id="1-excel数字按长度补0，并转换成文本"><a href="#1-excel数字按长度补0，并转换成文本" class="headerlink" title="1. excel数字按长度补0，并转换成文本"></a>1. excel数字按长度补0，并转换成文本</h2><p>在海尔这段时间从数据库里导出来的员工工号8位数，因为有些0开头的，导出到excel里后前面的0就没有了。<br>可以新建一列，然后以导出的那列为基础数据用公式处理成想要的，补齐8位，前面补0。公式如下：</p>
-<pre><code>=REPT(0,8-LEN(A2))&amp;A2
-</code></pre>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-197172968d66e595.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="补齐8位，前面补0"></p>
+<pre class="line-numbers language-shell"><code class="language-shell">=REPT(0,8-LEN(A2))&A2
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/tools/excel-format.png" alt="补齐8位，前面补0"></p>
 <h2 id="2-excel里将数据拼接成语句"><a href="#2-excel里将数据拼接成语句" class="headerlink" title="2. excel里将数据拼接成语句"></a>2. excel里将数据拼接成语句</h2><p>有时候需要将excel里的数据，拼接成想要的json或者sql。</p>
 <ul>
 <li><p>拼接成json或者map</p>
-<pre><code>=CONCATENATE("""",B2,"""","    {:en-us """,C2,"""  :ja-jp """,D2,"""}")
-</code></pre>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-50e2d8fa74ff2115.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="拼接成json"><br>目标内容比如：<code>"优裁精选"    {:en-us "Retail"  :ja-jp "優れた裁断"}</code></p>
+<pre class="line-numbers language-shell"><code class="language-shell">=CONCATENATE("""",B2,"""","    {:en-us """,C2,"""  :ja-jp """,D2,"""}")
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/tools/excel-CONCATENATE.png" alt="拼接成json"><br>目标内容比如：<code>"优裁精选"    {:en-us "Retail"  :ja-jp "優れた裁断"}</code></p>
 </li>
 <li><p>根据表头，拼接成sql的insert语句</p>
-<pre><code>=CONCATENATE("INSERT INTO t_sys_user (`"&amp;A$1&amp;"`, `"&amp;B$1&amp;"`, `"&amp;C$1&amp;"`, `"&amp;D$1&amp;"`, `"&amp;E$1&amp;"`, `"&amp;F$1&amp;"`) VALUES ('"&amp;A3&amp;"',"&amp;" '"&amp;B3&amp;"','"&amp;C3&amp;"',"&amp;"'"&amp;D3&amp;"',"&amp;"'"&amp;E3&amp;"',"&amp;"'"&amp;F3&amp;"');")
-</code></pre>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-2f3ea5a88e2c05f1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="拼接成sql"></p>
+<pre class="line-numbers language-shell"><code class="language-shell">=CONCATENATE("INSERT INTO t_sys_user (`"&A$1&"`, `"&B$1&"`, `"&C$1&"`, `"&D$1&"`, `"&E$1&"`, `"&F$1&"`) VALUES ('"&A3&"',"&" '"&B3&"','"&C3&"',"&"'"&D3&"',"&"'"&E3&"',"&"'"&F3&"');")
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/tools/excel-contact-sql.png" alt="拼接成sql"></p>
 </li>
 </ul>
 
@@ -1013,9 +1013,9 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="海尔创客汇笔记----安卓上adb的使用笔记">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="海尔创客汇笔记----安卓上adb的使用">
                         
-                        <span class="card-title">海尔创客汇笔记----安卓上adb的使用笔记</span>
+                        <span class="card-title">海尔创客汇笔记----安卓上adb的使用</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1043,16 +1043,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/react-native/">
-                        <span class="chip bg-color">react-native</span>
-                    </a>
-                    
                     <a href="/tags/android/">
                         <span class="chip bg-color">android</span>
                     </a>
                     
-                    <a href="/tags/package/">
-                        <span class="chip bg-color">package</span>
+                    <a href="/tags/adb/">
+                        <span class="chip bg-color">adb</span>
                     </a>
                     
                 </div>
@@ -1103,10 +1099,6 @@
                     
                     <a href="/tags/clojure/">
                         <span class="chip bg-color">clojure</span>
-                    </a>
-                    
-                    <a href="/tags/leiningen/">
-                        <span class="chip bg-color">leiningen</span>
                     </a>
                     
                 </div>
