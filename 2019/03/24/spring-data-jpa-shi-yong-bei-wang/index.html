@@ -539,355 +539,354 @@
 <span id="more"></span>
 <p>springboot+SpringDataJpa用了很久了，有些东西不用时间长了也还是会忘。<br>好记性不如烂笔头，这话是有道理的，所以用到什么就简单记录下，还是有好处的。</p>
 <h4 id="1、Qquery不能使用limit关键字"><a href="#1、Qquery不能使用limit关键字" class="headerlink" title="1、Qquery不能使用limit关键字"></a>1、Qquery不能使用limit关键字</h4><p>第一种方式：使用nativeQuery</p>
-<pre><code>@Query("SELECT * FROM t_misaka m WHERE m.id&gt;4 limit 0,2", nativeQuery=true) 
-  Page&lt;Misaka&gt; search(Pageable pageable); 
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Query</span><span class="token punctuation">(</span><span class="token string">"SELECT * FROM t_misaka m WHERE m.id>4 limit 0,2"</span><span class="token punctuation">,</span> nativeQuery<span class="token operator">=</span><span class="token boolean">true</span><span class="token punctuation">)</span> 
+  Page<span class="token operator">&lt;</span>Misaka<span class="token operator">></span> <span class="token function">search</span><span class="token punctuation">(</span>Pageable pageable<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>第二种方式:使用Page实现</p>
-<pre><code>
-Pageable pageable = new PageRequest(1, 2, Direction.ASC, "name"); 
-Page&lt;Misaka&gt; misakaPage = misakaDao.search(pageable); 
-List&lt;Misaka&gt; misakaList = misakaPage.getContent(); 
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java">Pageable pageable <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PageRequest</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> Direction<span class="token punctuation">.</span>ASC<span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+Page<span class="token operator">&lt;</span>Misaka<span class="token operator">></span> misakaPage <span class="token operator">=</span> misakaDao<span class="token punctuation">.</span><span class="token function">search</span><span class="token punctuation">(</span>pageable<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+List<span class="token operator">&lt;</span>Misaka<span class="token operator">></span> misakaList <span class="token operator">=</span> misakaPage<span class="token punctuation">.</span><span class="token function">getContent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>查询接口</p>
-<pre><code>@Query("SELECT m FROM Misaka m WHERE m.id&gt;4") 
-  Page&lt;Misaka&gt; search(Pageable pageable); 
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Query</span><span class="token punctuation">(</span><span class="token string">"SELECT m FROM Misaka m WHERE m.id>4"</span><span class="token punctuation">)</span> 
+  Page<span class="token operator">&lt;</span>Misaka<span class="token operator">></span> <span class="token function">search</span><span class="token punctuation">(</span>Pageable pageable<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>注意：如果使用springboot2.x，上面的<code>Pageable pageable = new PageRequest</code>需要改成<code>Pageable pageable = PageRequest.of();</code>，里面参数一样。</p>
 <h4 id="2、Jpa-Repository里用-Query的查询结果集自定义接受实体"><a href="#2、Jpa-Repository里用-Query的查询结果集自定义接受实体" class="headerlink" title="2、Jpa Repository里用@Query的查询结果集自定义接受实体"></a>2、Jpa Repository里用@Query的查询结果集自定义接受实体</h4><p>直接上查询代码：</p>
-<pre><code>@Query("SELECT d.smsDate AS smsDate , SUM(d.smsSendCount) AS smsSendCount , SUM(d.smsSendFailureCount) AS  smsSendFailureCount " +
-        " FROM DashboardSms d" +
-        " WHERE d.smsDate between :startDate AND :endDate " +
-        " GROUP BY d.smsDate " +
-        " ORDER BY d.smsDate ASC ")
-List&lt;SmsCountSum&gt; findAllBySmsDate(Date startDate, Date endDate);
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Query</span><span class="token punctuation">(</span><span class="token string">"SELECT d.smsDate AS smsDate , SUM(d.smsSendCount) AS smsSendCount , SUM(d.smsSendFailureCount) AS  smsSendFailureCount "</span> <span class="token operator">+</span>
+        <span class="token string">" FROM DashboardSms d"</span> <span class="token operator">+</span>
+        <span class="token string">" WHERE d.smsDate between :startDate AND :endDate "</span> <span class="token operator">+</span>
+        <span class="token string">" GROUP BY d.smsDate "</span> <span class="token operator">+</span>
+        <span class="token string">" ORDER BY d.smsDate ASC "</span><span class="token punctuation">)</span>
+List<span class="token operator">&lt;</span>SmsCountSum<span class="token operator">></span> <span class="token function">findAllBySmsDate</span><span class="token punctuation">(</span>Date startDate<span class="token punctuation">,</span> Date endDate<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-interface SmsCountSum {
-    Date getSmsDate();
-    Integer getSmsSendCount();
-    Integer getSmsSendFailureCount();
-}
-</code></pre>
+<span class="token keyword">interface</span> <span class="token class-name">SmsCountSum</span> <span class="token punctuation">{</span>
+    Date <span class="token function">getSmsDate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Integer <span class="token function">getSmsSendCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Integer <span class="token function">getSmsSendFailureCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>调用处：</p>
-<pre><code>List&lt;SlaveDashboardSmsRepository.SmsCountSum&gt; list = slaveDashboardSmsRepository.findAllBySmsDate(startDate, entDate);
-List&lt;DashboardXYVo&gt; smsChartData = list.stream().map(this::smsDataToVo).collect(Collectors.toList());
-private DashboardXYVo smsDataToVo(SlaveDashboardSmsRepository.SmsCountSum sms) {
-    DashboardXYVo vo = new DashboardXYVo();
-    vo.setX(DateUtil.date2str(sms.getSmsDate(), DateUtil.MONTH_DAY_FORMAT));
-    vo.setY(String.valueOf(sms.getSmsSendCount()));
-    return vo;
-}
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java">List<span class="token operator">&lt;</span>SlaveDashboardSmsRepository<span class="token punctuation">.</span>SmsCountSum<span class="token operator">></span> list <span class="token operator">=</span> slaveDashboardSmsRepository<span class="token punctuation">.</span><span class="token function">findAllBySmsDate</span><span class="token punctuation">(</span>startDate<span class="token punctuation">,</span> entDate<span class="token punctuation">)</span><span class="token punctuation">;</span>
+List<span class="token operator">&lt;</span>DashboardXYVo<span class="token operator">></span> smsChartData <span class="token operator">=</span> list<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token operator">:</span><span class="token operator">:</span>smsDataToVo<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span>Collectors<span class="token punctuation">.</span><span class="token function">toList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">private</span> DashboardXYVo <span class="token function">smsDataToVo</span><span class="token punctuation">(</span>SlaveDashboardSmsRepository<span class="token punctuation">.</span>SmsCountSum sms<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    DashboardXYVo vo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DashboardXYVo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    vo<span class="token punctuation">.</span><span class="token function">setX</span><span class="token punctuation">(</span>DateUtil<span class="token punctuation">.</span><span class="token function">date2str</span><span class="token punctuation">(</span>sms<span class="token punctuation">.</span><span class="token function">getSmsDate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> DateUtil<span class="token punctuation">.</span>MONTH_DAY_FORMAT<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    vo<span class="token punctuation">.</span><span class="token function">setY</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>sms<span class="token punctuation">.</span><span class="token function">getSmsSendCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> vo<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="3、使用Specification查询"><a href="#3、使用Specification查询" class="headerlink" title="3、使用Specification查询"></a>3、使用Specification查询</h4><p>一个常写的例子：</p>
-<pre><code>    public static Specification&lt;DashboardAppSmsLogin&gt; build(Date startDate, Date endDate) {
-        return (root, criteriaQuery, builder) -&gt; {
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">static</span> Specification<span class="token operator">&lt;</span>DashboardAppSmsLogin<span class="token operator">></span> <span class="token function">build</span><span class="token punctuation">(</span>Date startDate<span class="token punctuation">,</span> Date endDate<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>root<span class="token punctuation">,</span> criteriaQuery<span class="token punctuation">,</span> builder<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
 
-            Predicate predicate = builder.conjunction();
-            try {
-                if (startDate != null) {
-                    Predicate graterStartTime = null;
-                    graterStartTime = builder.greaterThanOrEqualTo(root.get("smsDate"), DateUtil.formateData(startDate, DateUtil.DATE_FORMAT));
-                    predicate = builder.and(predicate, graterStartTime);
-                }
-                if (endDate != null) {
-                    Predicate lessEndTime = builder.lessThanOrEqualTo(root.get("smsDate"), DateUtil.formateData(endDate, DateUtil.DATE_FORMAT));
-                    predicate = builder.and(predicate, lessEndTime);
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            criteriaQuery.orderBy(builder.desc(root.get("appName")));
-            return predicate;
+            Predicate predicate <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">conjunction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>startDate <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    Predicate graterStartTime <span class="token operator">=</span> null<span class="token punctuation">;</span>
+                    graterStartTime <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">greaterThanOrEqualTo</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"smsDate"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> DateUtil<span class="token punctuation">.</span><span class="token function">formateData</span><span class="token punctuation">(</span>startDate<span class="token punctuation">,</span> DateUtil<span class="token punctuation">.</span>DATE_FORMAT<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    predicate <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">and</span><span class="token punctuation">(</span>predicate<span class="token punctuation">,</span> graterStartTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>endDate <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    Predicate lessEndTime <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">lessThanOrEqualTo</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"smsDate"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> DateUtil<span class="token punctuation">.</span><span class="token function">formateData</span><span class="token punctuation">(</span>endDate<span class="token punctuation">,</span> DateUtil<span class="token punctuation">.</span>DATE_FORMAT<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    predicate <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">and</span><span class="token punctuation">(</span>predicate<span class="token punctuation">,</span> lessEndTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">ParseException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            criteriaQuery<span class="token punctuation">.</span><span class="token function">orderBy</span><span class="token punctuation">(</span>builder<span class="token punctuation">.</span><span class="token function">desc</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"appName"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> predicate<span class="token punctuation">;</span>
 
-        };
-    }
-</code></pre>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用：</p>
-<pre><code>    Date yesterday = DateUtil.pastDate(new Date, 1);
-    Specification&lt;DashboardAppSmsLogin&gt; spec = DashboardAppSmsSpecs.build(yesterday, new Date);
-    List&lt;DashboardAppSmsLogin&gt; appSmsLogin = slaveDashboardAppSmsLoginRepository.findAll(spec);
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java">    Date yesterday <span class="token operator">=</span> DateUtil<span class="token punctuation">.</span><span class="token function">pastDate</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Specification<span class="token operator">&lt;</span>DashboardAppSmsLogin<span class="token operator">></span> spec <span class="token operator">=</span> DashboardAppSmsSpecs<span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span>yesterday<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    List<span class="token operator">&lt;</span>DashboardAppSmsLogin<span class="token operator">></span> appSmsLogin <span class="token operator">=</span> slaveDashboardAppSmsLoginRepository<span class="token punctuation">.</span><span class="token function">findAll</span><span class="token punctuation">(</span>spec<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>封装一层条件查的例子：<br>包括equal、like、大于等于、小于等于、时间等条件。</p>
-<pre><code>    /**
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token comment" spellcheck="true">/**
      * 登录成功构建
      * @param query
      * @return
-     */
-    public static Specification&lt;UserLoginLog&gt; loginBuild(UserLoginLogQuery query) {
-        return (root, criteriaQuery, builder) -&gt; buildPredicate(root, builder, query);
-    }
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Specification<span class="token operator">&lt;</span>UserLoginLog<span class="token operator">></span> <span class="token function">loginBuild</span><span class="token punctuation">(</span>UserLoginLogQuery query<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>root<span class="token punctuation">,</span> criteriaQuery<span class="token punctuation">,</span> builder<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token function">buildPredicate</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> builder<span class="token punctuation">,</span> query<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 登录失败构建
      * @param query
      * @return
-     */
-    public static Specification&lt;UserLoginFailureLog&gt; loginFailureBuild(UserLoginLogQuery query) {
-        return (root, criteriaQuery, builder) -&gt; buildPredicate(root, builder, query);
-    }
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Specification<span class="token operator">&lt;</span>UserLoginFailureLog<span class="token operator">></span> <span class="token function">loginFailureBuild</span><span class="token punctuation">(</span>UserLoginLogQuery query<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>root<span class="token punctuation">,</span> criteriaQuery<span class="token punctuation">,</span> builder<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token function">buildPredicate</span><span class="token punctuation">(</span>root<span class="token punctuation">,</span> builder<span class="token punctuation">,</span> query<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
 
-    private static Predicate buildPredicate(Root root, CriteriaBuilder builder, UserLoginLogQuery query){
-        Predicate predicate = builder.conjunction();
-        if (!StringUtils.isEmpty(query.getAppId())) {
-            Predicate equalMenuValue = builder.equal(root.get("appId"), query.getAppId());
-            predicate = builder.and(predicate, equalMenuValue);
-        }
-        if (!StringUtils.isEmpty(query.getMobile())) {
-            String likeMobile = "%" + query.getMobile() + "%";
-            Predicate equalMenuValue = builder.like(root.get("mobile"), likeMobile);
-            predicate = builder.and(predicate, equalMenuValue);
-        }
-        if (query.getStartLoginTime() != null) {
-            Predicate graterStartTime = builder.greaterThanOrEqualTo(root.get("loginTime"), query.getStartLoginTime());
-            predicate = builder.and(predicate, graterStartTime);
-        }
-        if (query.getEndLoginTime() != null) {
-            Predicate lessEndTime = builder.lessThanOrEqualTo(root.get("loginTime"), query.getEndLoginTime());
-            predicate = builder.and(predicate, lessEndTime);
-        }
-        return predicate;
-    }
-</code></pre>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> Predicate <span class="token function">buildPredicate</span><span class="token punctuation">(</span>Root root<span class="token punctuation">,</span> CriteriaBuilder builder<span class="token punctuation">,</span> UserLoginLogQuery query<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        Predicate predicate <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">conjunction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>StringUtils<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>query<span class="token punctuation">.</span><span class="token function">getAppId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Predicate equalMenuValue <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"appId"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> query<span class="token punctuation">.</span><span class="token function">getAppId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            predicate <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">and</span><span class="token punctuation">(</span>predicate<span class="token punctuation">,</span> equalMenuValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>StringUtils<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>query<span class="token punctuation">.</span><span class="token function">getMobile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            String likeMobile <span class="token operator">=</span> <span class="token string">"%"</span> <span class="token operator">+</span> query<span class="token punctuation">.</span><span class="token function">getMobile</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"%"</span><span class="token punctuation">;</span>
+            Predicate equalMenuValue <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">like</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"mobile"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> likeMobile<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            predicate <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">and</span><span class="token punctuation">(</span>predicate<span class="token punctuation">,</span> equalMenuValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>query<span class="token punctuation">.</span><span class="token function">getStartLoginTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Predicate graterStartTime <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">greaterThanOrEqualTo</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"loginTime"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> query<span class="token punctuation">.</span><span class="token function">getStartLoginTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            predicate <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">and</span><span class="token punctuation">(</span>predicate<span class="token punctuation">,</span> graterStartTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>query<span class="token punctuation">.</span><span class="token function">getEndLoginTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Predicate lessEndTime <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">lessThanOrEqualTo</span><span class="token punctuation">(</span>root<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"loginTime"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> query<span class="token punctuation">.</span><span class="token function">getEndLoginTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            predicate <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">and</span><span class="token punctuation">(</span>predicate<span class="token punctuation">,</span> lessEndTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> predicate<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>调用就一样了。</p>
-<h4 id="4、用-Modifying进行更新操作"><a href="#4、用-Modifying进行更新操作" class="headerlink" title="4、用@Modifying进行更新操作"></a>4、用@Modifying进行更新操作</h4><pre><code>    @Modifying
-    @Query("update YhTask t set t.deleteFlag = '1' where t.taskId = :taskId")
-    int logicDeleteTask(@Param("taskId") String taskId);
-</code></pre>
-<h4 id="5、JPA的Query里进行条件为空容错，时间格式化"><a href="#5、JPA的Query里进行条件为空容错，时间格式化" class="headerlink" title="5、JPA的Query里进行条件为空容错，时间格式化"></a>5、JPA的Query里进行条件为空容错，时间格式化</h4><pre><code>@Query("select u from YhUser u " +
-            "where u.deleteFlag = '0' and u.leaderFlag = '0' " +
-            "and u.fullName like concat('%',:createUserName,'%') " +
-            "and (:platformId is null or :platformId is not null and u.platformId = :platformId) " +
-            "and (:areaId is null or :areaId is not null and u.areaId = :areaId) " +
-            " and DATE_FORMAT(s.firstLoginTime,'%Y-%m-%d')&gt;=str_to_date(:startTime,'%Y-%m-%d') " +
-            " and DATE_FORMAT(s.firstLoginTime,'%Y-%m-%d')&lt;=str_to_date(:endTime,'%Y-%m-%d')" +
-            "and u.haierUserId not in (" +
-            "select t.createUserId from YhTask t where t.deleteFlag = '0' " +
-            "and t.createTime between :startTime and :endTime)")
-    List&lt;YhUser&gt; findUnsubmitedUserByTime(@Param("createUserName") String createUserName, @Param("platformId") String platformId, @Param("areaId") String areaId, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
-</code></pre>
+<h4 id="4、用-Modifying进行更新操作"><a href="#4、用-Modifying进行更新操作" class="headerlink" title="4、用@Modifying进行更新操作"></a>4、用@Modifying进行更新操作</h4><pre class="line-numbers language-java"><code class="language-java">    <span class="token annotation punctuation">@Modifying</span>
+    <span class="token annotation punctuation">@Query</span><span class="token punctuation">(</span><span class="token string">"update YhTask t set t.deleteFlag = '1' where t.taskId = :taskId"</span><span class="token punctuation">)</span>
+    <span class="token keyword">int</span> <span class="token function">logicDeleteTask</span><span class="token punctuation">(</span><span class="token annotation punctuation">@Param</span><span class="token punctuation">(</span><span class="token string">"taskId"</span><span class="token punctuation">)</span> String taskId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="5、JPA的Query里进行条件为空容错，时间格式化"><a href="#5、JPA的Query里进行条件为空容错，时间格式化" class="headerlink" title="5、JPA的Query里进行条件为空容错，时间格式化"></a>5、JPA的Query里进行条件为空容错，时间格式化</h4><pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Query</span><span class="token punctuation">(</span><span class="token string">"select u from YhUser u "</span> <span class="token operator">+</span>
+            <span class="token string">"where u.deleteFlag = '0' and u.leaderFlag = '0' "</span> <span class="token operator">+</span>
+            <span class="token string">"and u.fullName like concat('%',:createUserName,'%') "</span> <span class="token operator">+</span>
+            <span class="token string">"and (:platformId is null or :platformId is not null and u.platformId = :platformId) "</span> <span class="token operator">+</span>
+            <span class="token string">"and (:areaId is null or :areaId is not null and u.areaId = :areaId) "</span> <span class="token operator">+</span>
+            <span class="token string">" and DATE_FORMAT(s.firstLoginTime,'%Y-%m-%d')>=str_to_date(:startTime,'%Y-%m-%d') "</span> <span class="token operator">+</span>
+            <span class="token string">" and DATE_FORMAT(s.firstLoginTime,'%Y-%m-%d')&lt;=str_to_date(:endTime,'%Y-%m-%d')"</span> <span class="token operator">+</span>
+            <span class="token string">"and u.haierUserId not in ("</span> <span class="token operator">+</span>
+            <span class="token string">"select t.createUserId from YhTask t where t.deleteFlag = '0' "</span> <span class="token operator">+</span>
+            <span class="token string">"and t.createTime between :startTime and :endTime)"</span><span class="token punctuation">)</span>
+    List<span class="token operator">&lt;</span>YhUser<span class="token operator">></span> <span class="token function">findUnsubmitedUserByTime</span><span class="token punctuation">(</span><span class="token annotation punctuation">@Param</span><span class="token punctuation">(</span><span class="token string">"createUserName"</span><span class="token punctuation">)</span> String createUserName<span class="token punctuation">,</span> <span class="token annotation punctuation">@Param</span><span class="token punctuation">(</span><span class="token string">"platformId"</span><span class="token punctuation">)</span> String platformId<span class="token punctuation">,</span> <span class="token annotation punctuation">@Param</span><span class="token punctuation">(</span><span class="token string">"areaId"</span><span class="token punctuation">)</span> String areaId<span class="token punctuation">,</span> <span class="token annotation punctuation">@Param</span><span class="token punctuation">(</span><span class="token string">"startTime"</span><span class="token punctuation">)</span> Date startTime<span class="token punctuation">,</span> <span class="token annotation punctuation">@Param</span><span class="token punctuation">(</span><span class="token string">"endTime"</span><span class="token punctuation">)</span> Date endTime<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="6、多表级联的情况，条件查询示例"><a href="#6、多表级联的情况，条件查询示例" class="headerlink" title="6、多表级联的情况，条件查询示例"></a>6、多表级联的情况，条件查询示例</h4><p>比如，部门实体：</p>
-<pre><code>@Data
-@Entity
-@Table(name = "t_user")
-public class User implements Serializable {
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Data</span>
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"t_user"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span> <span class="token punctuation">{</span>
 
-    private static final long serialVersionUID = 3046056270962780761L;
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> serialVersionUID <span class="token operator">=</span> 3046056270962780761L<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 用户id
-     */
-    @Id
-    @GenericGenerator(name = "idGenerator", strategy = "uuid")
-    @GeneratedValue(generator = "idGenerator")
-    private String userId;
+     */</span>
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token annotation punctuation">@GenericGenerator</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"idGenerator"</span><span class="token punctuation">,</span> strategy <span class="token operator">=</span> <span class="token string">"uuid"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@GeneratedValue</span><span class="token punctuation">(</span>generator <span class="token operator">=</span> <span class="token string">"idGenerator"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> String userId<span class="token punctuation">;</span>
 
-    @ManyToOne
-    @JoinColumn(name = "dept_id")
-    @NotFound(action = NotFoundAction.IGNORE)
-    private Department department;
-</code></pre>
+    <span class="token annotation punctuation">@ManyToOne</span>
+    <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"dept_id"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@NotFound</span><span class="token punctuation">(</span>action <span class="token operator">=</span> NotFoundAction<span class="token punctuation">.</span>IGNORE<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> Department department<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>部门实体：</p>
-<pre><code>@Data
-@Entity
-@Table(name = "t_department")
-public class Department implements Serializable {
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Data</span>
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"t_department"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Department</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span> <span class="token punctuation">{</span>
 
-    private static final long serialVersionUID = 5415593855586815943L;
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> serialVersionUID <span class="token operator">=</span> 5415593855586815943L<span class="token punctuation">;</span>
 
-    @Id
-    @GenericGenerator(name = "idGenerator", strategy = "uuid")
-    @GeneratedValue(generator = "idGenerator")
-    @Column(name = "dept_id")
-    private String deptId;
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token annotation punctuation">@GenericGenerator</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"idGenerator"</span><span class="token punctuation">,</span> strategy <span class="token operator">=</span> <span class="token string">"uuid"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@GeneratedValue</span><span class="token punctuation">(</span>generator <span class="token operator">=</span> <span class="token string">"idGenerator"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"dept_id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> String deptId<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 部门们称
-     */
-    private String deptName;
+     */</span>
+    <span class="token keyword">private</span> String deptName<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 部门代码
-     */
-    private String deptCode;
+     */</span>
+    <span class="token keyword">private</span> String deptCode<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 父节点
-     */
-    private String parentId;
-</code></pre>
+     */</span>
+    <span class="token keyword">private</span> String parentId<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>根据多个部门id查询用户列表</p>
-<pre><code>      List&lt;String&gt; allDeptIds = findDeptIds(deptId);
-      Page&lt;HaierUser&gt; users = haierUserRepository.findByDepartment_DeptIdIn(allDeptIds, pageable);
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java">      List<span class="token operator">&lt;</span>String<span class="token operator">></span> allDeptIds <span class="token operator">=</span> <span class="token function">findDeptIds</span><span class="token punctuation">(</span>deptId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      Page<span class="token operator">&lt;</span>HaierUser<span class="token operator">></span> users <span class="token operator">=</span> haierUserRepository<span class="token punctuation">.</span><span class="token function">findByDepartment_DeptIdIn</span><span class="token punctuation">(</span>allDeptIds<span class="token punctuation">,</span> pageable<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>findByDepartment_DeptIdIn方法呢？</p>
-<pre><code>/**
+<pre class="line-numbers language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
      * 通过部门ID查询用户
      *
      * @param deptIds
      * @param pageable
      * @return
-     */
-    Page&lt;HaierUser&gt; findByDepartment_DeptIdIn(List&lt;String&gt; deptIds, Pageable pageable);
-</code></pre>
+     */</span>
+    Page<span class="token operator">&lt;</span>HaierUser<span class="token operator">></span> <span class="token function">findByDepartment_DeptIdIn</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>String<span class="token operator">></span> deptIds<span class="token punctuation">,</span> Pageable pageable<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>中间一个下划线链接，就是这么简单。</p>
-<h3 id="7、创建时间和更新时间自动处理"><a href="#7、创建时间和更新时间自动处理" class="headerlink" title="7、创建时间和更新时间自动处理"></a>7、创建时间和更新时间自动处理</h3><pre><code>@Entity  
-@Table(name="t_login_log")  
-@Data
-public class LoginLog {  
-  @Id  
-  @GenericGenerator(name="UUIDGENERATE",strategy="uuid2")  
-  @GeneratedValue(generator="UUIDGENERATE")  
-  @Column(name="id",length=36)  
-  private String id;
+<h3 id="7、创建时间和更新时间自动处理"><a href="#7、创建时间和更新时间自动处理" class="headerlink" title="7、创建时间和更新时间自动处理"></a>7、创建时间和更新时间自动处理</h3><pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Entity</span>  
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"t_login_log"</span><span class="token punctuation">)</span>  
+<span class="token annotation punctuation">@Data</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LoginLog</span> <span class="token punctuation">{</span>  
+  <span class="token annotation punctuation">@Id</span>  
+  <span class="token annotation punctuation">@GenericGenerator</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"UUIDGENERATE"</span><span class="token punctuation">,</span>strategy<span class="token operator">=</span><span class="token string">"uuid2"</span><span class="token punctuation">)</span>  
+  <span class="token annotation punctuation">@GeneratedValue</span><span class="token punctuation">(</span>generator<span class="token operator">=</span><span class="token string">"UUIDGENERATE"</span><span class="token punctuation">)</span>  
+  <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"id"</span><span class="token punctuation">,</span>length<span class="token operator">=</span><span class="token number">36</span><span class="token punctuation">)</span>  
+  <span class="token keyword">private</span> String id<span class="token punctuation">;</span>
   
-  @Column(name="create_time, updatable = false)  
-  @Temporal(TemporalType.TIMESTAMP)  
-  @org.hibernate.annotations.CreationTimestamp   
-  private Date createTime;
+  <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span>"create_time<span class="token punctuation">,</span> updatable <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">)</span>  
+  <span class="token annotation punctuation">@Temporal</span><span class="token punctuation">(</span>TemporalType<span class="token punctuation">.</span>TIMESTAMP<span class="token punctuation">)</span>  
+  <span class="token annotation punctuation">@org</span><span class="token punctuation">.</span>hibernate<span class="token punctuation">.</span>annotations<span class="token punctuation">.</span>CreationTimestamp   
+  <span class="token keyword">private</span> Date createTime<span class="token punctuation">;</span>
    
-  @Column(name="update_time")  
-  @Temporal(TemporalType.TIMESTAMP)  
-  @org.hibernate.annotations.UpdateTimestamp
-  private Date updateTime;   
-</code></pre>
+  <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"update_time"</span><span class="token punctuation">)</span>  
+  <span class="token annotation punctuation">@Temporal</span><span class="token punctuation">(</span>TemporalType<span class="token punctuation">.</span>TIMESTAMP<span class="token punctuation">)</span>  
+  <span class="token annotation punctuation">@org</span><span class="token punctuation">.</span>hibernate<span class="token punctuation">.</span>annotations<span class="token punctuation">.</span>UpdateTimestamp
+  <span class="token keyword">private</span> Date updateTime<span class="token punctuation">;</span>   
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="8、实体上常用的一些注解"><a href="#8、实体上常用的一些注解" class="headerlink" title="8、实体上常用的一些注解"></a>8、实体上常用的一些注解</h3><p>时间格式化</p>
-<pre><code>    @JsonFormat(pattern = DateUtil.TIME_FORMAT, timezone = "GMT+8")
-    @Column(updatable = false)
-    private Date createTime;
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token annotation punctuation">@JsonFormat</span><span class="token punctuation">(</span>pattern <span class="token operator">=</span> DateUtil<span class="token punctuation">.</span>TIME_FORMAT<span class="token punctuation">,</span> timezone <span class="token operator">=</span> <span class="token string">"GMT+8"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>updatable <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> Date createTime<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>在json结构中忽略</p>
-<pre><code>    /**
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token comment" spellcheck="true">/**
      * 删除标志，1：删除，0：未删除
-     */
-    @JsonIgnore
-    private Boolean deleteFlag = false;
-</code></pre>
+     */</span>
+    <span class="token annotation punctuation">@JsonIgnore</span>
+    <span class="token keyword">private</span> Boolean deleteFlag <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>插入/更新时自动赋值</p>
-<pre><code>    @PrePersist
-    public void PrePersist() {
-        this.createTime = new Date();
-    }
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token annotation punctuation">@PrePersist</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">PrePersist</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>createTime <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-  @PreUpdate
-    public void PreUpdate() {
-        this.updateTime = new Date();
-    }
-</code></pre>
-<p>@Temporal(TemporalType.DATE)<br>在页面端取值：2016–09–28<br>@Temporal(TemporalType.TIME)<br>在页面端取值：15:50:30<br>@Temporal(TemporalType.TIMESTAMP)<br>在页面端取值：2016-09-28 15:52:32:000</p>
-<h4 id="9、自定义Repository实现查询"><a href="#9、自定义Repository实现查询" class="headerlink" title="9、自定义Repository实现查询"></a>9、自定义Repository实现查询</h4><pre><code>import org.springframework.stereotype.Repository;
+  <span class="token annotation punctuation">@PreUpdate</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">PreUpdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>updateTime <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其他属性：<br>@Temporal(TemporalType.DATE)<br>在页面端取值：2016–09–28<br>@Temporal(TemporalType.TIME)<br>在页面端取值：15:50:30<br>@Temporal(TemporalType.TIMESTAMP)<br>在页面端取值：2016-09-28 15:52:32:000</p>
+<h4 id="9、自定义Repository实现查询"><a href="#9、自定义Repository实现查询" class="headerlink" title="9、自定义Repository实现查询"></a>9、自定义Repository实现查询</h4><pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>stereotype<span class="token punctuation">.</span>Repository<span class="token punctuation">;</span>
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.util.List;
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>persistence<span class="token punctuation">.</span>EntityManager<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>persistence<span class="token punctuation">.</span>PersistenceContext<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>persistence<span class="token punctuation">.</span>Query<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>List<span class="token punctuation">;</span>
 
-/**
+<span class="token comment" spellcheck="true">/**
  * 推送类型统计
- */
-@Repository
-public class MessageStatisticRepository {
+ */</span>
+<span class="token annotation punctuation">@Repository</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MessageStatisticRepository</span> <span class="token punctuation">{</span>
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    <span class="token annotation punctuation">@PersistenceContext</span>
+    <span class="token keyword">private</span> EntityManager entityManager<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 统计每个推送类型的推送消息数量
      * @param userId
      * @param search
      * @return
-     */
-    public List&lt;Object[]&gt;  findMessageTypeCont(String userId, String search){
-        String sql = "SELECT t.id,t.title,t.icon,p.num FROM t_message_type AS t INNER JOIN  " +
-                     "(" +
-                        "SELECT type,COUNT(*) AS num FROM t_message_push " +
-                        "WHERE (title LIKE :search OR content LIKE :search) AND state &lt;&gt; 3 AND receive_user_id=:userId " +
-                        "GROUP BY type" +
-                     ") AS p " +
-                     " on t.id = p.type WHERE t.delete_flag=0 ORDER BY t.order ASC";
-        Query query = entityManager.createNativeQuery(sql);
-        query.setParameter("search", '%' +search + '%');
-        query.setParameter("userId", userId);
-        return query.getResultList();
-    }
+     */</span>
+    <span class="token keyword">public</span> List<span class="token operator">&lt;</span>Object<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span>  <span class="token function">findMessageTypeCont</span><span class="token punctuation">(</span>String userId<span class="token punctuation">,</span> String search<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        String sql <span class="token operator">=</span> <span class="token string">"SELECT t.id,t.title,t.icon,p.num FROM t_message_type AS t INNER JOIN  "</span> <span class="token operator">+</span>
+                     <span class="token string">"("</span> <span class="token operator">+</span>
+                        <span class="token string">"SELECT type,COUNT(*) AS num FROM t_message_push "</span> <span class="token operator">+</span>
+                        <span class="token string">"WHERE (title LIKE :search OR content LIKE :search) AND state &lt;> 3 AND receive_user_id=:userId "</span> <span class="token operator">+</span>
+                        <span class="token string">"GROUP BY type"</span> <span class="token operator">+</span>
+                     <span class="token string">") AS p "</span> <span class="token operator">+</span>
+                     <span class="token string">" on t.id = p.type WHERE t.delete_flag=0 ORDER BY t.order ASC"</span><span class="token punctuation">;</span>
+        Query query <span class="token operator">=</span> entityManager<span class="token punctuation">.</span><span class="token function">createNativeQuery</span><span class="token punctuation">(</span>sql<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        query<span class="token punctuation">.</span><span class="token function">setParameter</span><span class="token punctuation">(</span><span class="token string">"search"</span><span class="token punctuation">,</span> <span class="token string">'%'</span> <span class="token operator">+</span>search <span class="token operator">+</span> <span class="token string">'%'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        query<span class="token punctuation">.</span><span class="token function">setParameter</span><span class="token punctuation">(</span><span class="token string">"userId"</span><span class="token punctuation">,</span> userId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> query<span class="token punctuation">.</span><span class="token function">getResultList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-}
-</code></pre>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>获取到的结果是List的Object数组，里面的值需要解析Object获取。</p>
-<pre><code>   public static MessageTypeVo toMessageTypeVo(Object[] data){
-       MessageTypeVo messageType = new MessageTypeVo();
-       messageType.setId((String) data[0]);
-       messageType.setTitle((String) data[1]);
-       messageType.setIcon((String) data[2]);
-       messageType.setCount((BigInteger) data[3]);
-       return messageType;
-   }
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token keyword">public</span> <span class="token keyword">static</span> MessageTypeVo <span class="token function">toMessageTypeVo</span><span class="token punctuation">(</span>Object<span class="token punctuation">[</span><span class="token punctuation">]</span> data<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        MessageTypeVo messageType <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MessageTypeVo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        messageType<span class="token punctuation">.</span><span class="token function">setId</span><span class="token punctuation">(</span><span class="token punctuation">(</span>String<span class="token punctuation">)</span> data<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        messageType<span class="token punctuation">.</span><span class="token function">setTitle</span><span class="token punctuation">(</span><span class="token punctuation">(</span>String<span class="token punctuation">)</span> data<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        messageType<span class="token punctuation">.</span><span class="token function">setIcon</span><span class="token punctuation">(</span><span class="token punctuation">(</span>String<span class="token punctuation">)</span> data<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        messageType<span class="token punctuation">.</span><span class="token function">setCount</span><span class="token punctuation">(</span><span class="token punctuation">(</span>BigInteger<span class="token punctuation">)</span> data<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> messageType<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-   List&lt;Object[]&gt; rows = messageStatisticRepository.findMessageTypeCont(userId, keywords);
-   List&lt;MessageTypeVo&gt; messageTypes = rows.stream().map(MessageTypeVo::toMessageTypeVo).collect(Collectors.toList());
-</code></pre>
+    List<span class="token operator">&lt;</span>Object<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span> rows <span class="token operator">=</span> messageStatisticRepository<span class="token punctuation">.</span><span class="token function">findMessageTypeCont</span><span class="token punctuation">(</span>userId<span class="token punctuation">,</span> keywords<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    List<span class="token operator">&lt;</span>MessageTypeVo<span class="token operator">></span> messageTypes <span class="token operator">=</span> rows<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>MessageTypeVo<span class="token operator">:</span><span class="token operator">:</span>toMessageTypeVo<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">collect</span><span class="token punctuation">(</span>Collectors<span class="token punctuation">.</span><span class="token function">toList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>上面的查询如果不返回Object，也可以设置返回成map，只需要在查询前设置<code>ResultTransformer</code>即可:</p>
-<pre><code>query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-List&lt;Map&lt;String, Object&gt;&gt; resultLit = query.getResultList();
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java">query<span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span>SQLQuery<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setResultTransformer</span><span class="token punctuation">(</span>Transformers<span class="token punctuation">.</span>ALIAS_TO_ENTITY_MAP<span class="token punctuation">)</span><span class="token punctuation">;</span>
+List<span class="token operator">&lt;</span>Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">>></span> resultLit <span class="token operator">=</span> query<span class="token punctuation">.</span><span class="token function">getResultList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="10、多表级联查询自定义返回结果"><a href="#10、多表级联查询自定义返回结果" class="headerlink" title="10、多表级联查询自定义返回结果"></a>10、多表级联查询自定义返回结果</h4><p>首先定义一个结果集的接口类，</p>
-<pre><code>public interface HotelSummary {
-    City getCity();
-    String getName();
-    Double getAverageRating();
-    default Integer getAverageRatingRounded() {
-        return getAverageRating() == null ? null : (int) Math.round(getAverageRating());
-    }
-}
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">HotelSummary</span> <span class="token punctuation">{</span>
+    City <span class="token function">getCity</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    String <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Double <span class="token function">getAverageRating</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">default</span> Integer <span class="token function">getAverageRatingRounded</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">getAverageRating</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> null <span class="token operator">?</span> null <span class="token operator">:</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span><span class="token function">getAverageRating</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>查询的方法返回类型设置为新创建的接口</p>
-<pre><code>@Query("select h.city as city, h.name as name, avg(r.rating) as averageRating "
-        - "from Hotel h left outer join h.reviews r where h.city = ?1 group by h")
-Page&lt;HotelSummary&gt; findByCity(City city, Pageable pageable);
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Query</span><span class="token punctuation">(</span><span class="token string">"select h.city as city, h.name as name, avg(r.rating) as averageRating "</span>
+        <span class="token operator">-</span> <span class="token string">"from Hotel h left outer join h.reviews r where h.city = ?1 group by h"</span><span class="token punctuation">)</span>
+Page<span class="token operator">&lt;</span>HotelSummary<span class="token operator">></span> <span class="token function">findByCity</span><span class="token punctuation">(</span>City city<span class="token punctuation">,</span> Pageable pageable<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-@Query("select h.name as name, avg(r.rating) as averageRating "
-        - "from Hotel h left outer join h.reviews r  group by h")
-Page&lt;HotelSummary&gt; findByCity(Pageable pageable);
-</code></pre>
+<span class="token annotation punctuation">@Query</span><span class="token punctuation">(</span><span class="token string">"select h.name as name, avg(r.rating) as averageRating "</span>
+        <span class="token operator">-</span> <span class="token string">"from Hotel h left outer join h.reviews r  group by h"</span><span class="token punctuation">)</span>
+Page<span class="token operator">&lt;</span>HotelSummary<span class="token operator">></span> <span class="token function">findByCity</span><span class="token punctuation">(</span>Pageable pageable<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用</p>
-<pre><code>Page&lt;HotelSummary&gt; hotels = this.hotelRepository.findByCity(new PageRequest(0, 10, Direction.ASC, "name"));
-for(HotelSummary summay:hotels) {
-    System.out.println("Name" +summay.getName());
-}
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java">Page<span class="token operator">&lt;</span>HotelSummary<span class="token operator">></span> hotels <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>hotelRepository<span class="token punctuation">.</span><span class="token function">findByCity</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">PageRequest</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> Direction<span class="token punctuation">.</span>ASC<span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span><span class="token punctuation">(</span>HotelSummary summay<span class="token operator">:</span>hotels<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Name"</span> <span class="token operator">+</span>summay<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="碰到的错误"><a href="#碰到的错误" class="headerlink" title="碰到的错误"></a>碰到的错误</h1><h3 id="版本问题"><a href="#版本问题" class="headerlink" title="版本问题"></a>版本问题</h3><p>1、问题和现状<br>配置一个Hibernate的OneToMany的映射，想要达到级联保存和级联查询，查主体时将对应的many的列表页查出来，但是在如下的配置后，<br>主表：</p>
-<pre><code>@Data
-@Entity
-@Table(name = "t_patient")
-public class Patient {
-    @Id
-    @GenericGenerator(name = "idGenerator", strategy = "uuid")
-    @GeneratedValue(generator = "idGenerator")
-    @Column(name = "patient_id", length = 40)
-    private String patientId;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Data</span>
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"t_patient"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Patient</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token annotation punctuation">@GenericGenerator</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"idGenerator"</span><span class="token punctuation">,</span> strategy <span class="token operator">=</span> <span class="token string">"uuid"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@GeneratedValue</span><span class="token punctuation">(</span>generator <span class="token operator">=</span> <span class="token string">"idGenerator"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"patient_id"</span><span class="token punctuation">,</span> length <span class="token operator">=</span> <span class="token number">40</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> String patientId<span class="token punctuation">;</span>
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "patient_id")
-    private List&lt;PatientAllergicHistory&gt; patientAllergicHistory = new LinkedList&lt;&gt;();
-}
-</code></pre>
+    <span class="token annotation punctuation">@OneToMany</span><span class="token punctuation">(</span>cascade <span class="token operator">=</span> CascadeType<span class="token punctuation">.</span>ALL<span class="token punctuation">,</span> fetch <span class="token operator">=</span> FetchType<span class="token punctuation">.</span>EAGER<span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"patient_id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>PatientAllergicHistory<span class="token operator">></span> patientAllergicHistory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>子表：</p>
-<pre><code>@Data
-@Entity
-@Table(name = "t_patient_allergic_history")
-public class PatientAllergicHistory {
-    @Id
-    @GenericGenerator(name = "idGenerator", strategy = "uuid")
-    @GeneratedValue(generator = "idGenerator")
-    @Column(name = "id")
-    private Long id;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Data</span>
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"t_patient_allergic_history"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PatientAllergicHistory</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token annotation punctuation">@GenericGenerator</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"idGenerator"</span><span class="token punctuation">,</span> strategy <span class="token operator">=</span> <span class="token string">"uuid"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@GeneratedValue</span><span class="token punctuation">(</span>generator <span class="token operator">=</span> <span class="token string">"idGenerator"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> Long id<span class="token punctuation">;</span>
 
-    /** 患者id */
-    @Column(name = "patient_id")
-    private String patientId;
-}
-</code></pre>
+    <span class="token comment" spellcheck="true">/** 患者id */</span>
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"patient_id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> String patientId<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>查询时抛出异常</p>
-<pre><code>org.springframework.http.converter.HttpMessageNotWritableException: Could not write JSON: failed to lazily initialize a collection of role: com.hczt.xhminiapp.db.entity.Patient.patientContacts, could not initialize proxy - no Session; nested exception is com.fasterxml.jackson.databind.JsonMappingException: failed to lazily initialize a collection of role: com.hczt.xhminiapp.db.entity.Patient.patientContacts, could not initialize proxy - no Session (through reference chain: com.hczt.xhminiapp.common.bean.RtnResult["data"]-&gt;com.hczt.xhminiapp.db.entity.Patient["patientContacts"])
+<pre class="line-numbers language-shell"><code class="language-shell">org.springframework.http.converter.HttpMessageNotWritableException: Could not write JSON: failed to lazily initialize a collection of role: com.hczt.xhminiapp.db.entity.Patient.patientContacts, could not initialize proxy - no Session; nested exception is com.fasterxml.jackson.databind.JsonMappingException: failed to lazily initialize a collection of role: com.hczt.xhminiapp.db.entity.Patient.patientContacts, could not initialize proxy - no Session (through reference chain: com.hczt.xhminiapp.common.bean.RtnResult["data"]->com.hczt.xhminiapp.db.entity.Patient["patientContacts"])
     at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.writeInternal(AbstractJackson2HttpMessageConverter.java:296)
     at org.springframework.http.converter.AbstractGenericHttpMessageConverter.write(AbstractGenericHttpMessageConverter.java:103)
     at org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodProcessor.writeWithMessageConverters(AbstractMessageConverterMethodProcessor.java:290)
@@ -936,7 +935,7 @@ public class PatientAllergicHistory {
     at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
     at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
     at java.lang.Thread.run(Thread.java:748)
-Caused by: com.fasterxml.jackson.databind.JsonMappingException: failed to lazily initialize a collection of role: com.hczt.xhminiapp.db.entity.Patient.patientContacts, could not initialize proxy - no Session (through reference chain: com.hczt.xhminiapp.common.bean.RtnResult["data"]-&gt;com.hczt.xhminiapp.db.entity.Patient["patientContacts"])
+Caused by: com.fasterxml.jackson.databind.JsonMappingException: failed to lazily initialize a collection of role: com.hczt.xhminiapp.db.entity.Patient.patientContacts, could not initialize proxy - no Session (through reference chain: com.hczt.xhminiapp.common.bean.RtnResult["data"]->com.hczt.xhminiapp.db.entity.Patient["patientContacts"])
     at com.fasterxml.jackson.databind.JsonMappingException.wrapWithPath(JsonMappingException.java:394)
     at com.fasterxml.jackson.databind.JsonMappingException.wrapWithPath(JsonMappingException.java:353)
     at com.fasterxml.jackson.databind.ser.std.StdSerializer.wrapAndThrow(StdSerializer.java:316)
@@ -961,21 +960,21 @@ Caused by: org.hibernate.LazyInitializationException: failed to lazily initializ
     at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:727)
     at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:719)
     ... 56 common frames omitted
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>2、原因和解决<br>该异常在<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/4334970/hibernate-cannot-simultaneously-fetch-multiple-bags">https://stackoverflow.com/questions/4334970/hibernate-cannot-simultaneously-fetch-multiple-bags</a>上找到了答案（staticOverFlow还是很强大的）。</p>
 <p>I think a newer version of hibernate (supporting JPA 2.0) should handle this. But otherwise you can work it around by annotating the collection fields with:  <code>@LazyCollection(LazyCollectionOption.FALSE)</code>,Remember to remove the fetchType attribute from the @*ToMany annotation.</p>
-<pre><code> @OneToMany(cascade = CascadeType.ALL)
- @LazyCollection(LazyCollectionOption.FALSE)
- @JoinColumn(name = "patient_id")
- private List&lt;PatientAllergicHistory&gt; patientAllergicHistory = new LinkedList&lt;&gt;();
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java"> <span class="token annotation punctuation">@OneToMany</span><span class="token punctuation">(</span>cascade <span class="token operator">=</span> CascadeType<span class="token punctuation">.</span>ALL<span class="token punctuation">)</span>
+ <span class="token annotation punctuation">@LazyCollection</span><span class="token punctuation">(</span>LazyCollectionOption<span class="token punctuation">.</span>FALSE<span class="token punctuation">)</span>
+ <span class="token annotation punctuation">@JoinColumn</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"patient_id"</span><span class="token punctuation">)</span>
+ <span class="token keyword">private</span> List<span class="token operator">&lt;</span>PatientAllergicHistory<span class="token operator">></span> patientAllergicHistory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>正常的控制台日志应该是这样的，主查询完了以后，开启子查询</p>
-<pre><code>10:26:29.920 [http-nio-8085-exec-10] INFO  p6spy - 10:26:29|1|SELECT 1 FROM DUAL
+<pre class="line-numbers language-shell"><code class="language-shell">10:26:29.920 [http-nio-8085-exec-10] INFO  p6spy - 10:26:29|1|SELECT 1 FROM DUAL
 10:26:29.932 [http-nio-8085-exec-10] INFO  p6spy - 10:26:29|4|select patient0_.patient_id as patient_1_3_0_, patient0_.create_time as create_t2_3_0_, patient0_.deleted as deleted3_3_0_, patient0_.first_diagnose_date as first_di4_3_0_, patient0_.first_injection_date as first_in5_3_0_, patient0_.gender as gender6_3_0_, patient0_.height as height7_3_0_, patient0_.mobile as mobile8_3_0_, patient0_.name as name9_3_0_, patient0_.nick_name as nick_na10_3_0_, patient0_.openid as openid11_3_0_, patient0_.passive_smoking as passive15_3_0_, patient0_.self_smoking as self_sm12_3_0_, patient0_.unionid as unionid13_3_0_, patient0_.weight as weight14_3_0_, sysdict1_.id as id1_6_1_, sysdict1_.code as code2_6_1_, sysdict1_.create_time as create_t3_6_1_, sysdict1_.deleted as deleted4_6_1_, sysdict1_.group_code as group_co5_6_1_, sysdict1_.name as name6_6_1_, sysdict1_.parent_id as parent_i7_6_1_, sysdict1_.sort as sort8_6_1_, sysdict1_.type as type9_6_1_, sysdict1_.update_time as update_10_6_1_ from t_patient patient0_ left outer join t_sys_dict sysdict1_ on patient0_.passive_smoking=sysdict1_.id where patient0_.patient_id='111'
 10:26:29.940 [http-nio-8085-exec-10] INFO  p6spy - 10:26:29|2|select patientcon0_.patient_id as patient_6_5_0_, patientcon0_.id as id1_5_0_, patientcon0_.id as id1_5_1_, patientcon0_.address as address2_5_1_, patientcon0_.gender as gender3_5_1_, patientcon0_.mobile as mobile4_5_1_, patientcon0_.name as name5_5_1_, patientcon0_.patient_id as patient_6_5_1_, patientcon0_.relation as relation7_5_1_, sysdict1_.id as id1_6_2_, sysdict1_.code as code2_6_2_, sysdict1_.create_time as create_t3_6_2_, sysdict1_.deleted as deleted4_6_2_, sysdict1_.group_code as group_co5_6_2_, sysdict1_.name as name6_6_2_, sysdict1_.parent_id as parent_i7_6_2_, sysdict1_.sort as sort8_6_2_, sysdict1_.type as type9_6_2_, sysdict1_.update_time as update_10_6_2_ from t_patient_contacts patientcon0_ left outer join t_sys_dict sysdict1_ on patientcon0_.relation=sysdict1_.id where patientcon0_.patient_id='111'
 10:26:29.945 [http-nio-8085-exec-10] INFO  p6spy - 10:26:29|1|select patientall0_.patient_id as patient_5_4_0_, patientall0_.id as id1_4_0_, patientall0_.id as id1_4_1_, patientall0_.gmxby as gmxby2_4_1_, patientall0_.gmxpy as gmxpy3_4_1_, patientall0_.main as main4_4_1_, patientall0_.patient_id as patient_5_4_1_, patientall0_.swgm as swgm6_4_1_, patientall0_.ybgmz as ybgmz7_4_1_, patientall0_.zqgxc as zqgxc8_4_1_ from t_patient_allergic_history patientall0_ where patientall0_.patient_id='111'
 10:26:29.947 [http-nio-8085-exec-10] INFO  p6spy - 10:26:29|0|
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h3><p><a href="%5Bhttps://niocoder.com/categories/#Security%5D(https://niocoder.com/categories/#Security)">Security源码分析</a></p>
 
                 

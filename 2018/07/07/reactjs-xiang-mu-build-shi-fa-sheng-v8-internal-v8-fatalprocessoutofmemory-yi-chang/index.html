@@ -504,14 +504,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.2k
+                    1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    6 分
+                    5 分
                 </div>
                 
 
@@ -536,21 +536,21 @@
 
 <h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>最近工程里有个用<a target="_blank" rel="noopener" href="https://pro.ant.design/index-cn">Ant Design Pro</a>搭建的前后端分离的后台管理系统，一直使用jenkins自动部署的，但是今天一不小心build失败了。虽然很快就搞定了，但是还是记录一下，好记性不如烂笔头。</p>
 <h2 id="问题出现"><a href="#问题出现" class="headerlink" title="问题出现"></a>问题出现</h2><p>构建失败信息是这样的：</p>
-<pre><code>&lt;pre class="console-output" style="box-sizing: border-box; white-space: pre-wrap; word-wrap: break-word; margin: 0px; color: rgb(51, 51, 51); font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;"&gt;Started by user [超级管理员](http://jenkins.haier.haiqiang.xin:7776/user/admin)
+<pre class="line-numbers language-log"><code class="language-log"><pre class="console-output" style="box-sizing: border-box; white-space: pre-wrap; word-wrap: break-word; margin: 0px; color: rgb(51, 51, 51); font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;">Started by user [超级管理员](http://jenkins.haier.haiqiang.xin:7776/user/admin)
 Building in workspace /var/lib/jenkins/workspace/chuangke_pre_portal_web_auto_deploy
- &gt; git rev-parse --is-inside-work-tree # timeout=10
+ > git rev-parse --is-inside-work-tree # timeout=10
 Fetching changes from the remote Git repository
- &gt; git config remote.origin.url git@git.3vyd.com:portalmanage.git # timeout=10
+ > git config remote.origin.url git@git.3vyd.com:portalmanage.git # timeout=10
 Fetching upstream changes from git@git.3vyd.com:portalmanage.git
- &gt; git --version # timeout=10
- &gt; git fetch --tags --progress git@git.3vyd.com:portalmanage.git +refs/heads/*:refs/remotes/origin/*
- &gt; git rev-parse refs/remotes/origin/master^{commit} # timeout=10
- &gt; git rev-parse refs/remotes/origin/origin/master^{commit} # timeout=10
+ > git --version # timeout=10
+ > git fetch --tags --progress git@git.3vyd.com:portalmanage.git +refs/heads/*:refs/remotes/origin/*
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+ > git rev-parse refs/remotes/origin/origin/master^{commit} # timeout=10
 Checking out Revision c9a9d48ae6453a8d84734920f8718abec5598f2a (refs/remotes/origin/master)
- &gt; git config core.sparsecheckout # timeout=10
- &gt; git checkout -f c9a9d48ae6453a8d84734920f8718abec5598f2a
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f c9a9d48ae6453a8d84734920f8718abec5598f2a
 Commit message: "直播统计"
- &gt; git rev-list --no-walk 34ede46c51b5a223746b1c07d0845952d7d0eefd # timeout=10
+ > git rev-list --no-walk 34ede46c51b5a223746b1c07d0845952d7d0eefd # timeout=10
 [chuangke_pre_portal_web_auto_deploy] $ /bin/sh -xe /tmp/jenkins1426166608252484443.sh
 + yarn
 yarn install v1.3.2
@@ -563,20 +563,20 @@ yarn run v1.3.2
 $ node scripts/build.js
 Creating an optimized production build...
 
-&lt;--- Last few GCs ---&gt;
+<--- Last few GCs --->
 
-  780502 ms: Mark-sweep 1323.4 (1408.7) -&gt; 1317.3 (1408.7) MB, 955.6 / 0.0 ms [allocation failure] [GC in old space requested].
-  781304 ms: Mark-sweep 1317.3 (1408.7) -&gt; 1317.3 (1410.7) MB, 802.4 / 0.0 ms [allocation failure] [GC in old space requested].
-  782171 ms: Mark-sweep 1317.3 (1410.7) -&gt; 1326.8 (1403.7) MB, 866.5 / 0.0 ms [last resort gc].
-  782958 ms: Mark-sweep 1326.8 (1403.7) -&gt; 1336.9 (1403.7) MB, 787.3 / 0.0 ms [last resort gc].
+  780502 ms: Mark-sweep 1323.4 (1408.7) -> 1317.3 (1408.7) MB, 955.6 / 0.0 ms [allocation failure] [GC in old space requested].
+  781304 ms: Mark-sweep 1317.3 (1408.7) -> 1317.3 (1410.7) MB, 802.4 / 0.0 ms [allocation failure] [GC in old space requested].
+  782171 ms: Mark-sweep 1317.3 (1410.7) -> 1326.8 (1403.7) MB, 866.5 / 0.0 ms [last resort gc].
+  782958 ms: Mark-sweep 1326.8 (1403.7) -> 1336.9 (1403.7) MB, 787.3 / 0.0 ms [last resort gc].
 
-&lt;--- JS stacktrace ---&gt;
+<--- JS stacktrace --->
 
 ==== JS stack trace =========================================
 
-Security context: 0x1116596cf781 &lt;JS Object&gt;
-    1: stringify [native json.js:~176] [pc=0x1ab7d7e562d3] (this=0x1116596c92a1 &lt;a JSON with map 0xa5d18e09b09&gt;,E=0x27fe2de64711 &lt;an Object with map 0x23d396b32619&gt;,F=0x111659604381 &lt;undefined&gt;,S=0x111659604381 &lt;undefined&gt;)
-    2: arguments adaptor frame: 1-&gt;3
+Security context: 0x1116596cf781 <JS Object>
+    1: stringify [native json.js:~176] [pc=0x1ab7d7e562d3] (this=0x1116596c92a1 <a JSON with map 0xa5d18e09b09>,E=0x27fe2de64711 <an Object with map 0x23d396b32619>,F=0x111659604381 <undefined>,S=0x111659604381 <undefined>)
+    2: arguments adaptor frame: 1->3
     3: /* anonymous */(aka /* anonymous */) [/var/lib/jenkins/workspace/chuangke_pre_portal_web_auto_deploy/node_modules/webpack/lib/Sou...
 
 FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory
@@ -585,22 +585,22 @@ FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memo
  3: v8::Utils::ReportApiFailure(char const*, char const*) [node]
  4: v8::internal::V8::FatalProcessOutOfMemory(char const*, bool) [node]
  5: v8::internal::Factory::NewRawTwoByteString(int, v8::internal::PretenureFlag) [node]
- 6: v8::internal::String::SlowFlatten(v8::internal::Handle&lt;v8::internal::ConsString&gt;, v8::internal::PretenureFlag) [node]
- 7: v8::internal::String::Flatten(v8::internal::Handle&lt;v8::internal::String&gt;, v8::internal::PretenureFlag) [node]
- 8: v8::internal::BasicJsonStringifier::SerializeString(v8::internal::Handle&lt;v8::internal::String&gt;) [node]
- 9: v8::internal::BasicJsonStringifier::Result v8::internal::BasicJsonStringifier::Serialize_&lt;false&gt;(v8::internal::Handle&lt;v8::internal::Object&gt;, bool, v8::internal::Handle&lt;v8::internal::Object&gt;) [node]
-10: v8::internal::BasicJsonStringifier::SerializeJSArraySlow(v8::internal::Handle&lt;v8::internal::JSArray&gt;, unsigned int, unsigned int) [node]
-11: v8::internal::BasicJsonStringifier::Result v8::internal::BasicJsonStringifier::Serialize_&lt;true&gt;(v8::internal::Handle&lt;v8::internal::Object&gt;, bool, v8::internal::Handle&lt;v8::internal::Object&gt;) [node]
-12: v8::internal::BasicJsonStringifier::Result v8::internal::BasicJsonStringifier::Serialize_&lt;false&gt;(v8::internal::Handle&lt;v8::internal::Object&gt;, bool, v8::internal::Handle&lt;v8::internal::Object&gt;) [node]
-13: v8::internal::BasicJsonStringifier::Stringify(v8::internal::Handle&lt;v8::internal::Object&gt;) [node]
+ 6: v8::internal::String::SlowFlatten(v8::internal::Handle<v8::internal::ConsString>, v8::internal::PretenureFlag) [node]
+ 7: v8::internal::String::Flatten(v8::internal::Handle<v8::internal::String>, v8::internal::PretenureFlag) [node]
+ 8: v8::internal::BasicJsonStringifier::SerializeString(v8::internal::Handle<v8::internal::String>) [node]
+ 9: v8::internal::BasicJsonStringifier::Result v8::internal::BasicJsonStringifier::Serialize_<false>(v8::internal::Handle<v8::internal::Object>, bool, v8::internal::Handle<v8::internal::Object>) [node]
+10: v8::internal::BasicJsonStringifier::SerializeJSArraySlow(v8::internal::Handle<v8::internal::JSArray>, unsigned int, unsigned int) [node]
+11: v8::internal::BasicJsonStringifier::Result v8::internal::BasicJsonStringifier::Serialize_<true>(v8::internal::Handle<v8::internal::Object>, bool, v8::internal::Handle<v8::internal::Object>) [node]
+12: v8::internal::BasicJsonStringifier::Result v8::internal::BasicJsonStringifier::Serialize_<false>(v8::internal::Handle<v8::internal::Object>, bool, v8::internal::Handle<v8::internal::Object>) [node]
+13: v8::internal::BasicJsonStringifier::Stringify(v8::internal::Handle<v8::internal::Object>) [node]
 14: v8::internal::Runtime_BasicJSONStringify(int, v8::internal::Object**, v8::internal::Isolate*) [node]
 15: 0x1ab7ca0092a7
 error Command failed with signal "SIGABRT".
 info Visit [https://yarnpkg.com/en/docs/cli/run](https://yarnpkg.com/en/docs/cli/run) for documentation about this command.
 Build step 'Execute shell' marked build as failure
 Sending e-mails to: marvin.ma@3vyd.com damon.shen@3vyd.com
-Finished: FAILURE&lt;/pre&gt;
-</code></pre>
+Finished: FAILURE</pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h2><p>1、Jenkins服务器系统内存不够<br>看了看jenkins所在服务器的内存，在jenkins执行这个job的时候，内存最高也就140%，因为服务器是Centos 4核16G的配置，用free查看，可用内存仍然9G多。当时没有截图，所以就不贴图了，但是肯定不是说服务器内存吃紧导致的。</p>
 <p>2、排除了服务器本身内存小的问题，考虑本次build新进的代码的问题，看了一下就两个commit，因为网上有说是调用file.write的时候处理不当，会导致该问题的产生的，正好本次build有一个commit是添加了富文本编辑器。<br>但是检查一圈好像没有问题。</p>
 <p>3、框架问题，限制了内存。</p>
@@ -610,23 +610,24 @@ Finished: FAILURE&lt;/pre&gt;
 </blockquote>
 <p>改成了</p>
 <blockquote>
-<p>yarn<br>REACT_APP_BRANCH=PRE node –max-old-space-size=4096 scripts/build.js<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-4060ebe238c7a7bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="jenkins build shell"></p>
+<p>yarn<br>REACT_APP_BRANCH=PRE node –max-old-space-size=4096 scripts/build.js</p>
 </blockquote>
+<p><img src="/loading.gif" data-original="/images/fontend/rn-build-shell.png" alt="jenkins build shell"></p>
 <p>重新build，success。</p>
 <p>然后因为该项目分开发，测试、生产等多个环境，因此打算在代码框架里直接作为配置项，具体的做法是在package.json的build命令前加上指定内存的参数<code>--max-old-space-size=4096</code>。将原来的：</p>
-<pre><code>"scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
-  }
-</code></pre>
+<pre class="line-numbers language-json"><code class="language-json"><span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"start"</span><span class="token operator">:</span> <span class="token string">"node scripts/start.js"</span><span class="token punctuation">,</span>
+    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"node scripts/build.js"</span><span class="token punctuation">,</span>
+    <span class="token property">"test"</span><span class="token operator">:</span> <span class="token string">"node scripts/test.js --env=jsdom"</span>
+  <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>修改为：</p>
-<pre><code>  "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node --max-old-space-size=4096 scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
-  },
-</code></pre>
+<pre class="line-numbers language-json"><code class="language-json">  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"start"</span><span class="token operator">:</span> <span class="token string">"node scripts/start.js"</span><span class="token punctuation">,</span>
+    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"node --max-old-space-size=4096 scripts/build.js"</span><span class="token punctuation">,</span>
+    <span class="token property">"test"</span><span class="token operator">:</span> <span class="token string">"node scripts/test.js --env=jsdom"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>提交代码，jenkins修改回原来的<code>yarn start</code>，重新build， SUCCESS。<br>一劳永逸。</p>
 
                 

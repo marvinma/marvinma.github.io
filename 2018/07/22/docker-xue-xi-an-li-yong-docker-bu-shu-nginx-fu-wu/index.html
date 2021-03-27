@@ -508,7 +508,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2k
+                    1.9k
                 </div>
                 
 
@@ -539,10 +539,10 @@
 <span id="more"></span>
 
 <h3 id="一、使用docker-run命令直接启动一个nginx容器"><a href="#一、使用docker-run命令直接启动一个nginx容器" class="headerlink" title="一、使用docker run命令直接启动一个nginx容器"></a>一、使用docker run命令直接启动一个nginx容器</h3><p>直接上结果<br>运行脚本：<br>1、下载最新版nginx的docker镜像</p>
-<pre><code>$ docker pull nginx
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">$ docker pull nginx
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>2、启动容器</p>
-<pre><code>docker run \
+<pre class="line-numbers language-shell"><code class="language-shell">docker run \
 --name centos_nginx \
 -d -p 80:80 \
 -v /usr/local/nginx/html:/usr/share/nginx/html \
@@ -550,22 +550,22 @@
 -v /usr/local/nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro \
 -v /usr/local/nginx/conf/conf.d:/etc/nginx/conf.d \
 nginx
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
 <p>这里有几个注意事项：<br>（1）第一个“-v”，是项目位置，把项目放到挂载到的目录下即可；<br>（2）第二个“-v”，是挂载的主配置文件”nginx.conf”，注意”nginx.conf”文件内有一行”include /etc/nginx/conf.d/*.conf;”，这个include指向了子配置文件的路径，此处注意include后所跟的路径一定不要出错。<br>（3）第三个“-v”，把docker内子配置文件的路径也挂载了出来，注意要与（2）中include指向路径一致<br>（4）重点强调一下，nginx.conf是挂载了一个文件（docker是不推荐这样用的），conf.d挂载的是一个目录</p>
 </blockquote>
 <p>再看宿主机配置：</p>
-<pre><code>[root@dev nginx]# ll
+<pre class="line-numbers language-shell"><code class="language-shell">[root@dev nginx]# ll
 total 12
 drwxr-xr-x 3 root root 4096 Jul 19 11:15 conf
 drwxr-xr-x 3 root root 4096 Jul 19 10:34 html
 drwxr-xr-x 2 root root 4096 Jul 19 10:41 logs
 [root@dev nginx]# 
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
 <p>/usr/local/nginx/conf/nginx.conf</p>
 </blockquote>
-<pre><code>user  root;
+<pre class="line-numbers language-conf"><code class="language-conf">user  root;
 worker_processes  1;
 error_log  /var/log/nginx/error.log warn;
 pid        /var/run/nginx.pid;
@@ -597,11 +597,11 @@ http {
     include /etc/nginx/conf.d/*.conf;
  
 }
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
 <p>/usr/local/nginx/conf/conf.d/default.conf</p>
 </blockquote>
-<pre><code>server {  
+<pre class="line-numbers language-conf"><code class="language-conf">server {  
     listen       80;  
     server_name  localhost;  
   
@@ -647,54 +647,54 @@ http {
     #    deny  all;  
     #}  
 }
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
 <p>/usr/local/nginx/html/default/index.html</p>
 </blockquote>
-<pre><code>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;Welcome to nginx! This is a demo!&lt;/title&gt;
-&lt;style&gt;
-    body {
-        width: 35em;
-        margin: 0 auto;
-        font-family: Tahoma, Verdana, Arial, sans-serif;
-    }
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;h1&gt;****************************&lt;/h1&gt;
-&lt;h1 align="center" style="color:red;" &gt;Welcome to nginx! &lt;/h1&gt;
-&lt;h1&gt;****************************&lt;/h1&gt;
-&lt;p&gt;If you see this page, the nginx web server is successfully installed and
-working. Further configuration is required.&lt;/p&gt;
+<pre class="line-numbers language-html"><code class="language-html"><span class="token doctype">&lt;!DOCTYPE html></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>Welcome to nginx! This is a demo!<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style language-css">
+    <span class="token selector">body </span><span class="token punctuation">{</span>
+        <span class="token property">width</span><span class="token punctuation">:</span> <span class="token number">35</span>em<span class="token punctuation">;</span>
+        <span class="token property">margin</span><span class="token punctuation">:</span> <span class="token number">0</span> auto<span class="token punctuation">;</span>
+        <span class="token property">font-family</span><span class="token punctuation">:</span> Tahoma, Verdana, Arial, sans-serif<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>****************************<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span> <span class="token attr-name">align</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>center<span class="token punctuation">"</span></span><span class="token style-attr language-css"><span class="token attr-name"> <span class="token attr-name">style</span></span><span class="token punctuation">="</span><span class="token attr-value"><span class="token property">color</span><span class="token punctuation">:</span>red<span class="token punctuation">;</span></span><span class="token punctuation">"</span></span> <span class="token punctuation">></span></span>Welcome to nginx! <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>****************************<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
  
-&lt;p&gt;For online documentation and support please refer to
-&lt;a href="http://nginx.org/"&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>For online documentation and support please refer to
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://nginx.org/<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>nginx.org<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>.<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>br</span><span class="token punctuation">/></span></span>
 Commercial support is available at
-&lt;a href="http://nginx.com/"&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>http://nginx.com/<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>nginx.com<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>.<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
  
-&lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;/em&gt;&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>em</span><span class="token punctuation">></span></span>Thank you for using nginx.<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>em</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
 <p>/usr/local/nginx/logs/access.log</p>
 </blockquote>
-<pre><code>194.105.136.181 - - [19/Jul/2018:04:29:59 +0000] "GET / HTTP/1.1" 200 742 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36" "-"
+<pre class="line-numbers language-shell"><code class="language-shell">194.105.136.181 - - [19/Jul/2018:04:29:59 +0000] "GET / HTTP/1.1" 200 742 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36" "-"
 94.102.52.77 - - [19/Jul/2018:04:41:30 +0000] "GET / HTTP/1.1" 200 742 "-" "libwww-perl/6.34" "-"
 187.74.100.192 - - [19/Jul/2018:04:59:21 +0000] "GET / HTTP/1.1" 200 742 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36" "-"
 106.11.225.139 - - [19/Jul/2018:05:17:41 +0000] "GET / HTTP/1.1" 200 742 "-" "Mozilla/5.0 (iPad; CPU OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1" "-"
 103.3.76.194 - - [19/Jul/2018:05:33:48 +0000] "GET / HTTP/1.1" 200 742 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36" "-"
 106.11.226.243 - - [19/Jul/2018:05:42:05 +0000] "GET / HTTP/1.1" 200 742 "-" "Mozilla/5.0 (iPad; CPU OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1" "-"
 177.137.62.62 - - [19/Jul/2018:06:18:32 +0000] "GET / HTTP/1.1" 200 742 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36" "-"
-</code></pre>
-<p>启动效果：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-707cf3071a0544e0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="default nginx"></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>启动效果：<br><img src="/loading.gif" data-original="/images/linux/docker/docker-nginx.png" alt="default nginx"></p>
 <hr>
-<h3 id="二、-使用docker-file启动nginx容器"><a href="#二、-使用docker-file启动nginx容器" class="headerlink" title="二、 使用docker file启动nginx容器"></a>二、 使用docker file启动nginx容器</h3><p>doeker常用命令：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-cf76a467f655f4bb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="docker file"></p>
+<h3 id="二、-使用docker-file启动nginx容器"><a href="#二、-使用docker-file启动nginx容器" class="headerlink" title="二、 使用docker file启动nginx容器"></a>二、 使用docker file启动nginx容器</h3><p>doeker常用命令：<br><img src="/loading.gif" data-original="/images/linux/docker/docker-nginx1.png" alt="docker file"></p>
 <h6 id="1、编写docker-file"><a href="#1、编写docker-file" class="headerlink" title="1、编写docker file"></a>1、编写docker file</h6><p>在任意目录创建一个nginx.Dockerfile 文件，写入如下内容：</p>
-<pre><code># Base images 基础镜像
+<pre class="line-numbers language-shell"><code class="language-shell"># Base images 基础镜像
 FROM nginx 
 MAINTAINER marvin
 ENV RUN_USER nginx 
@@ -709,69 +709,69 @@ ADD conf/nginx.conf /etc/nginx/nginx.conf
 ADD conf/conf.d /etc/nginx/conf.d
 EXPOSE 80
 ENTRYPOINT nginx -g "daemon off;"
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>做了这么几件事：</p>
 <p>1、拉取一个nginx镜像。<br>2、设置了几个变量。<br>3、创建了几个需要的目录。<br>4、把当前目录下的web程序复制到镜像的/data/web目录。<br>5、把nginx.conf配置文件和default.conf配置文件复制到镜像中。<br>6、设置一个默认端口。<br>7、最后设置了容器启动时执行的命令，我用来启动nginx程序，注意这个命令不能错，不然容器启动不了。这样设置后，当你docker run运行此镜像时不需要在后面再次执行需要执行的命令了。<br>8、ADD后面src的路径不要是绝对路径，最好是dockerfile和这些添加的目录放在一个目录下，否则build时会提示<code>lstat usr/local/nginx/html: no such file or directory</code>的错误，别问为什么，经验之谈！</p>
-<h6 id="2、用dockerfile-构建出镜nginx镜像"><a href="#2、用dockerfile-构建出镜nginx镜像" class="headerlink" title="2、用dockerfile 构建出镜nginx镜像"></a>2、用dockerfile 构建出镜nginx镜像</h6><pre><code>[root@dev nginx]# ls
+<h6 id="2、用dockerfile-构建出镜nginx镜像"><a href="#2、用dockerfile-构建出镜nginx镜像" class="headerlink" title="2、用dockerfile 构建出镜nginx镜像"></a>2、用dockerfile 构建出镜nginx镜像</h6><pre class="line-numbers language-shell"><code class="language-shell">[root@dev nginx]# ls
 conf  dockerfile  html  logs
 [root@dev nginx]# docker build -t nginx_image1 . 
 Sending build context to Docker daemon 27.65 kB
 Step 1/14 : FROM nginx
- ---&gt; 8b89e48b5f15
+ ---> 8b89e48b5f15
 Step 2/14 : MAINTAINER marvin
- ---&gt; Using cache
- ---&gt; fc935dc63140
+ ---> Using cache
+ ---> fc935dc63140
 Step 3/14 : ENV RUN_USER nginx
- ---&gt; Using cache
- ---&gt; 7ca3b90ddc2a
+ ---> Using cache
+ ---> 7ca3b90ddc2a
 Step 4/14 : ENV RUN_GROUP nginx
- ---&gt; Using cache
- ---&gt; a2e2674d4c9f
+ ---> Using cache
+ ---> a2e2674d4c9f
 Step 5/14 : ENV DATA_DIR /usr/share/nginx/html
- ---&gt; Using cache
- ---&gt; f031dd5f8ce0
+ ---> Using cache
+ ---> f031dd5f8ce0
 Step 6/14 : ENV LOG_DIR /var/log/nginx
- ---&gt; Using cache
- ---&gt; e57a42b5bea0
+ ---> Using cache
+ ---> e57a42b5bea0
 Step 7/14 : RUN mkdir /var/log/nginx -p
- ---&gt; Using cache
- ---&gt; 0cbaaac3d55b
+ ---> Using cache
+ ---> 0cbaaac3d55b
 Step 8/14 : RUN chown nginx.nginx -R /var/log/nginx
- ---&gt; Using cache
- ---&gt; 714919c0618b
+ ---> Using cache
+ ---> 714919c0618b
 Step 9/14 : ADD html /usr/share/nginx/html
- ---&gt; 1c75fe9cdd3f
+ ---> 1c75fe9cdd3f
 Removing intermediate container 702f4e3ace2e
 Step 10/14 : ADD logs /var/log/nginx
- ---&gt; 545ba7cc270b
+ ---> 545ba7cc270b
 Removing intermediate container 123bb6c3703c
 Step 11/14 : ADD conf/nginx.conf /etc/nginx/nginx.conf
- ---&gt; d96a6dfa8ba9
+ ---> d96a6dfa8ba9
 Removing intermediate container db2394df7691
 Step 12/14 : ADD conf/conf.d /etc/nginx/conf.d
- ---&gt; d02f5acc99de
+ ---> d02f5acc99de
 Removing intermediate container fdc7c2542990
 Step 13/14 : EXPOSE 80
- ---&gt; Running in 679ecad9d883
- ---&gt; 9ee05d0ab66f
+ ---> Running in 679ecad9d883
+ ---> 9ee05d0ab66f
 Removing intermediate container 679ecad9d883
 Step 14/14 : ENTRYPOINT nginx -g "daemon off;"
- ---&gt; Running in 774ac2a000ac
- ---&gt; c4d5f5accc06
+ ---> Running in 774ac2a000ac
+ ---> c4d5f5accc06
 Removing intermediate container 774ac2a000ac
 Successfully built c4d5f5accc06
 [root@dev nginx]# 
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>注意最后面的点 (“.”)，表示dockerfile所在当前目录。</p>
 <p>从执行过程可以看出一共十三个步骤，都完成了。再查看目前的镜像：</p>
-<pre><code>[root@dev nginx]# docker images
+<pre class="line-numbers language-shell"><code class="language-shell">[root@dev nginx]# docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 nginx_image1        latest              c4d5f5accc06        47 seconds ago      109 MB
 docker.io/nginx     latest              8b89e48b5f15        6 days ago          109 MB
 [root@dev nginx]# 
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>可以看到从官方拉取了一个nginx镜像，然后在此镜像的基础上构建了nginx_image1镜像。注意，由于nginx_image1是在nginx镜像的基础上构建出来的，所以如果你要删除nginx镜像是不允许的，只有先删除nginx_image1镜像后才可以删除nginx镜像。</p>
-<h6 id="3、-运行新构建的镜像"><a href="#3、-运行新构建的镜像" class="headerlink" title="3、 运行新构建的镜像"></a>3、 运行新构建的镜像</h6><pre><code>[root@dev nginx]# docker images
+<h6 id="3、-运行新构建的镜像"><a href="#3、-运行新构建的镜像" class="headerlink" title="3、 运行新构建的镜像"></a>3、 运行新构建的镜像</h6><pre class="line-numbers language-shell"><code class="language-shell">[root@dev nginx]# docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 nginx_image1        latest              c4d5f5accc06        47 seconds ago      109 MB
 docker.io/nginx     latest              8b89e48b5f15        6 days ago          109 MB
@@ -779,10 +779,10 @@ docker.io/nginx     latest              8b89e48b5f15        6 days ago          
 00a88a12a6f4037c406a64f12e8c664cd1f1cbe1eb8c1c29371aa091a01ca161
 [root@dev nginx]# docker ps
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                NAMES
-00a88a12a6f4        nginx_image1        "/bin/sh -c 'nginx..."   15 seconds ago      Up 14 seconds       0.0.0.0:80-&gt;80/tcp   nginx
+00a88a12a6f4        nginx_image1        "/bin/sh -c 'nginx..."   15 seconds ago      Up 14 seconds       0.0.0.0:80->80/tcp   nginx
 [root@dev nginx]# 
-</code></pre>
-<p>其他配置与上面情况一下的配置，浏览器查看效果<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-950057f4fb55f4fc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="nginx：80"></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其他配置与上面情况一下的配置，浏览器查看效果<br><img src="/loading.gif" data-original="/images/linux/docker/docker-nginx2.png" alt="nginx：80"></p>
 <h3 id="三、-备注"><a href="#三、-备注" class="headerlink" title="三、 备注"></a>三、 备注</h3><p>3.1 docker run 执行完没有出错，但是docker ps时没有运行的容器。<br>方案：用docker ps -a 能看到没有启动容器。<br>用docker logs <contain name=""> 查看容器启动时的log</contain></p>
 <p>3.2 删除docker 镜像中REPOSITORY 和 TAG 为 None的镜像</p>
 <blockquote>

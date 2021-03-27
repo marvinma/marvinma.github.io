@@ -349,7 +349,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/images/java/maven-repo-new.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -504,14 +504,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    841
+                    770
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    3 分
                 </div>
                 
 
@@ -538,26 +538,26 @@
 <h3 id="1、下载"><a href="#1、下载" class="headerlink" title="1、下载"></a>1、下载</h3><p>通过此<a target="_blank" rel="noopener" href="https://www.sonatype.com/oss-thank-you-tar.gz">地址</a>下载需要的版本</p>
 <p>安装下载好nexus3.9最新版后解压，copy到/usr/local/nexus/目录下然后修改端口等配置。</p>
 <h3 id="2、修改配置"><a href="#2、修改配置" class="headerlink" title="2、修改配置"></a>2、修改配置</h3><p>2.1、启动。以3.6.0为例</p>
-<pre><code>[root@MiWiFi-R3-srv ~]# cd /usr/local/nexus-3.6.0-02/bin/
-[root@MiWiFi-R3-srv ~]# ./nexus run &amp;
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@MiWiFi-R3-srv ~]# cd /usr/local/nexus-3.6.0-02/bin/
+[root@MiWiFi-R3-srv ~]# ./nexus run &
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>稍等一会(首次启动会比较慢),当出现以下日志的时候表示启动成功!</p>
 <blockquote>
 <p>Started Sonatype Nexus OSS 3.6.0-02</p>
 </blockquote>
 <p>2.2、开启远程访问端口</p>
-<pre><code>[root@MiWiFi-R3-srv bin]# firewall-cmd --zone=public --add-port=8081/tcp --permanent
+<pre class="line-numbers language-shell"><code class="language-shell">[root@MiWiFi-R3-srv bin]# firewall-cmd --zone=public --add-port=8081/tcp --permanent
 [root@MiWiFi-R3-srv bin]# firewall-cmd --reload
-</code></pre>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-af61217d7c179028.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/java/maven-repo.png" alt="maven私服"></p>
 <blockquote>
 <p>nexus3默认端口是:8081<br>nexus3默认账号是:admin<br>nexus3默认密码是:admin123</p>
 </blockquote>
 <p>2.3、设置开机自启动(systemctl方式)<br>创建一个服务</p>
-<pre><code>[root@MiWiFi-R3-srv ~]# vim /usr/lib/systemd/system/nexus.service
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@MiWiFi-R3-srv ~]# vim /usr/lib/systemd/system/nexus.service
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>填入相关内容</p>
-<pre><code>[Unit]
+<pre class="line-numbers language-shell"><code class="language-shell">[Unit]
 Description=nexus service
 
 [Service]
@@ -570,98 +570,98 @@ Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>将服务加入开机启动</p>
-<pre><code>[root@MiWiFi-R3-srv ~]# systemctl enable nexus.service
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@MiWiFi-R3-srv ~]# systemctl enable nexus.service
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>重新加载配置文件</p>
-<pre><code>[root@MiWiFi-R3-srv ~]# systemctl daemon-reload
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@MiWiFi-R3-srv ~]# systemctl daemon-reload
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>2.4、修改nexus3的运行用户为root</p>
-<pre><code>[root@MiWiFi-R3-srv bin]# vim nexus.rc
+<pre class="line-numbers language-shell"><code class="language-shell">[root@MiWiFi-R3-srv bin]# vim nexus.rc
 
 run_as_user="root"
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>2.5、修改nexus3启动时要使用的jdk版本</p>
-<pre><code>[root@MiWiFi-R3-srv bin]# vim nexus
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@MiWiFi-R3-srv bin]# vim nexus
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>第14行:</p>
-<pre><code>INSTALL4J_JAVA_HOME_OVERRIDE=/usr/local/java/jdk1.8.0_144
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">INSTALL4J_JAVA_HOME_OVERRIDE=/usr/local/java/jdk1.8.0_144
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>2.6、修改nexus3默认端口(可选)</p>
-<pre><code>[root@MiWiFi-R3-srv etc]# cd /usr/local/nexus-3.6.0-02/etc/
+<pre class="line-numbers language-shell"><code class="language-shell">[root@MiWiFi-R3-srv etc]# cd /usr/local/nexus-3.6.0-02/etc/
 [root@MiWiFi-R3-srv etc]# vim nexus-default.properties 
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>默认端口:8081</p>
-<pre><code>application-port=8081
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">application-port=8081
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>2.7、修改nexus3数据以及相关日志的存储位置(可选)：</p>
-<pre><code>[root@MiWiFi-R3-srv bin]# cd /usr/local/nexus-3.6.0-02/bin/
+<pre class="line-numbers language-shell"><code class="language-shell">[root@MiWiFi-R3-srv bin]# cd /usr/local/nexus-3.6.0-02/bin/
 [root@MiWiFi-R3-srv bin]# vim nexus.vmoptions 
 
 -XX:LogFile=./sonatype-work/nexus3/log/jvm.log
 -Dkaraf.data=./sonatype-work/nexus3
 -Djava.io.tmpdir=./sonatype-work/nexus3/tmp
-</code></pre>
-<h3 id="3、上传外部jar文件"><a href="#3、上传外部jar文件" class="headerlink" title="3、上传外部jar文件"></a>3、上传外部jar文件</h3><p>3.1、创建仓库<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-01a4b3206506b4e7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>3.2、上传jar<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-b18e364e8e8677a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>3.3、最最最重要的一步：将新创建的3rdParty加入到public对外公布的group下<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-f87fde0566ba6175.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3、上传外部jar文件"><a href="#3、上传外部jar文件" class="headerlink" title="3、上传外部jar文件"></a>3、上传外部jar文件</h3><p>3.1、创建仓库<br><img src="/loading.gif" data-original="/images/java/maven-repo-create-repo.png" alt="创建仓库"></p>
+<p>3.2、上传jar<br><img src="/loading.gif" data-original="/images/java/maven-repo-upload.png" alt="upload jar"></p>
+<p>3.3、最最最重要的一步：将新创建的3rdParty加入到public对外公布的group下<br><img src="/loading.gif" data-original="/images/java/maven-repo-set-public.png" alt="设置为public"></p>
 <h3 id="4、配置本地maven的pom文件"><a href="#4、配置本地maven的pom文件" class="headerlink" title="4、配置本地maven的pom文件"></a>4、配置本地maven的pom文件</h3><p>4.1、全局修改maven配置文件的setting.xml配置文件</p>
-<pre><code> &lt;profiles&gt;
+<pre class="line-numbers language-xml"><code class="language-xml"> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>profiles</span><span class="token punctuation">></span></span>
 
-    &lt;profile&gt;
-    &lt;id&gt;dev&lt;/id&gt;
-    &lt;repositories&gt;
-        &lt;repository&gt; 
-            &lt;id&gt;central&lt;/id&gt; 
-            &lt;url&gt;http://jenkins.haier.haiqiang.xin:8887/repository/maven-public/&lt;/url&gt;
-            &lt;name&gt;Yuandian Maven Repo&lt;/name&gt; 
-        &lt;/repository&gt;
-          &lt;repository&gt;
-           &lt;id&gt;mvn-repo&lt;/id&gt;
-           &lt;url&gt;http://jenkins.haier.haiqiang.xin:8887/repository/maven-public/&lt;/url&gt;
-       &lt;/repository&gt;
-    &lt;/repositories&gt;
-    &lt;pluginRepositories&gt;  
-        &lt;pluginRepository&gt;  
-            &lt;id&gt;nexus&lt;/id&gt;  
-            &lt;name&gt;nexus&lt;/name&gt;  
-            &lt;url&gt;http://jenkins.haier.haiqiang.xin:8887/repository/maven-public/&lt;/url&gt;
-            &lt;releases&gt;  
-                &lt;enabled&gt;true&lt;/enabled&gt;  
-            &lt;/releases&gt;  
-            &lt;snapshots&gt;  
-                &lt;enabled&gt;true&lt;/enabled&gt;  
-            &lt;/snapshots&gt;  
-        &lt;/pluginRepository&gt;  
-    &lt;/pluginRepositories&gt;
-    &lt;/profile&gt;
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>profile</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>dev<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>repositories</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>repository</span><span class="token punctuation">></span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>central<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span> 
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url</span><span class="token punctuation">></span></span>http://jenkins.haier.haiqiang.xin:8887/repository/maven-public/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>Yuandian Maven Repo<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span> 
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>repository</span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>repository</span><span class="token punctuation">></span></span>
+           <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>mvn-repo<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
+           <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url</span><span class="token punctuation">></span></span>http://jenkins.haier.haiqiang.xin:8887/repository/maven-public/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url</span><span class="token punctuation">></span></span>
+       <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>repository</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>repositories</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pluginRepositories</span><span class="token punctuation">></span></span>  
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pluginRepository</span><span class="token punctuation">></span></span>  
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>nexus<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>  
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>nexus<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>  
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url</span><span class="token punctuation">></span></span>http://jenkins.haier.haiqiang.xin:8887/repository/maven-public/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>releases</span><span class="token punctuation">></span></span>  
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>enabled</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>enabled</span><span class="token punctuation">></span></span>  
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>releases</span><span class="token punctuation">></span></span>  
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>snapshots</span><span class="token punctuation">></span></span>  
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>enabled</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>enabled</span><span class="token punctuation">></span></span>  
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>snapshots</span><span class="token punctuation">></span></span>  
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>pluginRepository</span><span class="token punctuation">></span></span>  
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>pluginRepositories</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>profile</span><span class="token punctuation">></span></span>
 
-  &lt;/profiles&gt;
-</code></pre>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>profiles</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>4.2、在项目中使用私服，修改maven的pom文件，加入repository的配置</p>
-<pre><code>    &lt;repositories&gt;
-        &lt;repository&gt;
-            &lt;id&gt;nexus&lt;/id&gt;
-            &lt;name&gt;Team Nexus Repository&lt;/name&gt;
-            &lt;url&gt;http://27.223.70.82:8887/repository/maven-public/&lt;/url&gt;
-            &lt;layout&gt;default&lt;/layout&gt;
-            &lt;releases&gt;
-                &lt;enabled&gt;true&lt;/enabled&gt;
-            &lt;/releases&gt;
-            &lt;snapshots&gt;
-                &lt;enabled&gt;false&lt;/enabled&gt;
-            &lt;/snapshots&gt;
-        &lt;/repository&gt;
-    &lt;/repositories&gt;
-    &lt;pluginRepositories&gt;
-        &lt;pluginRepository&gt;
-        &lt;id&gt;nexus&lt;/id&gt;
-        &lt;name&gt;Team Nexus Repository&lt;/name&gt;
-        &lt;url&gt;http://27.223.70.82:8887/repository/maven-public/&lt;/url&gt;
-        &lt;/pluginRepository&gt;
-    &lt;/pluginRepositories&gt;
-</code></pre>
+<pre class="line-numbers language-xml"><code class="language-xml">    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>repositories</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>repository</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>nexus<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>Team Nexus Repository<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url</span><span class="token punctuation">></span></span>http://27.223.70.82:8887/repository/maven-public/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>layout</span><span class="token punctuation">></span></span>default<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>layout</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>releases</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>enabled</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>enabled</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>releases</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>snapshots</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>enabled</span><span class="token punctuation">></span></span>false<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>enabled</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>snapshots</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>repository</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>repositories</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pluginRepositories</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pluginRepository</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>nexus<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>Team Nexus Repository<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url</span><span class="token punctuation">></span></span>http://27.223.70.82:8887/repository/maven-public/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>pluginRepository</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>pluginRepositories</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>结束。</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yougoule/article/details/56843562">https://blog.csdn.net/yougoule/article/details/56843562</a> </p>
 
@@ -1178,19 +1178,19 @@ run_as_user="root"
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2018/09/02/windows-vuejs-xue-xi-bi-ji-1/">
+                <a href="/2018/09/02/windows-vuejs-xue-xi-bi-ji-2/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="windows10 上浅尝vue js好记性不如烂笔头之一">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="windows10 上浅尝vue js好记性不如烂笔头之二">
                         
-                        <span class="card-title">windows10 上浅尝vue js好记性不如烂笔头之一</span>
+                        <span class="card-title">windows10 上浅尝vue js好记性不如烂笔头之二</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            vuejs学习笔记—-vue安装、数据初始化、数据mock简书地址
+                            vuejs学习笔记—-父子组件传值、动态组件、自定义组件、vue-router、vue-link、state简书地址
                         
                     </div>
                     <div class="publish-info">

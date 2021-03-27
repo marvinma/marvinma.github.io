@@ -539,19 +539,18 @@
 <span id="more"></span>
 
 <p>同事那里的总结拿过来自己保存一份，类似的教程太多了。</p>
-<p>在linux上安装mysql server，进行常规设置</p>
 <h2 id="MySQL数据库安装"><a href="#MySQL数据库安装" class="headerlink" title="MySQL数据库安装"></a>MySQL数据库安装</h2><ol>
 <li><p><strong>安装</strong></p>
-<pre><code># 更新包索引
+<pre class="line-numbers language-shell"><code class="language-shell"># 更新包索引
 sudo apt-get update
 
 # 安装
 sudo apt-get install mysql-server
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p> 安装过程中会提示设置root密码。</p>
 </li>
 <li><p><strong>设置</strong></p>
-<pre><code># 执行安全脚本设置
+<pre class="line-numbers language-shell"><code class="language-shell"># 执行安全脚本设置
 sudo mysql_secure_installation
 
 # 执行初始化脚本(按此方法安装不用执行)
@@ -561,10 +560,10 @@ mysql_install_db
 
 # 5.7.6及后续版本执行
 mysqld --initialize
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p><strong>测试</strong></p>
-<pre><code># 查看mysql运行状态
+<pre class="line-numbers language-shell"><code class="language-shell"># 查看mysql运行状态
 systemctl status mysql.service
 
 # 启动Mysql
@@ -575,14 +574,14 @@ sudo systemctl stop mysql
 
 # 重启Mysql
 sudo systemctl restart mysql
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 </ol>
 <h2 id="MySQL数据库配置"><a href="#MySQL数据库配置" class="headerlink" title="MySQL数据库配置"></a>MySQL数据库配置</h2><p>按此种方式安装完Mysql后，配置文件默认位于/etc/msyql下，其中mysql.conf.d下的mysqld.cnf用于配置服务端，conf.d下的mysql.cnf用于配置客户端。</p>
 <ol>
 <li><strong>忽略大小写</strong></li>
 </ol>
-<pre class="line-numbers language-sh"><code class="language-sh"># 编辑my.cnf文件
+<pre class="line-numbers language-shell"><code class="language-shell"># 编辑my.cnf文件
 vim /etc/my.cnf
 
 # 在[msyqld]下添加如下代码
@@ -643,92 +642,111 @@ max_allowed_packet=100M
 </li>
 </ol>
 <p>  先看能否ping通远程服务器，如果不可以就是网络问题。然后，检查端口是否被防火墙挡住了</p>
-<pre><code>telnet ip地址 3306
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">telnet ip地址 3306
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>  如果连接失败，配置防火墙</p>
-<pre><code># 防火墙放开Mysql端口
+<pre class="line-numbers language-shell"><code class="language-shell"># 防火墙放开Mysql端口
 iptables -A INPUT -p tcp --dport 3306 -j ACCEPT    
 iptables -A OUTPUT -p tcp --dport 3306 -j ACCEPT
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>  4.2 检查MySQL配置<br>  如果开启了防火墙，telnet还是失败，通过netstat查看3306的端口状态</p>
-<pre><code>netstat -apn | grep 3306
+<pre class="line-numbers language-shell"><code class="language-shell">netstat -apn | grep 3306
 
 # 返回结果
 tcp6 0 0 127.0.0.1:3306 :::* LISTEN 13524/mysqld
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>  如果显示127.0.0.1：3306表示3306被绑定到了本地。需要修改mysqld.conf</p>
-<pre><code># 编辑mysqld.cnf文件
+<pre class="line-numbers language-shell"><code class="language-shell"># 编辑mysqld.cnf文件
 vim /etc/mysql/mysql.conf.d/mysqld.cnf
 [mysqld]
 bind-address=addr
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>  不配置或者IP配置为0.0.0.0，表示监听所有客户端连接。</p>
 <p>  4.3 检查用户访问权限    MySQ建用户的时候会指定一个host,默认是127.0.0.1/localhost，那么这个用户就只能本机访问，其他机器用这个账号访问会提示没有权限，host改为%，表示允许所有机器访问。</p>
-<pre><code># 登录mysql服务器
+<pre class="line-numbers language-shell"><code class="language-shell"># 登录mysql服务器
 mysql -uroot -p
 
 # 使用mysql数据库
-mysql&gt; use mysql;
+mysql> use mysql;
 Database changed
 
 # 修改root用户访问权限
-mysql&gt; update user set host='%' where user='root';
+mysql> update user set host='%' where user='root';
 Query OK, 0 rows affected(0.00 sec)
 Row matched: 1 Changed: 0 Warnings: 0
 
 # 查看结果
-mysql&gt; select host, user from user;
+mysql> select host, user from user;
 +------+-------+
 |host  |user    |
 +------+-------+
 |%     |root    |
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>  重启Mysql使用修改生效</p>
 <ol start="5">
 <li><strong>设置开机启动及禁止</strong></li>
 </ol>
-<pre><code># 禁止启动
+<pre class="line-numbers language-shell"><code class="language-shell"># 禁止启动
 sudo systemctl disable mysqld
 
 # 开机启动
 sudo systemctl enable mysqld
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="MySQL用户及数据库-表权限配置"><a href="#MySQL用户及数据库-表权限配置" class="headerlink" title="MySQL用户及数据库/表权限配置"></a>MySQL用户及数据库/表权限配置</h2><p>基本操作命令：</p>
 <ul>
-<li>1、查询用户权限<pre><code>show grants for username;
-</code></pre>
-</li>
-<li>2、用户授权<pre><code>grant select on db.* to username;
-</code></pre>
-</li>
-<li>3、回收用户权限<pre><code>revoke select on db.* from username;(权限不存在会报错)
-</code></pre>
-<h4 id="1、新建用户"><a href="#1、新建用户" class="headerlink" title="1、新建用户"></a>1、新建用户</h4>　1.1 登录MYSQL：<br>　　root@bin&gt;mysql -u root -p<br>&nbsp;&nbsp; &nbsp;Enter password: **********<br>　　1.2 创建用户：</li>
+<li>1、查询用户权限</li>
 </ul>
-<p>　　mysql&gt; insert into mysql.user(Host,User,Password) values(“localhost”,”demo”,password(“1234”));</p>
-<p>　　这样就创建了一个名为：demo 密码为：1234 的用户。</p>
+<pre class="line-numbers language-shell"><code class="language-shell">show grants for username;
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>2、用户授权<pre class="line-numbers language-shell"><code class="language-shell">grant select on db.* to username;
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li>3、回收用户权限<pre class="line-numbers language-shell"><code class="language-shell">revoke select on db.* from username;(权限不存在会报错)
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="1、新建用户"><a href="#1、新建用户" class="headerlink" title="1、新建用户"></a>1、新建用户</h4>　1.1 登录MYSQL：<br>　　root@bin&gt;mysql -u root -p<br>&nbsp;&nbsp; &nbsp;Enter password: **********<br>　　1.2 创建用户：<pre class="line-numbers language-sql"><code class="language-sql">　　mysql<span class="token operator">></span> <span class="token keyword">insert</span> <span class="token keyword">into</span> mysql<span class="token punctuation">.</span><span class="token keyword">user</span><span class="token punctuation">(</span>Host<span class="token punctuation">,</span><span class="token keyword">User</span><span class="token punctuation">,</span>Password<span class="token punctuation">)</span> <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token string">"localhost"</span><span class="token punctuation">,</span><span class="token string">"demo"</span><span class="token punctuation">,</span>password<span class="token punctuation">(</span><span class="token string">"1234"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+　　这样就创建了一个名为：demo 密码为：1234 的用户。</li>
+</ul>
 <p>　　注意：此处的”localhost”，是指该用户只能在本地登录，不能在另外一台机器上远程登录。如果想远程登录的话，将”localhost”改为”%”，表示在任何一台电脑上都可以登录。也可以指定某台机器可以远程登录。</p>
 <p>　　1.3 然后登录一下：</p>
-<p>　　mysql&gt;exit;</p>
-<p>　　root@bin&gt;mysql -u demo -p<br>&nbsp;&nbsp; &nbsp;Enter password: **********</p>
+<pre class="line-numbers language-shell"><code class="language-shell">　　mysql>exit;
+
+　　root@bin>mysql -u demo -p
+&nbsp;Enter password: **********
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2、用户授权"><a href="#2、用户授权" class="headerlink" title="2、用户授权"></a>2、用户授权</h4><p>授权格式：grant 权限 on 数据库.* to 用户名@登录主机 identified by “密码”;　</p>
 <p>　　2.1 登录MYSQL（有ROOT权限），这里以ROOT身份登录：</p>
-<p>　　root@bin&gt;mysql -u demo -p<br>&nbsp;&nbsp; &nbsp;Enter password: **********</p>
+<pre><code>　　root@bin&gt;mysql -u demo -p
+&nbsp;Enter password: **********
+</code></pre>
 <p>　　2.2 首先为用户创建一个数据库(testDB)：</p>
-<p>　　mysql&gt;create database demoDB;</p>
+<pre class="line-numbers language-sql"><code class="language-sql">　　mysql<span class="token operator">></span><span class="token keyword">create</span> <span class="token keyword">database</span> demoDB<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>　　2.3 授权test用户拥有testDB数据库的所有权限（某个数据库的所有权限）：</p>
+<pre><code>```sql
+</code></pre>
 <p>　　&nbsp;mysql&gt;grant all privileges on demoDB.* to demo@localhost identified by ‘1234’;</p>
-<p>&nbsp;　　mysql&gt;flush privileges;//刷新系统权限表</p>
+<p>&nbsp;　　mysql&gt;flush privileges;//刷新系统权限表<br>    ```</p>
 <p>　　格式：grant 权限 on 数据库.* to 用户名@登录主机 identified by “密码”;　</p>
 <p>　　2.4 如果想指定部分权限给一用户，可以这样来写:</p>
-<p>　　mysql&gt;grant select,update on demoDB.* to demo@localhost identified by ‘1234’;</p>
-<p>　　mysql&gt;flush privileges; //刷新系统权限表</p>
+<pre><code>mysql&gt;grant select,update on demoDB.* to demo@localhost identified by '1234';
+
+mysql&gt;flush privileges; //刷新系统权限表
+</code></pre>
 <p>　　2.5 授权test用户拥有所有数据库的某些权限： 　&nbsp;</p>
-<p>　　mysql&gt;grant select,delete,update,create,drop on <em>.</em> to demo@”%” identified by “1234”;</p>
+<pre><code>mysql&gt;grant select,delete,update,create,drop on *.* to demo@"%" identified by "1234";
+</code></pre>
 <p>&nbsp; &nbsp; &nbsp;//test用户对所有数据库都有select,delete,update,create,drop 权限。</p>
 <p>　&nbsp;//@”%” 表示对所有非本地主机授权，不包括localhost。（localhost地址设为127.0.0.1，如果设为真实的本地地址，不知道是否可以，没有验证。）</p>
 <p>　//对localhost授权：加上一句grant all privileges on demoDB.* to demo@localhost identified by ‘1234’;即可。&nbsp;</p>
-<h4 id="3、删除用户"><a href="#3、删除用户" class="headerlink" title="3、删除用户"></a>3、删除用户</h4><p>root@bin&gt;mysql -u demo -p<br>&nbsp;&nbsp; &nbsp;Enter password: **********<br>&nbsp;　　mysql&gt;Delete FROM user Where User=’demo’ and Host=’localhost’;<br>&nbsp;　　mysql&gt;flush privileges;<br>&nbsp;　　mysql&gt;drop database demoDB; //删除用户的数据库<br>删除账户及权限：&gt;drop user 用户名@’%’;<br>　　　　　　　　&gt;drop user 用户名@ localhost;&nbsp;</p>
+<h4 id="3、删除用户"><a href="#3、删除用户" class="headerlink" title="3、删除用户"></a>3、删除用户</h4><pre><code>root@bin&gt;mysql -u demo -p
+&nbsp;&nbsp; &nbsp;Enter password: **********
+&nbsp;　　mysql&gt;Delete FROM user Where User='demo' and Host='localhost';
+&nbsp;　　mysql&gt;flush privileges;
+&nbsp;　　mysql&gt;drop database demoDB; //删除用户的数据库
+</code></pre>
+<p>删除账户及权限：&gt;drop user 用户名@’%’;<br>　　　　　　　　&gt;drop user 用户名@ localhost;&nbsp;</p>
 <h4 id="4、修改用户密码"><a href="#4、修改用户密码" class="headerlink" title="4、修改用户密码"></a>4、修改用户密码</h4><p>root@bin&gt;mysql -u demo -p<br>&nbsp;&nbsp; &nbsp; &nbsp;Enter password: **********<br>&nbsp; 　　mysql&gt;update mysql.user set password=password(‘新密码’) where User=”demo” and Host=”localhost”;<br>&nbsp; 　　mysql&gt;flush privileges;</p>
 <p><strong>说明：grant和revoke可以在几个层次上控制访问权限</strong><br>1.整个服务器：grant all /revoke all<br>2.整个数据库：on database.*<br>3.特定的表：on database.table<br>4.特定的列：grant select(id, se, rank) on testdb.apache_log to dba@localhost;<br>5.特定的存储过程：grant execute on procedure testdb.pr_add to ’dba’@’localhost’<br>6.特定的函数：grant execute on function testdb.fn_add to ’dba’@’localhost’</p>
 
@@ -1192,19 +1210,19 @@ sudo systemctl enable mysqld
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2018/06/15/react-native-an-zhuo-xiang-mu-gradle-you-hua/">
+                <a href="/2018/06/15/react-native-xiang-mu-bian-yi-da-bao-cheng-android-app/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="react-native 安卓项目gradle优化">
+                        <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="react native项目编译，打包成android APP">
                         
-                        <span class="card-title">react-native 安卓项目gradle优化</span>
+                        <span class="card-title">react native项目编译，打包成android APP</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            大前端学习之安卓项目编译速度优化简书地址
+                            编译react native项目，并最终打包成安卓的apk包简书地址
                         
                     </div>
                     <div class="publish-info">

@@ -508,7 +508,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.2k
+                    2.1k
                 </div>
                 
 
@@ -546,45 +546,74 @@
 </li>
 </ul>
 <h2 id="2、实际操作"><a href="#2、实际操作" class="headerlink" title="2、实际操作"></a>2、实际操作</h2><p>实际操作过程因为我作为后端工程师，没有前端环境，因此用我本地接口调试神奇postman来模拟前端。<br>服务端有一个接口是这样的：</p>
-<pre><code>    @PostMapping("tests")
-    public RtnResult&lt;String&gt; testPost(@RequestBody DataVo vo) {
-        logger.info("post data:{}" , JSONObject.toJSONString(vo));
-        return new RtnResult&lt;&gt;(0,"保存成功");
-    }
-</code></pre>
-<p>用postman本地测试，故意不传参数，效果如下：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-0eb65273110f37b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="参数错误400的场景"><br>接下来，抓包查看。</p>
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">"tests"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> RtnResult<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token function">testPost</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestBody</span> DataVo vo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"post data:{}"</span> <span class="token punctuation">,</span> JSONObject<span class="token punctuation">.</span><span class="token function">toJSONString</span><span class="token punctuation">(</span>vo<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">RtnResult</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token string">"保存成功"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>用postman本地测试，故意不传参数，效果如下：<br><img src="/loading.gif" data-original="/images/tools/tcpdump-postman.png" alt="参数错误400的场景"><br>接下来，抓包查看。</p>
 <h3 id="2-1、准备工作"><a href="#2-1、准备工作" class="headerlink" title="2.1、准备工作"></a>2.1、准备工作</h3><ul>
-<li>先看看自己本地的ip，有个比较坑的地方，就是不要想当然的认为在本地命令行ipconfig或者ifconfig查看到的就是所谓的本地ip，要看外网出去的对公IP地址。比如<a target="_blank" rel="noopener" href="http://www.ip138.com/">http://www.ip138.com/</a>这个网站可以就可以产看本地ip，可以试试，两种方式得到的ip地址是不一样的。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-a60592db30bb3417.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="我的本地IP地址"></li>
-<li>确保服务器安装了tcpdump，一般linux都自带了这个命令，如果没有的自行百度安装。</li>
-<li>确定服务器的网卡号，一般默认是eth0。<h3 id="2-2、抓取服务端报文"><a href="#2-2、抓取服务端报文" class="headerlink" title="2.2、抓取服务端报文"></a>2.2、抓取服务端报文</h3>例如我截取本机<code> 112.224.67.134</code>和主机<code>39.106.35.56</code>之间的数据，在服务器<code>39.106.35.56</code>的任意目录执行如下命令：<br>```<br>[root@dev ~]# tcpdump -A -i eth0 -w dump-file1 host 112.224.67.134<br>tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes</li>
+<li>先看看自己本地的ip，有个比较坑的地方，就是不要想当然的认为在本地命令行ipconfig或者ifconfig查看到的就是所谓的本地ip，要看外网出去的对公IP地址。比如<a target="_blank" rel="noopener" href="http://www.ip138.com/">http://www.ip138.com/</a>这个网站可以就可以产看本地ip，可以试试，两种方式得到的ip地址是不一样的。</li>
 </ul>
-<pre><code>在本地用post请求服务器的接口
-![9.png](https://upload-images.jianshu.io/upload_images/4109786-838d2589c586a4c1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-Ctrl+C停止保存抓包，报文内容保存在dump-file1文件内
-</code></pre>
-<p>[root@dev ~]# tcpdump -A -i eth0 -w dump-file1 host 112.224.67.134<br>tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes<br>^C24 packets captured<br>25 packets received by filter<br>0 packets dropped by kernel<br>[root@dev ~]# ll<br>total 4<br>-rw-r–r– 1 tcpdump tcpdump 2880 Jul  3 14:05 dump-file1<br>[root@dev ~]# </p>
-<pre><code>可以使用` tcpdump -r dump-file1 `命令查看
-</code></pre>
-<p>[root@dev ~]# tcpdump -r dump-file1<br>reading from file dump-file1, link-type EN10MB (Ethernet)<br>14:04:30.636260 IP dev.ssh &gt; 112.224.67.134.26919: Flags [P.], seq 332116900:332116952, ack 3962938602, win 255, length 52<br>14:04:30.661616 IP dev.ssh &gt; 112.224.67.134.26919: Flags [P.], seq 52:184, ack 1, win 255, length 132<br>14:04:30.710115 IP 112.224.67.134.26919 &gt; dev.ssh: Flags [.], ack 184, win 66, length 0<br>14:04:49.658756 IP 112.224.67.134.26920 &gt; dev.ssh: Flags [P.], seq 3449703456:3449703492, ack 3469026640, win 64, length 36<br>14:04:49.698057 IP dev.ssh &gt; 112.224.67.134.26920: Flags [.], ack 36, win 255, length 0<br>14:05:04.771846 IP 112.224.67.134.58166 &gt; dev.d-s-n: Flags [S], seq 3379667287, win 17520, options [mss 1400,nop,wscale 8,nop,nop,sackOK], length 0<br>14:05:04.771914 IP dev.d-s-n &gt; 112.224.67.134.58166: Flags [S.], seq 2331290743, ack 3379667288, win 29200, options [mss 1460,nop,nop,sackOK,nop,wscale 7], length 0<br>14:05:04.811492 IP 112.224.67.134.58166 &gt; dev.d-s-n: Flags [.], ack 1, win 68, length 0<br>14:05:04.820465 IP 112.224.67.134.58166 &gt; dev.d-s-n: Flags [P.], seq 1:415, ack 1, win 68, length 414<br>14:05:04.820496 IP dev.d-s-n &gt; 112.224.67.134.58166: Flags [.], ack 415, win 237, length 0<br>14:05:04.824051 IP dev.d-s-n &gt; 112.224.67.134.58166: Flags [P.], seq 1:354, ack 415, win 237, length 353<br>14:05:04.824297 IP dev.d-s-n &gt; 112.224.67.134.58166: Flags [P.], seq 354:359, ack 415, win 237, length 5<br>14:05:04.871458 IP 112.224.67.134.58166 &gt; dev.d-s-n: Flags [.], ack 359, win 67, length 0<br>14:05:05.911468 IP 112.224.67.134.58166 &gt; dev.d-s-n: Flags [.], seq 414:415, ack 359, win 67, length 1<br>14:05:05.911526 IP dev.d-s-n &gt; 112.224.67.134.58166: Flags [.], ack 415, win 237, options [nop,nop,sack 1 {414:415}], length 0<br>14:05:06.951486 IP 112.224.67.134.58166 &gt; dev.d-s-n: Flags [.], seq 414:415, ack 359, win 67, length 1<br>14:05:06.951537 IP dev.d-s-n &gt; 112.224.67.134.58166: Flags [.], ack 415, win 237, options [nop,nop,sack 1 {414:415}], length 0<br>14:05:08.011588 IP 112.224.67.134.58166 &gt; dev.d-s-n: Flags [.], seq 414:415, ack 359, win 67, length 1<br>14:05:08.011644 IP dev.d-s-n &gt; 112.224.67.134.58166: Flags [.], ack 415, win 237, options [nop,nop,sack 1 {414:415}], length 0<br>14:05:09.051406 IP 112.224.67.134.58166 &gt; dev.d-s-n: Flags [.], seq 414:415, ack 359, win 67, length 1<br>14:05:09.051452 IP dev.d-s-n &gt; 112.224.67.134.58166: Flags [.], ack 415, win 237, options [nop,nop,sack 1 {414:415}], length 0<br>14:05:10.091399 IP 112.224.67.134.58166 &gt; dev.d-s-n: Flags [.], seq 414:415, ack 359, win 67, length 1<br>14:05:10.091451 IP dev.d-s-n &gt; 112.224.67.134.58166: Flags [.], ack 415, win 237, options [nop,nop,sack 1 {414:415}], length 0<br>14:05:10.130248 IP 112.224.67.134.26919 &gt; dev.ssh: Flags [P.], seq 1:53, ack 184, win 66, length 52<br>[root@dev ~]# </p>
-<pre><code>### 2.2、用wireshark分析报文内容
-了解tcp网络协议的，看到以上报文，应该已经了解一二了。
-为了将其转换成常用的http协议，我们用wireshark这款工具再分析一下。
-下载该文件，在windows上可以直接将该文件拖入到wireshark，会自动打开。
-![tcpdump文件在WireShark中打开](https://upload-images.jianshu.io/upload_images/4109786-f34ad2b9ed3d62e4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-可以看到三次握手的具体报文。同时看到了一个post的http request和一个http status为200的http response。右击post请求，选择【追踪流】-&gt;【TCP流】：
-![TCP流查看](https://upload-images.jianshu.io/upload_images/4109786-9abc599bc4633018.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-看到了前端传过来的参数和返回值。
-
-当然，查看服务器log，也看到了日志信息
-</code></pre>
-<p>2018-07-03 14:24:16.660  INFO 29004 — [nio-8086-exec-6] com.hczt.shop.weixin.config.CorsFilter   : requesturi is : /weixin/tests<br>2018-07-03 14:24:16.661  INFO 29004 — [nio-8086-exec-6] c.h.s.weixin.controller.TestController   : post data:{“address”:”山东青岛”,”age”:28,”name”:”张三”,”sex”:”男”}</p>
-<pre><code>这里演示的正常返回的，如果接口是400，服务端也就没有这条log，这时候抓包也才更有意义了。
-到这里，基本的使用就介绍完了。至于WireShark在本地怎么使用，怎么添加过滤器等，查看其它博文学习。
-## 3、推荐
-[WireShark抓包使用教程](https://www.cnblogs.com/Jerry-zhao2110/p/8282427.html)
-[tcpdump语法介绍与常用参数举例](https://www.jianshu.com/p/a62ed1bb5b20)
-</code></pre>
+<p><img src="/loading.gif" data-original="/images/tools/tcpdumu-local-ip.png" alt="我的本地IP地址"></p>
+<ul>
+<li>确保服务器安装了tcpdump，一般linux都自带了这个命令，如果没有的自行百度安装。</li>
+<li>确定服务器的网卡号，一般默认是eth0。<h3 id="2-2、抓取服务端报文"><a href="#2-2、抓取服务端报文" class="headerlink" title="2.2、抓取服务端报文"></a>2.2、抓取服务端报文</h3>例如我截取本机<code> 112.224.67.134</code>和主机<code>39.106.35.56</code>之间的数据，在服务器<code>39.106.35.56</code>的任意目录执行如下命令：</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@dev ~]# tcpdump -A -i eth0 -w dump-file1 host 112.224.67.134
+tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>在本地用post请求服务器的接口<br><img src="/loading.gif" data-original="/images/tools/tcpdump-postman-api.png" alt="9.png"></p>
+<p>Ctrl+C停止保存抓包，报文内容保存在dump-file1文件内</p>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@dev ~]# tcpdump -A -i eth0 -w dump-file1 host 112.224.67.134
+tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes
+^C24 packets captured
+25 packets received by filter
+0 packets dropped by kernel
+[root@dev ~]# ll
+total 4
+-rw-r--r-- 1 tcpdump tcpdump 2880 Jul  3 14:05 dump-file1
+[root@dev ~]# 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以使用<code>tcpdump -r dump-file1</code>命令查看</p>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@dev ~]# tcpdump -r dump-file1 
+reading from file dump-file1, link-type EN10MB (Ethernet)
+14:04:30.636260 IP dev.ssh > 112.224.67.134.26919: Flags [P.], seq 332116900:332116952, ack 3962938602, win 255, length 52
+14:04:30.661616 IP dev.ssh > 112.224.67.134.26919: Flags [P.], seq 52:184, ack 1, win 255, length 132
+14:04:30.710115 IP 112.224.67.134.26919 > dev.ssh: Flags [.], ack 184, win 66, length 0
+14:04:49.658756 IP 112.224.67.134.26920 > dev.ssh: Flags [P.], seq 3449703456:3449703492, ack 3469026640, win 64, length 36
+14:04:49.698057 IP dev.ssh > 112.224.67.134.26920: Flags [.], ack 36, win 255, length 0
+14:05:04.771846 IP 112.224.67.134.58166 > dev.d-s-n: Flags [S], seq 3379667287, win 17520, options [mss 1400,nop,wscale 8,nop,nop,sackOK], length 0
+14:05:04.771914 IP dev.d-s-n > 112.224.67.134.58166: Flags [S.], seq 2331290743, ack 3379667288, win 29200, options [mss 1460,nop,nop,sackOK,nop,wscale 7], length 0
+14:05:04.811492 IP 112.224.67.134.58166 > dev.d-s-n: Flags [.], ack 1, win 68, length 0
+14:05:04.820465 IP 112.224.67.134.58166 > dev.d-s-n: Flags [P.], seq 1:415, ack 1, win 68, length 414
+14:05:04.820496 IP dev.d-s-n > 112.224.67.134.58166: Flags [.], ack 415, win 237, length 0
+14:05:04.824051 IP dev.d-s-n > 112.224.67.134.58166: Flags [P.], seq 1:354, ack 415, win 237, length 353
+14:05:04.824297 IP dev.d-s-n > 112.224.67.134.58166: Flags [P.], seq 354:359, ack 415, win 237, length 5
+14:05:04.871458 IP 112.224.67.134.58166 > dev.d-s-n: Flags [.], ack 359, win 67, length 0
+14:05:05.911468 IP 112.224.67.134.58166 > dev.d-s-n: Flags [.], seq 414:415, ack 359, win 67, length 1
+14:05:05.911526 IP dev.d-s-n > 112.224.67.134.58166: Flags [.], ack 415, win 237, options [nop,nop,sack 1 {414:415}], length 0
+14:05:06.951486 IP 112.224.67.134.58166 > dev.d-s-n: Flags [.], seq 414:415, ack 359, win 67, length 1
+14:05:06.951537 IP dev.d-s-n > 112.224.67.134.58166: Flags [.], ack 415, win 237, options [nop,nop,sack 1 {414:415}], length 0
+14:05:08.011588 IP 112.224.67.134.58166 > dev.d-s-n: Flags [.], seq 414:415, ack 359, win 67, length 1
+14:05:08.011644 IP dev.d-s-n > 112.224.67.134.58166: Flags [.], ack 415, win 237, options [nop,nop,sack 1 {414:415}], length 0
+14:05:09.051406 IP 112.224.67.134.58166 > dev.d-s-n: Flags [.], seq 414:415, ack 359, win 67, length 1
+14:05:09.051452 IP dev.d-s-n > 112.224.67.134.58166: Flags [.], ack 415, win 237, options [nop,nop,sack 1 {414:415}], length 0
+14:05:10.091399 IP 112.224.67.134.58166 > dev.d-s-n: Flags [.], seq 414:415, ack 359, win 67, length 1
+14:05:10.091451 IP dev.d-s-n > 112.224.67.134.58166: Flags [.], ack 415, win 237, options [nop,nop,sack 1 {414:415}], length 0
+14:05:10.130248 IP 112.224.67.134.26919 > dev.ssh: Flags [P.], seq 1:53, ack 184, win 66, length 52
+[root@dev ~]# 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-2、用wireshark分析报文内容"><a href="#2-2、用wireshark分析报文内容" class="headerlink" title="2.2、用wireshark分析报文内容"></a>2.2、用wireshark分析报文内容</h3><p>了解tcp网络协议的，看到以上报文，应该已经了解一二了。<br>为了将其转换成常用的http协议，我们用wireshark这款工具再分析一下。<br>下载该文件，在windows上可以直接将该文件拖入到wireshark，会自动打开。<br><img src="/loading.gif" data-original="/images/tools/tcpdump-wireshark.png" alt="tcpdump文件在WireShark中打开"></p>
+<p>可以看到三次握手的具体报文。同时看到了一个post的http request和一个http status为200的http response。右击post请求，选择【追踪流】-&gt;【TCP流】：</p>
+<p><img src="/loading.gif" data-original="/images/tools/tcpdump-wireshark-response.png" alt="TCP流查看"><br>看到了前端传过来的参数和返回值。</p>
+<p>当然，查看服务器log，也看到了日志信息</p>
+<pre class="line-numbers language-shell"><code class="language-shell">2018-07-03 14:24:16.660  INFO 29004 --- [nio-8086-exec-6] com.hczt.shop.weixin.config.CorsFilter   : requesturi is : /weixin/tests
+2018-07-03 14:24:16.661  INFO 29004 --- [nio-8086-exec-6] c.h.s.weixin.controller.TestController   : post data:{"address":"山东青岛","age":28,"name":"张三","sex":"男"}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这里演示的正常返回的，如果接口是400，服务端也就没有这条log，这时候抓包也才更有意义了。<br>到这里，基本的使用就介绍完了。至于WireShark在本地怎么使用，怎么添加过滤器等，查看其它博文学习。</p>
+<h2 id="3、推荐"><a href="#3、推荐" class="headerlink" title="3、推荐"></a>3、推荐</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Jerry-zhao2110/p/8282427.html">WireShark抓包使用教程</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a62ed1bb5b20">tcpdump语法介绍与常用参数举例</a></p>
 
                 
             </div>

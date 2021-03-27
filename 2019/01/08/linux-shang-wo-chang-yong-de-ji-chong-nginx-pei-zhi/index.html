@@ -540,299 +540,299 @@
 
 <p>nginx作为用烂了的反向代理服务器，这两年经手的项目也是各种配置，各种学习，再次记录下还能想的起来或者有据可查的nginx配置，以防哪天掉坑里时还有一根救命稻草。</p>
 <h3 id="前置"><a href="#前置" class="headerlink" title="前置"></a>前置</h3><p>个人爱好的原因，我的nginx一般安装在<code>/usr/local/nginx</code>这个目录，主配置文件<code>/usr/local/nginx/conf/nginx.conf</code>，其他配置文件则是在<code>/usr/local/nginx/conf/conf.d/*.conf</code>这些单独的文件上。<br>这些conf.d目录下的配置文件要在nginx.conf中被引入，因此nginx.conf文件最后一行有这么一句</p>
-<pre><code>include conf.d/*.conf;
-</code></pre>
+<pre class="line-numbers language-nginx"><code class="language-nginx"><span class="token keyword">include</span> conf<span class="token punctuation">.</span>d<span class="token operator">/</span><span class="token operator">*</span><span class="token punctuation">.</span>conf<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="1、一个域名，多个端口，多个项目"><a href="#1、一个域名，多个端口，多个项目" class="headerlink" title="1、一个域名，多个端口，多个项目"></a>1、一个域名，多个端口，多个项目</h3><p>这种情况是最理想，最好配置的，但是也是最没有啥可说的一种，不过我还的是copy一个记录一下吧。<br>比如conf.d下有几个配置文件，大概这样：</p>
-<pre><code>[haieradmin@1169CKT2 conf.d]$ ll
-total 20
--rw-r--r-- 1 haieradmin haieradmin  828 Mar  7  2018 hrsj.15386.conf
--rw-r--r-- 1 haieradmin haieradmin  827 Mar  7  2018 hryh.10386.conf
--rw-r--r-- 1 haieradmin haieradmin 1166 Nov 22 13:49 html.8880.conf
--rw-r--r-- 1 haieradmin haieradmin 1022 Jul 16 13:50 portal.8886.conf
--rw-r--r-- 1 haieradmin haieradmin  846 Jul 13  2018 questionnaire.8081.conf
-[haieradmin@1169CKT2 conf.d]$ pwd
-/usr/local/nginx/conf/conf.d
-[haieradmin@1169CKT2 conf.d]$ 
-</code></pre>
+<pre class="line-numbers language-nginx"><code class="language-nginx"><span class="token punctuation">[</span>haieradmin@1169CKT2 conf<span class="token punctuation">.</span>d<span class="token punctuation">]</span>$ ll
+total <span class="token number">20</span>
+<span class="token operator">-</span>rw<span class="token operator">-</span>r<span class="token operator">--</span>r<span class="token operator">--</span> <span class="token number">1</span> haieradmin haieradmin  <span class="token number">828</span> Mar  <span class="token number">7</span>  <span class="token number">2018</span> hrsj<span class="token number">.15386</span><span class="token punctuation">.</span>conf
+<span class="token operator">-</span>rw<span class="token operator">-</span>r<span class="token operator">--</span>r<span class="token operator">--</span> <span class="token number">1</span> haieradmin haieradmin  <span class="token number">827</span> Mar  <span class="token number">7</span>  <span class="token number">2018</span> hryh<span class="token number">.10386</span><span class="token punctuation">.</span>conf
+<span class="token operator">-</span>rw<span class="token operator">-</span>r<span class="token operator">--</span>r<span class="token operator">--</span> <span class="token number">1</span> haieradmin haieradmin <span class="token number">1166</span> Nov <span class="token number">22</span> <span class="token number">13</span><span class="token punctuation">:</span><span class="token number">49</span> html<span class="token number">.8880</span><span class="token punctuation">.</span>conf
+<span class="token operator">-</span>rw<span class="token operator">-</span>r<span class="token operator">--</span>r<span class="token operator">--</span> <span class="token number">1</span> haieradmin haieradmin <span class="token number">1022</span> Jul <span class="token number">16</span> <span class="token number">13</span><span class="token punctuation">:</span><span class="token number">50</span> portal<span class="token number">.8886</span><span class="token punctuation">.</span>conf
+<span class="token operator">-</span>rw<span class="token operator">-</span>r<span class="token operator">--</span>r<span class="token operator">--</span> <span class="token number">1</span> haieradmin haieradmin  <span class="token number">846</span> Jul <span class="token number">13</span>  <span class="token number">2018</span> questionnaire<span class="token number">.8081</span><span class="token punctuation">.</span>conf
+<span class="token punctuation">[</span>haieradmin@1169CKT2 conf<span class="token punctuation">.</span>d<span class="token punctuation">]</span>$ pwd
+<span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>nginx<span class="token operator">/</span>conf<span class="token operator">/</span>conf<span class="token punctuation">.</span>d
+<span class="token punctuation">[</span>haieradmin@1169CKT2 conf<span class="token punctuation">.</span>d<span class="token punctuation">]</span>$ 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>查看其中一个文件的内容：</p>
-<pre><code>[haieradmin@1169CKT2 conf.d]$ cat hrsj.15386.conf 
-server
-    {
-        listen       15386;
-        #server_name  tech.haier.net;
+<pre class="line-numbers language-nginx"><code class="language-nginx"><span class="token punctuation">[</span>haieradmin@1169CKT2 conf<span class="token punctuation">.</span>d<span class="token punctuation">]</span>$ cat hrsj<span class="token number">.15386</span><span class="token punctuation">.</span>conf 
+<span class="token keyword">server</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">listen</span>       <span class="token number">15386</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">#server_name  tech.haier.net;</span>
 
-        #ssl                  on;
-        #ssl_certificate      /usr/local/nginx/key/server.crt;
-        #ssl_certificate_key  /usr/local/nginx/key/server.key;
-        index index.html;
-        root /opt/chuangke/website/hrsj;
+        <span class="token comment" spellcheck="true">#ssl                  on;</span>
+        <span class="token comment" spellcheck="true">#ssl_certificate      /usr/local/nginx/key/server.crt;</span>
+        <span class="token comment" spellcheck="true">#ssl_certificate_key  /usr/local/nginx/key/server.key;</span>
+        <span class="token keyword">index</span> <span class="token keyword">index</span><span class="token punctuation">.</span>html<span class="token punctuation">;</span>
+        <span class="token keyword">root</span> <span class="token operator">/</span>opt<span class="token operator">/</span>chuangke<span class="token operator">/</span>website<span class="token operator">/</span>hrsj<span class="token punctuation">;</span>
 
-        location / {
-            client_max_body_size    100M;
-            try_files $uri $uri/ /index.html;
-        }
-        location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
-        {
-            expires      30d;
-        }
+        <span class="token keyword">location</span> <span class="token operator">/</span> <span class="token punctuation">{</span>
+            <span class="token keyword">client_max_body_size</span>    100M<span class="token punctuation">;</span>
+            <span class="token keyword">try_files</span> <span class="token variable">$uri</span> <span class="token variable">$uri</span><span class="token operator">/</span> <span class="token operator">/</span><span class="token keyword">index</span><span class="token punctuation">.</span>html<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">location</span> <span class="token operator">~</span> <span class="token punctuation">.</span><span class="token operator">*</span>\<span class="token punctuation">.</span><span class="token punctuation">(</span>gif<span class="token operator">|</span>jpg<span class="token operator">|</span>jpeg<span class="token operator">|</span>png<span class="token operator">|</span>bmp<span class="token operator">|</span>swf<span class="token punctuation">)</span>$
+        <span class="token punctuation">{</span>
+            <span class="token keyword">expires</span>      30d<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-        location ~ .*\.(js|css)?$
-        {
-            expires      12h;
-        }
+        <span class="token keyword">location</span> <span class="token operator">~</span> <span class="token punctuation">.</span><span class="token operator">*</span>\<span class="token punctuation">.</span><span class="token punctuation">(</span>js<span class="token operator">|</span>css<span class="token punctuation">)</span><span class="token operator">?</span>$
+        <span class="token punctuation">{</span>
+            <span class="token keyword">expires</span>      12h<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-        location ~ /\.
-        {
-            deny all;
-        }
+        <span class="token keyword">location</span> <span class="token operator">~</span> <span class="token operator">/</span>\<span class="token punctuation">.</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">deny</span> all<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-        error_page  404              /404.html;
-        access_log  /usr/local/nginx/logs/hrsj.host.access.log;
+        <span class="token keyword">error_page</span>  <span class="token number">404</span>              <span class="token operator">/</span><span class="token number">404</span><span class="token punctuation">.</span>html<span class="token punctuation">;</span>
+        <span class="token keyword">access_log</span>  <span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>nginx<span class="token operator">/</span>logs<span class="token operator">/</span>hrsj<span class="token punctuation">.</span>host<span class="token punctuation">.</span>access<span class="token punctuation">.</span>log<span class="token punctuation">;</span>
 
-    }
-[haieradmin@1169CKT2 conf.d]$ 
-</code></pre>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">[</span>haieradmin@1169CKT2 conf<span class="token punctuation">.</span>d<span class="token punctuation">]</span>$ 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>其他几个配置文件知识里面listen的端口和root目录不一样。</p>
-<h3 id="2、一个域名，一个端口，多个项目，访问时用二级目录名称区分"><a href="#2、一个域名，一个端口，多个项目，访问时用二级目录名称区分" class="headerlink" title="2、一个域名，一个端口，多个项目，访问时用二级目录名称区分"></a>2、一个域名，一个端口，多个项目，访问时用二级目录名称区分</h3><pre><code>[haieradmin@1169CKT conf.d]$ ll
-total 8
--rw-r--r-- 1 root root 1594 Jun 26  2018 nginx_8086_to_5601.conf
--rw-r--r-- 1 root root 1592 Jun 28  2018 nginx_8888_gitstats.conf
-[haieradmin@1169CKT conf.d]$ 
-</code></pre>
+<h3 id="2、一个域名，一个端口，多个项目，访问时用二级目录名称区分"><a href="#2、一个域名，一个端口，多个项目，访问时用二级目录名称区分" class="headerlink" title="2、一个域名，一个端口，多个项目，访问时用二级目录名称区分"></a>2、一个域名，一个端口，多个项目，访问时用二级目录名称区分</h3><pre class="line-numbers language-nginx"><code class="language-nginx"><span class="token punctuation">[</span>haieradmin@1169CKT conf<span class="token punctuation">.</span>d<span class="token punctuation">]</span>$ ll
+total <span class="token number">8</span>
+<span class="token operator">-</span>rw<span class="token operator">-</span>r<span class="token operator">--</span>r<span class="token operator">--</span> <span class="token number">1</span> <span class="token keyword">root</span> <span class="token keyword">root</span> <span class="token number">1594</span> Jun <span class="token number">26</span>  <span class="token number">2018</span> nginx_8086_to_5601<span class="token punctuation">.</span>conf
+<span class="token operator">-</span>rw<span class="token operator">-</span>r<span class="token operator">--</span>r<span class="token operator">--</span> <span class="token number">1</span> <span class="token keyword">root</span> <span class="token keyword">root</span> <span class="token number">1592</span> Jun <span class="token number">28</span>  <span class="token number">2018</span> nginx_8888_gitstats<span class="token punctuation">.</span>conf
+<span class="token punctuation">[</span>haieradmin@1169CKT conf<span class="token punctuation">.</span>d<span class="token punctuation">]</span>$ 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>查看配置文件</p>
-<pre><code>[haieradmin@1169CKT conf.d]$ cat nginx_8888_gitstats.conf 
-    server {
-        listen       8888;
-        server_name  localhost;
+<pre class="line-numbers language-nginx"><code class="language-nginx"><span class="token punctuation">[</span>haieradmin@1169CKT conf<span class="token punctuation">.</span>d<span class="token punctuation">]</span>$ cat nginx_8888_gitstats<span class="token punctuation">.</span>conf 
+    <span class="token keyword">server</span> <span class="token punctuation">{</span>
+        <span class="token keyword">listen</span>       <span class="token number">8888</span><span class="token punctuation">;</span>
+        <span class="token keyword">server_name</span>  localhost<span class="token punctuation">;</span>
 
-        #charset koi8-r;
+        <span class="token comment" spellcheck="true">#charset koi8-r;</span>
 
-        #access_log  logs/host.access.log  main;
+        <span class="token comment" spellcheck="true">#access_log  logs/host.access.log  main;</span>
 
-        #location / {
-        #    root   html;
-        #    index  index.html index.htm;
-        #}
-        index index.html index.htm;
+        <span class="token comment" spellcheck="true">#location / {</span>
+        <span class="token comment" spellcheck="true">#    root   html;</span>
+        <span class="token comment" spellcheck="true">#    index  index.html index.htm;</span>
+        <span class="token comment" spellcheck="true">#}</span>
+        <span class="token keyword">index</span> <span class="token keyword">index</span><span class="token punctuation">.</span>html <span class="token keyword">index</span><span class="token punctuation">.</span>htm<span class="token punctuation">;</span>
 
-        client_max_body_size    100m;
+        <span class="token keyword">client_max_body_size</span>    100m<span class="token punctuation">;</span>
     
-        location /questionnaire {
-            alias  /opt/chuangke/gitstats/result/questionnaire;
-        }
+        <span class="token keyword">location</span> <span class="token operator">/</span>questionnaire <span class="token punctuation">{</span>
+            <span class="token keyword">alias</span>  <span class="token operator">/</span>opt<span class="token operator">/</span>chuangke<span class="token operator">/</span>gitstats<span class="token operator">/</span>result<span class="token operator">/</span>questionnaire<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-        location /portal {
-            alias  /opt/chuangke/gitstats/result/Portal;
-        }
+        <span class="token keyword">location</span> <span class="token operator">/</span>portal <span class="token punctuation">{</span>
+            <span class="token keyword">alias</span>  <span class="token operator">/</span>opt<span class="token operator">/</span>chuangke<span class="token operator">/</span>gitstats<span class="token operator">/</span>result<span class="token operator">/</span>Portal<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-        location /portalmanage {
-            alias  /opt/chuangke/gitstats/result/portalmanage;
-        }
+        <span class="token keyword">location</span> <span class="token operator">/</span>portalmanage <span class="token punctuation">{</span>
+            <span class="token keyword">alias</span>  <span class="token operator">/</span>opt<span class="token operator">/</span>chuangke<span class="token operator">/</span>gitstats<span class="token operator">/</span>result<span class="token operator">/</span>portalmanage<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-        error_page  404              /404.html;
+        <span class="token keyword">error_page</span>  <span class="token number">404</span>              <span class="token operator">/</span><span class="token number">404</span><span class="token punctuation">.</span>html<span class="token punctuation">;</span>
 
-        # redirect server error pages to the static page /50x.html
-        #
-        error_page   500 502 503 504  /50x.html;
-        location = /50x.html {
-            root   html;
-        }
+        <span class="token comment" spellcheck="true"># redirect server error pages to the static page /50x.html</span>
+        <span class="token comment" spellcheck="true">#</span>
+        <span class="token keyword">error_page</span>   <span class="token number">500</span> <span class="token number">502</span> <span class="token number">503</span> <span class="token number">504</span>  <span class="token operator">/</span>50x<span class="token punctuation">.</span>html<span class="token punctuation">;</span>
+        <span class="token keyword">location</span> <span class="token operator">=</span> <span class="token operator">/</span>50x<span class="token punctuation">.</span>html <span class="token punctuation">{</span>
+            <span class="token keyword">root</span>   html<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
-        #
-        #location ~ \.php$ {
-        #    proxy_pass   http://127.0.0.1;
-        #}
+        <span class="token comment" spellcheck="true"># proxy the PHP scripts to Apache listening on 127.0.0.1:80</span>
+        <span class="token comment" spellcheck="true">#</span>
+        <span class="token comment" spellcheck="true">#location ~ \.php$ {</span>
+        <span class="token comment" spellcheck="true">#    proxy_pass   http://127.0.0.1;</span>
+        <span class="token comment" spellcheck="true">#}</span>
 
-        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-        #
-        #location ~ \.php$ {
-        #    root           html;
-        #    fastcgi_pass   127.0.0.1:9000;
-        #    fastcgi_index  index.php;
-        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
-        #    include        fastcgi_params;
-        #}
+        <span class="token comment" spellcheck="true"># pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span>
+        <span class="token comment" spellcheck="true">#</span>
+        <span class="token comment" spellcheck="true">#location ~ \.php$ {</span>
+        <span class="token comment" spellcheck="true">#    root           html;</span>
+        <span class="token comment" spellcheck="true">#    fastcgi_pass   127.0.0.1:9000;</span>
+        <span class="token comment" spellcheck="true">#    fastcgi_index  index.php;</span>
+        <span class="token comment" spellcheck="true">#    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;</span>
+        <span class="token comment" spellcheck="true">#    include        fastcgi_params;</span>
+        <span class="token comment" spellcheck="true">#}</span>
 
-        # deny access to .htaccess files, if Apache's document root
-        # concurs with nginx's one
-        #
-        #location ~ /\.ht {
-        #    deny  all;
-        #}
-    }
-[haieradmin@1169CKT conf.d]$ 
-</code></pre>
+        <span class="token comment" spellcheck="true"># deny access to .htaccess files, if Apache's document root</span>
+        <span class="token comment" spellcheck="true"># concurs with nginx's one</span>
+        <span class="token comment" spellcheck="true">#</span>
+        <span class="token comment" spellcheck="true">#location ~ /\.ht {</span>
+        <span class="token comment" spellcheck="true">#    deny  all;</span>
+        <span class="token comment" spellcheck="true">#}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">[</span>haieradmin@1169CKT conf<span class="token punctuation">.</span>d<span class="token punctuation">]</span>$ 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>访问的时候如：<br><code>http://localhost:8888/portalmanage</code>和<code>http://localhost:8888/portal</code>等。</p>
-<h3 id="3、多个域名，一个端口，多个项目"><a href="#3、多个域名，一个端口，多个项目" class="headerlink" title="3、多个域名，一个端口，多个项目"></a>3、多个域名，一个端口，多个项目</h3><pre><code>[root@im-test-cpr-1 nginx]# cat nginx.conf
-#   * Official Russian Documentation: http://nginx.org/ru/docs/
+<h3 id="3、多个域名，一个端口，多个项目"><a href="#3、多个域名，一个端口，多个项目" class="headerlink" title="3、多个域名，一个端口，多个项目"></a>3、多个域名，一个端口，多个项目</h3><pre class="line-numbers language-nginx"><code class="language-nginx"><span class="token punctuation">[</span><span class="token keyword">root</span>@im<span class="token operator">-</span>test<span class="token operator">-</span>cpr<span class="token number">-1</span> nginx<span class="token punctuation">]</span><span class="token comment" spellcheck="true"># cat nginx.conf</span>
+<span class="token comment" spellcheck="true">#   * Official Russian Documentation: http://nginx.org/ru/docs/</span>
 
-user root;
-worker_processes auto;
-error_log /var/log/nginx/error.log;
-pid /run/nginx.pid;
+<span class="token keyword">user</span> <span class="token keyword">root</span><span class="token punctuation">;</span>
+<span class="token keyword">worker_processes</span> auto<span class="token punctuation">;</span>
+<span class="token keyword">error_log</span> <span class="token operator">/</span>var<span class="token operator">/</span>log<span class="token operator">/</span>nginx<span class="token operator">/</span>error<span class="token punctuation">.</span>log<span class="token punctuation">;</span>
+<span class="token keyword">pid</span> <span class="token operator">/</span>run<span class="token operator">/</span>nginx<span class="token punctuation">.</span><span class="token keyword">pid</span><span class="token punctuation">;</span>
 
-# Load dynamic modules. See /usr/share/nginx/README.dynamic.
-include /usr/share/nginx/modules/*.conf;
+<span class="token comment" spellcheck="true"># Load dynamic modules. See /usr/share/nginx/README.dynamic.</span>
+<span class="token keyword">include</span> <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>nginx<span class="token operator">/</span>modules<span class="token operator">/</span><span class="token operator">*</span><span class="token punctuation">.</span>conf<span class="token punctuation">;</span>
 
-events {
-    worker_connections 1024;
-}
-http {
-    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-                      '$status $body_bytes_sent "$http_referer" '
-                      '"$http_user_agent" "$http_x_forwarded_for"';
+<span class="token keyword">events</span> <span class="token punctuation">{</span>
+    <span class="token keyword">worker_connections</span> <span class="token number">1024</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">http</span> <span class="token punctuation">{</span>
+    <span class="token keyword">log_format</span>  main  <span class="token string">'$remote_addr - $remote_user [$time_local] "$request" '</span>
+                      <span class="token string">'$status $body_bytes_sent "$http_referer" '</span>
+                      <span class="token string">'"$http_user_agent" "$http_x_forwarded_for"'</span><span class="token punctuation">;</span>
 
-    access_log  /var/log/nginx/access.log  main;
+    <span class="token keyword">access_log</span>  <span class="token operator">/</span>var<span class="token operator">/</span>log<span class="token operator">/</span>nginx<span class="token operator">/</span>access<span class="token punctuation">.</span>log  main<span class="token punctuation">;</span>
 
-    sendfile            on;
-    tcp_nopush          on;
-    tcp_nodelay         on;
-    keepalive_timeout   65;
-    types_hash_max_size 2048;
+    <span class="token keyword">sendfile</span>            on<span class="token punctuation">;</span>
+    <span class="token keyword">tcp_nopush</span>          on<span class="token punctuation">;</span>
+    <span class="token keyword">tcp_nodelay</span>         on<span class="token punctuation">;</span>
+    <span class="token keyword">keepalive_timeout</span>   <span class="token number">65</span><span class="token punctuation">;</span>
+    <span class="token keyword">types_hash_max_size</span> <span class="token number">2048</span><span class="token punctuation">;</span>
 
-    include             /etc/nginx/mime.types;
-    default_type        application/octet-stream;
+    <span class="token keyword">include</span>             <span class="token operator">/</span>etc<span class="token operator">/</span>nginx<span class="token operator">/</span>mime<span class="token punctuation">.</span><span class="token keyword">types</span><span class="token punctuation">;</span>
+    <span class="token keyword">default_type</span>        application<span class="token operator">/</span>octet<span class="token operator">-</span>stream<span class="token punctuation">;</span>
 
-    # Load modular configuration files from the /etc/nginx/conf.d directory.
-    # See http://nginx.org/en/docs/ngx_core_module.html#include
-    # for more information.
-    include /etc/nginx/conf.d/*.conf;
-    upstream server1 {
-        server 127.0.0.1:8890;
-    }
-    upstream server2 {
-        server 127.0.0.1:5151;
-    }
+    <span class="token comment" spellcheck="true"># Load modular configuration files from the /etc/nginx/conf.d directory.</span>
+    <span class="token comment" spellcheck="true"># See http://nginx.org/en/docs/ngx_core_module.html#include</span>
+    <span class="token comment" spellcheck="true"># for more information.</span>
+    <span class="token keyword">include</span> <span class="token operator">/</span>etc<span class="token operator">/</span>nginx<span class="token operator">/</span>conf<span class="token punctuation">.</span>d<span class="token operator">/</span><span class="token operator">*</span><span class="token punctuation">.</span>conf<span class="token punctuation">;</span>
+    <span class="token keyword">upstream</span> server1 <span class="token punctuation">{</span>
+        <span class="token keyword">server</span> <span class="token number">127.0</span><span class="token punctuation">.</span><span class="token number">0.1</span><span class="token punctuation">:</span><span class="token number">8890</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">upstream</span> server2 <span class="token punctuation">{</span>
+        <span class="token keyword">server</span> <span class="token number">127.0</span><span class="token punctuation">.</span><span class="token number">0.1</span><span class="token punctuation">:</span><span class="token number">5151</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    server {
-        listen       5050 default_server ssl;
-        listen       [::]:5050 default_server;
-        server_name  _;
-        root         /usr/share/nginx/html;
-        ssl_certificate "/etc/pki/nginx/server.crt";
-        ssl_certificate_key "/etc/pki/nginx/private/server.key";
-        ssl_session_cache shared:SSL:1m;
-        ssl_session_timeout  10m;
-
-
-        # Load configuration files for the default server block.
-        include /etc/nginx/default.d/*.conf;
-
-        location / {
-            proxy_set_header Host $host:$server_port;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_connect_timeout 90;
-            add_header Access-Control-Allow-Origin $http_origin;
-            add_header Access-Control-Allow-Methods 'GET, POST, PUT, DELETE, OPTIONS';
-            add_header Access-Control-Allow-Credentials 'true';
-            add_header Access-Control-Allow-Headers 'Accept, Authorization,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
-            if ($request_method = 'OPTIONS') {
-               add_header 'Access-Control-Max-Age' 1728000;
-               add_header 'Content-Type' 'text/plain charset=UTF-8';
-               add_header 'Content-Length' 0;
-               add_header Access-Control-Allow-Origin $http_origin;
-               add_header Access-Control-Allow-Methods 'GET, POST, PUT, DELETE, OPTIONS';
-               add_header Access-Control-Allow-Credentials 'true';
-               add_header Access-Control-Allow-Headers 'Accept, Authorization,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
-               return 204;
-           }
-                proxy_pass http://server2;
-
-        }
-
-        error_page 404 /404.html;
-            location = /40x.html {
-        }
-
-        error_page 500 502 503 504 /50x.html;
-            location = /50x.html {
-        }
-    }
-    server {
-        listen       8443 ssl;
-        server_name  sysadmint.rrs.com;
-        root         /usr/share/nginx/html/sysadmin/;
-
-        ssl_certificate "/etc/pki/nginx/server.crt";
-        ssl_certificate_key "/etc/pki/nginx/private/server.key";
-        ssl_session_cache shared:SSL:1m;
-        ssl_session_timeout  10m;
-        location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|js|css)$ {
-                add_header Cache-Control no-store;
-        }
-
-        location / {
-            try_files $uri /index.html;
-        }
-    }
-    server {
-        listen       8443 ssl;
-        server_name  opadmint.rrs.com;
-        location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|js|css)$ {
-                add_header Cache-Control no-store;
-        }
-
-        root         /usr/share/nginx/html/opadmin/;
-        location / {
-            try_files $uri /index.html;
-        }
+    <span class="token keyword">server</span> <span class="token punctuation">{</span>
+        <span class="token keyword">listen</span>       <span class="token number">5050</span> default_server <span class="token keyword">ssl</span><span class="token punctuation">;</span>
+        <span class="token keyword">listen</span>       <span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">:</span><span class="token number">5050</span> default_server<span class="token punctuation">;</span>
+        <span class="token keyword">server_name</span>  _<span class="token punctuation">;</span>
+        <span class="token keyword">root</span>         <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>nginx<span class="token operator">/</span>html<span class="token punctuation">;</span>
+        <span class="token keyword">ssl_certificate</span> <span class="token string">"/etc/pki/nginx/server.crt"</span><span class="token punctuation">;</span>
+        <span class="token keyword">ssl_certificate_key</span> <span class="token string">"/etc/pki/nginx/private/server.key"</span><span class="token punctuation">;</span>
+        <span class="token keyword">ssl_session_cache</span> shared<span class="token punctuation">:</span><span class="token keyword">SSL</span><span class="token punctuation">:</span>1m<span class="token punctuation">;</span>
+        <span class="token keyword">ssl_session_timeout</span>  10m<span class="token punctuation">;</span>
 
 
-        ssl_certificate "/etc/pki/nginx/server.crt";
-        ssl_certificate_key "/etc/pki/nginx/private/server.key";
-        ssl_session_cache shared:SSL:1m;
-        ssl_session_timeout  10m;
-    }
-    server {
-        listen       8443 ssl;
-        server_name  shopadmint.rrs.com;
-        root         /usr/share/nginx/html/shopadmin/;
-        location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|js|css)$ {
-                add_header Cache-Control no-store;
-        }
+        <span class="token comment" spellcheck="true"># Load configuration files for the default server block.</span>
+        <span class="token keyword">include</span> <span class="token operator">/</span>etc<span class="token operator">/</span>nginx<span class="token operator">/</span>default<span class="token punctuation">.</span>d<span class="token operator">/</span><span class="token operator">*</span><span class="token punctuation">.</span>conf<span class="token punctuation">;</span>
 
-        location / {
-            try_files $uri /index.html;
-        }
+        <span class="token keyword">location</span> <span class="token operator">/</span> <span class="token punctuation">{</span>
+            <span class="token keyword">proxy_set_header</span> Host <span class="token variable">$host</span><span class="token punctuation">:</span><span class="token variable">$server_port</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Real<span class="token operator">-</span>IP <span class="token variable">$remote_addr</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Forwarded<span class="token operator">-</span>For <span class="token variable">$proxy_add_x_forwarded_for</span><span class="token punctuation">;</span>
+            <span class="token keyword">proxy_connect_timeout</span> <span class="token number">90</span><span class="token punctuation">;</span>
+            <span class="token keyword">add_header</span> Access<span class="token operator">-</span>Control<span class="token operator">-</span><span class="token keyword">Allow</span><span class="token operator">-</span>Origin <span class="token variable">$http_origin</span><span class="token punctuation">;</span>
+            <span class="token keyword">add_header</span> Access<span class="token operator">-</span>Control<span class="token operator">-</span><span class="token keyword">Allow</span><span class="token operator">-</span>Methods <span class="token string">'GET, POST, PUT, DELETE, OPTIONS'</span><span class="token punctuation">;</span>
+            <span class="token keyword">add_header</span> Access<span class="token operator">-</span>Control<span class="token operator">-</span><span class="token keyword">Allow</span><span class="token operator">-</span>Credentials <span class="token string">'true'</span><span class="token punctuation">;</span>
+            <span class="token keyword">add_header</span> Access<span class="token operator">-</span>Control<span class="token operator">-</span><span class="token keyword">Allow</span><span class="token operator">-</span>Headers <span class="token string">'Accept, Authorization,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type'</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$request_method</span> <span class="token operator">=</span> <span class="token string">'OPTIONS'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+               <span class="token keyword">add_header</span> <span class="token string">'Access-Control-Max-Age'</span> <span class="token number">1728000</span><span class="token punctuation">;</span>
+               <span class="token keyword">add_header</span> <span class="token string">'Content-Type'</span> <span class="token string">'text/plain charset=UTF-8'</span><span class="token punctuation">;</span>
+               <span class="token keyword">add_header</span> <span class="token string">'Content-Length'</span> <span class="token number">0</span><span class="token punctuation">;</span>
+               <span class="token keyword">add_header</span> Access<span class="token operator">-</span>Control<span class="token operator">-</span><span class="token keyword">Allow</span><span class="token operator">-</span>Origin <span class="token variable">$http_origin</span><span class="token punctuation">;</span>
+               <span class="token keyword">add_header</span> Access<span class="token operator">-</span>Control<span class="token operator">-</span><span class="token keyword">Allow</span><span class="token operator">-</span>Methods <span class="token string">'GET, POST, PUT, DELETE, OPTIONS'</span><span class="token punctuation">;</span>
+               <span class="token keyword">add_header</span> Access<span class="token operator">-</span>Control<span class="token operator">-</span><span class="token keyword">Allow</span><span class="token operator">-</span>Credentials <span class="token string">'true'</span><span class="token punctuation">;</span>
+               <span class="token keyword">add_header</span> Access<span class="token operator">-</span>Control<span class="token operator">-</span><span class="token keyword">Allow</span><span class="token operator">-</span>Headers <span class="token string">'Accept, Authorization,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type'</span><span class="token punctuation">;</span>
+               <span class="token keyword">return</span> <span class="token number">204</span><span class="token punctuation">;</span>
+           <span class="token punctuation">}</span>
+                <span class="token keyword">proxy_pass</span> <span class="token keyword">http</span><span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span>server2<span class="token punctuation">;</span>
+
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">error_page</span> <span class="token number">404</span> <span class="token operator">/</span><span class="token number">404</span><span class="token punctuation">.</span>html<span class="token punctuation">;</span>
+            <span class="token keyword">location</span> <span class="token operator">=</span> <span class="token operator">/</span>40x<span class="token punctuation">.</span>html <span class="token punctuation">{</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">error_page</span> <span class="token number">500</span> <span class="token number">502</span> <span class="token number">503</span> <span class="token number">504</span> <span class="token operator">/</span>50x<span class="token punctuation">.</span>html<span class="token punctuation">;</span>
+            <span class="token keyword">location</span> <span class="token operator">=</span> <span class="token operator">/</span>50x<span class="token punctuation">.</span>html <span class="token punctuation">{</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">server</span> <span class="token punctuation">{</span>
+        <span class="token keyword">listen</span>       <span class="token number">8443</span> <span class="token keyword">ssl</span><span class="token punctuation">;</span>
+        <span class="token keyword">server_name</span>  sysadmint<span class="token punctuation">.</span>rrs<span class="token punctuation">.</span>com<span class="token punctuation">;</span>
+        <span class="token keyword">root</span>         <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>nginx<span class="token operator">/</span>html<span class="token operator">/</span>sysadmin<span class="token operator">/</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">ssl_certificate</span> <span class="token string">"/etc/pki/nginx/server.crt"</span><span class="token punctuation">;</span>
+        <span class="token keyword">ssl_certificate_key</span> <span class="token string">"/etc/pki/nginx/private/server.key"</span><span class="token punctuation">;</span>
+        <span class="token keyword">ssl_session_cache</span> shared<span class="token punctuation">:</span><span class="token keyword">SSL</span><span class="token punctuation">:</span>1m<span class="token punctuation">;</span>
+        <span class="token keyword">ssl_session_timeout</span>  10m<span class="token punctuation">;</span>
+        <span class="token keyword">location</span> <span class="token operator">~</span> <span class="token punctuation">.</span><span class="token operator">*</span>\<span class="token punctuation">.</span><span class="token punctuation">(</span>gif<span class="token operator">|</span>jpg<span class="token operator">|</span>jpeg<span class="token operator">|</span>png<span class="token operator">|</span>bmp<span class="token operator">|</span>swf<span class="token operator">|</span>js<span class="token operator">|</span>css<span class="token punctuation">)</span>$ <span class="token punctuation">{</span>
+                <span class="token keyword">add_header</span> Cache<span class="token operator">-</span>Control no<span class="token operator">-</span>store<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">location</span> <span class="token operator">/</span> <span class="token punctuation">{</span>
+            <span class="token keyword">try_files</span> <span class="token variable">$uri</span> <span class="token operator">/</span><span class="token keyword">index</span><span class="token punctuation">.</span>html<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">server</span> <span class="token punctuation">{</span>
+        <span class="token keyword">listen</span>       <span class="token number">8443</span> <span class="token keyword">ssl</span><span class="token punctuation">;</span>
+        <span class="token keyword">server_name</span>  opadmint<span class="token punctuation">.</span>rrs<span class="token punctuation">.</span>com<span class="token punctuation">;</span>
+        <span class="token keyword">location</span> <span class="token operator">~</span> <span class="token punctuation">.</span><span class="token operator">*</span>\<span class="token punctuation">.</span><span class="token punctuation">(</span>gif<span class="token operator">|</span>jpg<span class="token operator">|</span>jpeg<span class="token operator">|</span>png<span class="token operator">|</span>bmp<span class="token operator">|</span>swf<span class="token operator">|</span>js<span class="token operator">|</span>css<span class="token punctuation">)</span>$ <span class="token punctuation">{</span>
+                <span class="token keyword">add_header</span> Cache<span class="token operator">-</span>Control no<span class="token operator">-</span>store<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">root</span>         <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>nginx<span class="token operator">/</span>html<span class="token operator">/</span>opadmin<span class="token operator">/</span><span class="token punctuation">;</span>
+        <span class="token keyword">location</span> <span class="token operator">/</span> <span class="token punctuation">{</span>
+            <span class="token keyword">try_files</span> <span class="token variable">$uri</span> <span class="token operator">/</span><span class="token keyword">index</span><span class="token punctuation">.</span>html<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
 
-        ssl_certificate "/etc/pki/nginx/server.crt";
-        ssl_certificate_key "/etc/pki/nginx/private/server.key";
-        ssl_session_cache shared:SSL:1m;
-        ssl_session_timeout  10m;
-    }
+        <span class="token keyword">ssl_certificate</span> <span class="token string">"/etc/pki/nginx/server.crt"</span><span class="token punctuation">;</span>
+        <span class="token keyword">ssl_certificate_key</span> <span class="token string">"/etc/pki/nginx/private/server.key"</span><span class="token punctuation">;</span>
+        <span class="token keyword">ssl_session_cache</span> shared<span class="token punctuation">:</span><span class="token keyword">SSL</span><span class="token punctuation">:</span>1m<span class="token punctuation">;</span>
+        <span class="token keyword">ssl_session_timeout</span>  10m<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">server</span> <span class="token punctuation">{</span>
+        <span class="token keyword">listen</span>       <span class="token number">8443</span> <span class="token keyword">ssl</span><span class="token punctuation">;</span>
+        <span class="token keyword">server_name</span>  shopadmint<span class="token punctuation">.</span>rrs<span class="token punctuation">.</span>com<span class="token punctuation">;</span>
+        <span class="token keyword">root</span>         <span class="token operator">/</span>usr<span class="token operator">/</span>share<span class="token operator">/</span>nginx<span class="token operator">/</span>html<span class="token operator">/</span>shopadmin<span class="token operator">/</span><span class="token punctuation">;</span>
+        <span class="token keyword">location</span> <span class="token operator">~</span> <span class="token punctuation">.</span><span class="token operator">*</span>\<span class="token punctuation">.</span><span class="token punctuation">(</span>gif<span class="token operator">|</span>jpg<span class="token operator">|</span>jpeg<span class="token operator">|</span>png<span class="token operator">|</span>bmp<span class="token operator">|</span>swf<span class="token operator">|</span>js<span class="token operator">|</span>css<span class="token punctuation">)</span>$ <span class="token punctuation">{</span>
+                <span class="token keyword">add_header</span> Cache<span class="token operator">-</span>Control no<span class="token operator">-</span>store<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-}
-[root@im-test-cpr-1 nginx]#
-</code></pre>
+        <span class="token keyword">location</span> <span class="token operator">/</span> <span class="token punctuation">{</span>
+            <span class="token keyword">try_files</span> <span class="token variable">$uri</span> <span class="token operator">/</span><span class="token keyword">index</span><span class="token punctuation">.</span>html<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+
+        <span class="token keyword">ssl_certificate</span> <span class="token string">"/etc/pki/nginx/server.crt"</span><span class="token punctuation">;</span>
+        <span class="token keyword">ssl_certificate_key</span> <span class="token string">"/etc/pki/nginx/private/server.key"</span><span class="token punctuation">;</span>
+        <span class="token keyword">ssl_session_cache</span> shared<span class="token punctuation">:</span><span class="token keyword">SSL</span><span class="token punctuation">:</span>1m<span class="token punctuation">;</span>
+        <span class="token keyword">ssl_session_timeout</span>  10m<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+<span class="token punctuation">[</span><span class="token keyword">root</span>@im<span class="token operator">-</span>test<span class="token operator">-</span>cpr<span class="token number">-1</span> nginx<span class="token punctuation">]</span><span class="token comment" spellcheck="true">#</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>访问：host name+8443端口号</p>
 <h3 id="4、将收到的服务转发给别的服务"><a href="#4、将收到的服务转发给别的服务" class="headerlink" title="4、将收到的服务转发给别的服务"></a>4、将收到的服务转发给别的服务</h3><p>比如接受端口接受的端口是8086，但是映射后访问5601的资源。</p>
-<pre><code>[haieradmin@1169CKT conf.d]$ cat nginx_8086_to_5601.conf 
-server {
-        listen      8086;
-        server_name  office.haier.net;
-        access_log  logs/5601.host.access.log  main;
-        location / {
-            proxy_pass http://127.0.0.1:5601/;
-        }
+<pre class="line-numbers language-nginx"><code class="language-nginx"><span class="token punctuation">[</span>haieradmin@1169CKT conf<span class="token punctuation">.</span>d<span class="token punctuation">]</span>$ cat nginx_8086_to_5601<span class="token punctuation">.</span>conf 
+<span class="token keyword">server</span> <span class="token punctuation">{</span>
+        <span class="token keyword">listen</span>      <span class="token number">8086</span><span class="token punctuation">;</span>
+        <span class="token keyword">server_name</span>  office<span class="token punctuation">.</span>haier<span class="token punctuation">.</span>net<span class="token punctuation">;</span>
+        <span class="token keyword">access_log</span>  logs<span class="token operator">/</span><span class="token number">5601</span><span class="token punctuation">.</span>host<span class="token punctuation">.</span>access<span class="token punctuation">.</span>log  main<span class="token punctuation">;</span>
+        <span class="token keyword">location</span> <span class="token operator">/</span> <span class="token punctuation">{</span>
+            <span class="token keyword">proxy_pass</span> <span class="token keyword">http</span><span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token number">127.0</span><span class="token punctuation">.</span><span class="token number">0.1</span><span class="token punctuation">:</span><span class="token number">5601</span><span class="token operator">/</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-        location ~.*\.(gif|jpg|jpeg|png|bmp|swf)$ {
-            proxy_pass http://127.0.0.1:5601;
-        }
+        <span class="token keyword">location</span> <span class="token operator">~</span><span class="token punctuation">.</span><span class="token operator">*</span>\<span class="token punctuation">.</span><span class="token punctuation">(</span>gif<span class="token operator">|</span>jpg<span class="token operator">|</span>jpeg<span class="token operator">|</span>png<span class="token operator">|</span>bmp<span class="token operator">|</span>swf<span class="token punctuation">)</span>$ <span class="token punctuation">{</span>
+            <span class="token keyword">proxy_pass</span> <span class="token keyword">http</span><span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token number">127.0</span><span class="token punctuation">.</span><span class="token number">0.1</span><span class="token punctuation">:</span><span class="token number">5601</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-        location ~.*\.(js|css)?$ {
-            proxy_pass http://127.0.0.1:5601;
-        }
+        <span class="token keyword">location</span> <span class="token operator">~</span><span class="token punctuation">.</span><span class="token operator">*</span>\<span class="token punctuation">.</span><span class="token punctuation">(</span>js<span class="token operator">|</span>css<span class="token punctuation">)</span><span class="token operator">?</span>$ <span class="token punctuation">{</span>
+            <span class="token keyword">proxy_pass</span> <span class="token keyword">http</span><span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token number">127.0</span><span class="token punctuation">.</span><span class="token number">0.1</span><span class="token punctuation">:</span><span class="token number">5601</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
    
-        error_page   500 502 503 504  /50x.html;
-        location = /50x.html {
-            root   html;
-        }
-}
-[haieradmin@1169CKT conf.d]$ 
-</code></pre>
+        <span class="token keyword">error_page</span>   <span class="token number">500</span> <span class="token number">502</span> <span class="token number">503</span> <span class="token number">504</span>  <span class="token operator">/</span>50x<span class="token punctuation">.</span>html<span class="token punctuation">;</span>
+        <span class="token keyword">location</span> <span class="token operator">=</span> <span class="token operator">/</span>50x<span class="token punctuation">.</span>html <span class="token punctuation">{</span>
+            <span class="token keyword">root</span>   html<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token punctuation">[</span>haieradmin@1169CKT conf<span class="token punctuation">.</span>d<span class="token punctuation">]</span>$ 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>

@@ -544,49 +544,49 @@ SLF4J: Found binding in [jar:file:/Users/mahaiqiang/.m2/repository/org/slf4j/slf
 SLF4J: Found binding in [jar:file:/Users/mahaiqiang/.m2/repository/ch/qos/logback/logback-classic/1.1.3/logback-classic-1.1.3.jar!/org/slf4j/impl/StaticLoggerBinder.class]
 SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>提示冲突，再start项目<br><img src="/loading.gif" data-original="2019-06-02-clojure-java-interop-extend/jar-extend.png" alt="log"><br>打出一堆无用的log，现状演示完毕。<br>2、修改jar内容<br>参考的<a target="_blank" rel="noopener" href="https://blog.csdn.net/CHX_W/article/details/78261161">JAVA中jar包反编译再重新生成jar文件完整流程</a>，先看看SDK的pom里引用的log依赖，证实一下：<br><img src="/loading.gif" data-original="2019-06-02-clojure-java-interop-extend/jar-extend-pom.png" alt="image.png"></p>
-<p>另存为pom文件，删除掉这个dependency，然后将pom复制到这个jar所在的目录<br><img src="/loading.gif" data-original="2019-06-02-clojure-java-interop-extend/jar-extend-rep.webp" alt="image.png"></p>
+<p>提示冲突，再start项目<br><img src="/loading.gif" data-original="/images/clojure/2019-06-02-clojure-java-interop-extend/jar-extend.png" alt="log"><br>打出一堆无用的log，现状演示完毕。<br>2、修改jar内容<br>参考的<a target="_blank" rel="noopener" href="https://blog.csdn.net/CHX_W/article/details/78261161">JAVA中jar包反编译再重新生成jar文件完整流程</a>，先看看SDK的pom里引用的log依赖，证实一下：<br><img src="/loading.gif" data-original="/images/clojure/2019-06-02-clojure-java-interop-extend/jar-extend-pom.png" alt="pom dependency"></p>
+<p>另存为pom文件，删除掉这个dependency，然后将pom复制到这个jar所在的目录<br><img src="/loading.gif" data-original="/images/clojure/2019-06-02-clojure-java-interop-extend/jar-extend-rep.webp" alt="删除pom里的依赖"></p>
 <p>然后执行以下操作</p>
-<pre><code>//该命令创建pom文件与原jar包路径一样的文件夹(即class文件在jar包中的包名)
+<pre class="line-numbers language-shell"><code class="language-shell">//该命令创建pom文件与原jar包路径一样的文件夹(即class文件在jar包中的包名)
 mkdir -p META-INF/maven/com.baidu.aip/java-sdk
 //从当前目录拷贝一份修改后的pom.xml文件到java-sdk文件夹下
 cp pom.xml META-INF/maven/com.baidu.aip/java-sdk
 //将文件pom.xml添加/更新到现有的jar文件java-sdk-4.11.0.jar中
 jar uf java-sdk-4.11.0.jar META-INF/maven/com.baidu.aip/java-sdk/pom.xml
-</code></pre>
-<p>再看jar的内容<br><img src="/loading.gif" data-original="2019-06-02-clojure-java-interop-extend/jar-extend-pom2.webp" alt="image.png"><br>然后启动项目：<br>发现还是提示冲突，与之前一样，于是手动删除slf4j的slf4j-simple的jar<br><img src="/loading.gif" data-original="2019-06-02-clojure-java-interop-extend/jar-extend-slf4j.webp" alt="image.png"><br>然后再启动，还是一样，搜了一下slf4j<br><img src="/loading.gif" data-original="2019-06-02-clojure-java-interop-extend/jar-extend-slf4g-2.webp" alt="image.png"><br>果断该掉，再试一把呗，果然干净了。<br><img src="/loading.gif" data-original="2019-06-02-clojure-java-interop-extend/jar-extend-success.webp" alt="image.png"></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>再看jar的内容<br><img src="/loading.gif" data-original="/images/clojure/2019-06-02-clojure-java-interop-extend/jar-extend-pom2.webp" alt="image.png"><br>然后启动项目：<br>发现还是提示冲突，与之前一样，于是手动删除slf4j的slf4j-simple的jar<br><img src="/loading.gif" data-original="/images/clojure/2019-06-02-clojure-java-interop-extend/jar-extend-slf4j.webp" alt="image.png"><br>然后再启动，还是一样，搜了一下slf4j<br><img src="/loading.gif" data-original="/images/clojure/2019-06-02-clojure-java-interop-extend/jar-extend-slf4g-2.webp" alt="image.png"><br>果断该掉，再试一把呗，果然干净了。<br><img src="/loading.gif" data-original="/images/clojure/2019-06-02-clojure-java-interop-extend/jar-extend-success.webp" alt="image.png"></p>
 <p>以后怎么出来，怎么解决。再续吧，先干活要紧。<br>2、使用SDK<br>一般搜索clojure java interop就会有结果，我主要看了<a target="_blank" rel="noopener" href="https://clojure.org/reference/java_interop">https://clojure.org/reference/java_interop</a>和</p>
 <blockquote>
 <p>This was a good chance to get familiar with a few of the interop features:<br>Importing with (import java.io.FileReader)<br>Instantiating an object, where new FileReader(path) becomes (FileReader. path)<br>Accessing a class attribute/method, where CSVFormat.DEFAULT becomes CSVFormat/DEFAULT, and<br>Calling an instance method, where record.get(“greeting”) becomes (.get record “greeting”).<br>I particularly like that the Clojure notation clearly distinguishes class attributes/methods from instance methods eg. CSVFormat/DEFAULT vs. (.get record “greeting”).<br>I’ll still be reaching for Python when a CSV file comes my way, but I was pleasantly surprised at how neat the Clojure version of this code ended up.</p>
 </blockquote>
 <p>这段启示使用的,在repl里的代码如下：</p>
-<pre><code>(import com.baidu.aip.ocr.AipOcr)
-=&gt; com.baidu.aip.ocr.AipOcr
+<pre class="line-numbers language-clojure"><code class="language-clojure">(import com.baidu.aip.ocr.AipOcr)
+=> com.baidu.aip.ocr.AipOcr
 (def ocr-client
   (AipOcr. "16321634"
            "ppiRhvR7VQLqhaiMH7svO7G9"
            "my-secret"))
-=&gt; #'user/ocr-client
+=> #'user/ocr-client
 (.receipt ocr-client "upload/files/81558580941_.pic_1.jpg" (new java.util.HashMap))
-=&gt;
+=>
 #object[org.json.JSONObject
         0x7a4e1225
         "{\"log_id\":7285098450024979673,\"words_result\":[{\"words\":\"山东省耳鼻喉医院鼻变态反应-嗅觉门诊\",\"location\":{\"top\":29,\"left\":232,\"width\":606,\"height\":63}},{\"words\":\"变应原点刺试验报告单\",\"location\":{\"top\":104,\"left\":318,\"width\":419,\"height\":45}},{\"words\":\"姓名:\",\"location\":{\"top\":218,\"left\":63,\"width\":58,\"height\":25}},{\"words\":\"性别:年龄:岁电话\",\"location\":{\"top\":212,\"left\":205,\"width\":287,\"height\":30}},{\"words\":\"检查日期:\",\"location\":{\"top\":207,\"left\":697,\"width\":103,\"height\":25}},{\"words\":\"年月日\",\"location\":{\"top\":199,\"left\":876,\"width\":120,\"height\":29}},{\"words\":\"名称\",\"location\":{\"top\":302,\"left\":106,\"width\":40,\"height\":21}},{\"words\":\"标本风团直径结果\",\"location\":{\"top\":296,\"left\":220,\"width\":268,\"height\":26}},{\"words\":\"名称\",\"location\":{\"top\":295,\"left\":572,\"width\":40,\"height\":21}},{\"words\":\"标本风团直径结果\",\"location\":{\"top\":286,\"left\":694,\"width\":276,\"height\":29}},{\"words\":\" (mm)\",\"location\":{\"top\":328,\"left\":330,\"width\":55,\"height\":17}},{\"words\":\" mm)\",\"location\":{\"top\":321,\"left\":806,\"width\":43,\"height\":14}},{\"words\":\"9\",\"location\":{\"top\":370,\"left\":586,\"width\":12,\"height\":14}},{\"words\":\"粉尘螨\",\"location\":{\"top\":408,\"left\":98,\"width\":62,\"height\":22}},{\"words\":\"大籽蒿花粉\",\"location\":{\"top\":401,\"left\":543,\"width\":100,\"height\":23}},{\"words\":\"2\",\"location\":{\"top\":477,\"left\":126,\"width\":12,\"height\":14}},{\"words\":\"10\",\"location\":{\"top\":470,\"left\":582,\"width\":23,\"height\":16}},{\"words\":\"屋尘螨\",\"location\":{\"top\":509,\"left\":102,\"width\":60,\"height\":21}},{\"words\":\"杨树花粉\",\"location\":{\"top\":503,\"left\":553,\"width\":80,\"height\":22}},{\"words\":\"狗毛\",\"location\":{\"top\":607,\"left\":113,\"width\":42,\"height\":21}},{\"words\":\"柳树花粉\",\"location\":{\"top\":603,\"left\":554,\"width\":79,\"height\":23}},{\"words\":\"12\",\"location\":{\"top\":670,\"left\":583,\"width\":22,\"height\":17}},{\"words\":\"猫毛\",\"location\":{\"top\":706,\"left\":116,\"width\":40,\"height\":21}},{\"words\":\"梧桐花粉\",\"location\":{\"top\":702,\"left\":554,\"width\":79,\"height\":21}},{\"words\":\"5\",\"location\":{\"top\":773,\"left\":131,\"width\":13,\"height\":14}},{\"words\":\"13\",\"location\":{\"top\":768,\"left\":585,\"width\":21,\"height\":16}},{\"words\":\"鸭毛绒\",\"location\":{\"top\":804,\"left\":106,\"width\":62,\"height\":22}},{\"words\":\"产黄青霉\",\"location\":{\"top\":801,\"left\":554,\"width\":81,\"height\":21}},{\"words\":\"14\",\"location\":{\"top\":868,\"left\":586,\"width\":22,\"height\":14}},{\"words\":\"葎草\",\"location\":{\"top\":903,\"left\":119,\"width\":40,\"height\":19}},{\"words\":\"链格孢霉\",\"location\":{\"top\":900,\"left\":557,\"width\":80,\"height\":23}},{\"words\":\"15\",\"location\":{\"top\":955,\"left\":587,\"width\":21,\"height\":16}},{\"words\":\"藜属花粉\",\"location\":{\"top\":990,\"left\":98,\"width\":83,\"height\":24}},{\"words\":\"阴性对照\",\"location\":{\"top\":987,\"left\":558,\"width\":79,\"height\":23}},{\"words\":\"8\",\"location\":{\"top\":1058,\"left\":133,\"width\":14,\"height\":14}},{\"words\":\"16\",\"location\":{\"top\":1053,\"left\":588,\"width\":22,\"height\":16}},{\"words\":\"豚草\",\"location\":{\"top\":1088,\"left\":119,\"width\":42,\"height\":23}},{\"words\":\"阳性对照\",\"location\":{\"top\":1085,\"left\":558,\"width\":80,\"height\":21}},{\"words\":\"注:1、皮试前应停用口服抗组胺药物3天\",\"location\":{\"top\":1178,\"left\":46,\"width\":372,\"height\":41}},{\"words\":\"2、有严重皮肤病和皮肤溃烂者不得做皮肤试验\",\"location\":{\"top\":1217,\"left\":121,\"width\":405,\"height\":29}},{\"words\":\"3、以上结果不做证明用\",\"location\":{\"top\":1248,\"left\":120,\"width\":214,\"height\":40}}],\"words_result_num\":41}"]
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>再者，可以使用<a target="_blank" rel="noopener" href="https://coldnew.github.io/a9b87aa3/">使用 lein 來管理你本地的 maven repo</a>来讲jar做成本地资源，导入到maven仓库，不再多写了。</p>
 <p>3、进阶<br>上面的办法显然是比较low的，不利于持续化，更高阶的方式是在:dependencies中使用<code>:exclusions</code>关键字，忽略某些依赖，比如上面的sdk应该这么用：</p>
-<pre><code>[com.baidu.aip/java-sdk "4.11.0"
+<pre class="line-numbers language-clojure"><code class="language-clojure">[com.baidu.aip/java-sdk "4.11.0"
                   :exclusions [org.slf4j/slf4j-simple]]
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>4、关于dependencies的其他<br>在命令行里执行：</p>
-<pre><code>#查看依赖关系
+<pre class="line-numbers language-shell"><code class="language-shell">#查看依赖关系
 lein deps :tree
 #加载依赖
 lein deps
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>其他更多请参照：<a target="_blank" rel="noopener" href="https://cljdoc.org/d/leiningen/leiningen/2.9.1/api/leiningen.deps">https://cljdoc.org/d/leiningen/leiningen/2.9.1/api/leiningen.deps</a></p>
 <p>5、clojure里使用java</p>
-<pre><code>;;md5加密
+<pre class="line-numbers language-clojure"><code class="language-clojure">;;md5加密
 (defn get-str-md5 [s]
   (apply str
          (map (partial format "%02x")
@@ -595,13 +595,13 @@ lein deps
                          (.update (.getBytes s)))))))
 ;;修改时间格式
 (defn format-date-time [timestamp]
-  (-&gt; "yyyyMMddHHmmss"
+  (-> "yyyyMMddHHmmss"
       (java.text.SimpleDateFormat.)
       (.format timestamp)))
 ;;获取UUID
 (defn generate-db-id []
   (clojure.string/replace (str (java.util.UUID/randomUUID)) "-" ""))
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>更多clojure和java的交互使用参看：<a target="_blank" rel="noopener" href="https://clojure.org/reference/java_interop">https://clojure.org/reference/java_interop</a></p>
 
                 

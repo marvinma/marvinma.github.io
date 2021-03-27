@@ -541,134 +541,170 @@
 <p>不过也不是不可能，只要你愿意折腾，不放弃（其实是买不起mac）。</p>
 <h3 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h3><p>1、安装node，到今天（2018-09-10教师节），node最新版是10.8了，但是因为几个月前搞过vue，安装的node是8.6.0，今天升级以后反而连vue init都不能用了，所以不得已回退到8.6.0，所以还是使用稳定版比较稳妥。直接到<a target="_blank" rel="noopener" href="https://npm.taobao.org/mirrors/node/">官网</a>下载si文件下一步下一步傻瓜式安装即可。</p>
 <p>2、安装webpack</p>
-<pre><code>$ npm install -g webpack
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">$ npm install -g webpack
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>3、安装vue-cli</p>
-<pre><code>$ npm install -g vue-cli
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">$ npm install -g vue-cli
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>4、初始化项目</p>
-<pre><code>$ vue init webpack demo
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">$ vue init webpack demo
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>5、运行项目</p>
-<pre><code>$ npm install
+<pre class="line-numbers language-shell"><code class="language-shell">$ npm install
 $ npm run dev
-</code></pre>
-<p>默认访问端口是8080，访问即可<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-a3eb434d89fd24a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>默认访问端口是8080，访问即可<br><img src="/loading.gif" data-original="/images/fontend/vue-hello-world.png" alt="hello world"></p>
 <h3 id="使用json-server模拟REST-API"><a href="#使用json-server模拟REST-API" class="headerlink" title="使用json-server模拟REST API"></a>使用json-server模拟REST API</h3><p>因为是学习，老老实实写后端接口，再给前端调用，确实有些头重脚轻，我选择了json-server用来mock数据。</p>
 <ul>
-<li>安装服务<pre><code>$ npm install json-server -g
-</code></pre>
+<li>安装服务<pre class="line-numbers language-shell"><code class="language-shell">$ npm install json-server -g
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
-<li>创建文件<br>在项目根目录新建/mock文件夹，并且在mock目录下新建db.json文件，内容如下：<br>```<br>{<br>  “list”: [<pre><code>{
-  "id": 1,
-  "name": "张三",
-  "tel": "15223810923"
-},
-{
-  "id": 2,
-  "name": "李四",
-  "tel": "15223810923"
-},
-{
-  "id": 3,
-  "name": "王二",
-  "tel": "15223810923"
-},
-{
-  "id": 4,
-  "name": "陈五",
-  "tel": "15223810923"
-},
-{
-  "name": "赵六",
-  "tel": "123454323",
-  "id": 5
-},
-{
-  "name": "赵六",
-  "tel": "123454323",
-  "id": 6
-},
-{
-  "name": "赵六",
-  "tel": "123454323",
-  "id": 7
-}
-</code></pre>
-  ],<br>  “users”: [<pre><code>{
-  "id": 1,
-  "name": "陈五",
-  "sex":"male",
-  "tel": "12345678",
-  "auther":{
-    "name":"陈五",
-    "age":"25"
-  }
-},
-{
-  "id": 2,
-  "name": "王二",
-  "sex":"male",
-  "tel": "15223810923",
-  "auther":{
-    "name":"王二",
-    "age":"22"
-  }
-}
-</code></pre>
-  ],<br>  “user”: {<pre><code>  "id": 1,
-  "name": "陈五",
-  "tel": "15223810923"
-}
-,
-</code></pre>
-  “posts”: [<pre><code>{ "id": 1, "title": "json-server", "author": "typicode" }
-</code></pre>
-  ],<br>  “comments”: [<pre><code>{ "id": 1, "body": "some comment", "postId": 1 }
-</code></pre>
-  ],<br>  “profile”: { “name”: “typicode” },<br>   “goods”: {<pre><code>  "data" :[
-  { "price": "69.9", "title": "德芙", "img": "http://m.360buyimg.com/babel/s211x211_jfs/t3688/270/776223567/128582/fa074fb3/58170f6dN6b9a12bf.jpg!q50.jpg.webp" },
-  { "price": "63", "title": "费列罗", "img": "http://m.360buyimg.com/babel/s211x211_jfs/t613/100/1264998035/221234/1a29d51f/54c34525Nb4f6581c.jpg!q50.jpg.webp"},
-  { "price": "29.9", "title": "大米", "img": "http://m.360buyimg.com/babel/s211x211_jfs/t1258/40/17387560/108696/aced445f/54e011deN3ae867ae.jpg!q50.jpg.webp"},
-  { "price": "54.9", "title": "安慕希", "img": "http://m.360buyimg.com/babel/s211x211_jfs/t2734/15/680373407/215934/3abaa748/572057daNc09b5da7.jpg!q50.jpg.webp"},
-  { "price": "58", "title": "金典", "img": "http://m.360buyimg.com/babel/s211x211_jfs/t2482/145/1424008556/91991/d62f5454/569f47a2N3f763060.jpg!q50.jpg.webp"},
-  { "price": "60", "title": "味可滋", "img": "http://m.360buyimg.com/babel/s211x211_jfs/t2368/3/874563950/70786/7b5e8edd/563074c8N4d535db4.jpg!q50.jpg.webp" },
-  { "price": "248.00", "title": "泸州老窖", "img": "http://m.360buyimg.com/babel/s211x211_jfs/t283/166/1424018055/189580/7c0792b7/543b4958N05fa2feb.jpg!q50.jpg.webp"},
-  { "price": "328.8", "title": "剑南春", "img": "http://m.360buyimg.com/babel/s350x350_g15/M05/1A/0A/rBEhWlNeLAwIAAAAAAHyok3PZY0AAMl8gO8My0AAfK6307.jpg!q50.jpg.webp"},
-  { "price": "49.00", "title": "蓝莓", "img": "http://m.360buyimg.com/babel/s211x211_jfs/t2332/148/2952098628/94387/e64654e2/56f8d76aNb088c2ab.jpg!q50.jpg.webp" },
-  { "price": "68", "title": "芒果", "img": "http://m.360buyimg.com/n0/jfs/t3709/334/1378702984/206759/5c100ab5/58253588Naaa05c5c.jpg!q70.jpg"}
-]
-</code></pre>
-  }<br>}</li>
+<li>创建文件<br>在项目根目录新建/mock文件夹，并且在mock目录下新建db.json文件，内容如下：</li>
 </ul>
-<pre><code>* 运行json-server
-</code></pre>
-<p>json-server db.json -p 8080</p>
-<pre><code>指定rest api在8080端口上运行，使用http://127.0.0.1:8080/goods/查看。
+<pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"list"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"张三"</span><span class="token punctuation">,</span>
+        <span class="token property">"tel"</span><span class="token operator">:</span> <span class="token string">"15223810923"</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"李四"</span><span class="token punctuation">,</span>
+        <span class="token property">"tel"</span><span class="token operator">:</span> <span class="token string">"15223810923"</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"王二"</span><span class="token punctuation">,</span>
+        <span class="token property">"tel"</span><span class="token operator">:</span> <span class="token string">"15223810923"</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"陈五"</span><span class="token punctuation">,</span>
+        <span class="token property">"tel"</span><span class="token operator">:</span> <span class="token string">"15223810923"</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"赵六"</span><span class="token punctuation">,</span>
+        <span class="token property">"tel"</span><span class="token operator">:</span> <span class="token string">"123454323"</span><span class="token punctuation">,</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">5</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"赵六"</span><span class="token punctuation">,</span>
+        <span class="token property">"tel"</span><span class="token operator">:</span> <span class="token string">"123454323"</span><span class="token punctuation">,</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">6</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"赵六"</span><span class="token punctuation">,</span>
+        <span class="token property">"tel"</span><span class="token operator">:</span> <span class="token string">"123454323"</span><span class="token punctuation">,</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">7</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"users"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"陈五"</span><span class="token punctuation">,</span>
+        <span class="token property">"sex"</span><span class="token operator">:</span><span class="token string">"male"</span><span class="token punctuation">,</span>
+        <span class="token property">"tel"</span><span class="token operator">:</span> <span class="token string">"12345678"</span><span class="token punctuation">,</span>
+        <span class="token property">"auther"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+          <span class="token property">"name"</span><span class="token operator">:</span><span class="token string">"陈五"</span><span class="token punctuation">,</span>
+          <span class="token property">"age"</span><span class="token operator">:</span><span class="token string">"25"</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"王二"</span><span class="token punctuation">,</span>
+        <span class="token property">"sex"</span><span class="token operator">:</span><span class="token string">"male"</span><span class="token punctuation">,</span>
+        <span class="token property">"tel"</span><span class="token operator">:</span> <span class="token string">"15223810923"</span><span class="token punctuation">,</span>
+        <span class="token property">"auther"</span><span class="token operator">:</span><span class="token punctuation">{</span>
+          <span class="token property">"name"</span><span class="token operator">:</span><span class="token string">"王二"</span><span class="token punctuation">,</span>
+          <span class="token property">"age"</span><span class="token operator">:</span><span class="token string">"22"</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"user"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"陈五"</span><span class="token punctuation">,</span>
+        <span class="token property">"tel"</span><span class="token operator">:</span> <span class="token string">"15223810923"</span>
+      <span class="token punctuation">}</span>
+      <span class="token punctuation">,</span>
+    <span class="token property">"posts"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span> <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"json-server"</span><span class="token punctuation">,</span> <span class="token property">"author"</span><span class="token operator">:</span> <span class="token string">"typicode"</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"comments"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span> <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token property">"body"</span><span class="token operator">:</span> <span class="token string">"some comment"</span><span class="token punctuation">,</span> <span class="token property">"postId"</span><span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"profile"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"typicode"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+     <span class="token property">"goods"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"data"</span> <span class="token operator">:</span><span class="token punctuation">[</span>
+        <span class="token punctuation">{</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"69.9"</span><span class="token punctuation">,</span> <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"德芙"</span><span class="token punctuation">,</span> <span class="token property">"img"</span><span class="token operator">:</span> <span class="token string">"http://m.360buyimg.com/babel/s211x211_jfs/t3688/270/776223567/128582/fa074fb3/58170f6dN6b9a12bf.jpg!q50.jpg.webp"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"63"</span><span class="token punctuation">,</span> <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"费列罗"</span><span class="token punctuation">,</span> <span class="token property">"img"</span><span class="token operator">:</span> <span class="token string">"http://m.360buyimg.com/babel/s211x211_jfs/t613/100/1264998035/221234/1a29d51f/54c34525Nb4f6581c.jpg!q50.jpg.webp"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"29.9"</span><span class="token punctuation">,</span> <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"大米"</span><span class="token punctuation">,</span> <span class="token property">"img"</span><span class="token operator">:</span> <span class="token string">"http://m.360buyimg.com/babel/s211x211_jfs/t1258/40/17387560/108696/aced445f/54e011deN3ae867ae.jpg!q50.jpg.webp"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"54.9"</span><span class="token punctuation">,</span> <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"安慕希"</span><span class="token punctuation">,</span> <span class="token property">"img"</span><span class="token operator">:</span> <span class="token string">"http://m.360buyimg.com/babel/s211x211_jfs/t2734/15/680373407/215934/3abaa748/572057daNc09b5da7.jpg!q50.jpg.webp"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"58"</span><span class="token punctuation">,</span> <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"金典"</span><span class="token punctuation">,</span> <span class="token property">"img"</span><span class="token operator">:</span> <span class="token string">"http://m.360buyimg.com/babel/s211x211_jfs/t2482/145/1424008556/91991/d62f5454/569f47a2N3f763060.jpg!q50.jpg.webp"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"60"</span><span class="token punctuation">,</span> <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"味可滋"</span><span class="token punctuation">,</span> <span class="token property">"img"</span><span class="token operator">:</span> <span class="token string">"http://m.360buyimg.com/babel/s211x211_jfs/t2368/3/874563950/70786/7b5e8edd/563074c8N4d535db4.jpg!q50.jpg.webp"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"248.00"</span><span class="token punctuation">,</span> <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"泸州老窖"</span><span class="token punctuation">,</span> <span class="token property">"img"</span><span class="token operator">:</span> <span class="token string">"http://m.360buyimg.com/babel/s211x211_jfs/t283/166/1424018055/189580/7c0792b7/543b4958N05fa2feb.jpg!q50.jpg.webp"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"328.8"</span><span class="token punctuation">,</span> <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"剑南春"</span><span class="token punctuation">,</span> <span class="token property">"img"</span><span class="token operator">:</span> <span class="token string">"http://m.360buyimg.com/babel/s350x350_g15/M05/1A/0A/rBEhWlNeLAwIAAAAAAHyok3PZY0AAMl8gO8My0AAfK6307.jpg!q50.jpg.webp"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"49.00"</span><span class="token punctuation">,</span> <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"蓝莓"</span><span class="token punctuation">,</span> <span class="token property">"img"</span><span class="token operator">:</span> <span class="token string">"http://m.360buyimg.com/babel/s211x211_jfs/t2332/148/2952098628/94387/e64654e2/56f8d76aNb088c2ab.jpg!q50.jpg.webp"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span> <span class="token property">"price"</span><span class="token operator">:</span> <span class="token string">"68"</span><span class="token punctuation">,</span> <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"芒果"</span><span class="token punctuation">,</span> <span class="token property">"img"</span><span class="token operator">:</span> <span class="token string">"http://m.360buyimg.com/n0/jfs/t3709/334/1378702984/206759/5c100ab5/58253588Naaa05c5c.jpg!q70.jpg"</span><span class="token punctuation">}</span>
+      <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><p>运行json-server</p>
+<pre class="line-numbers language-shell"><code class="language-shell">json-server db.json -p 8080
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>指定rest api在8080端口上运行，使用<a target="_blank" rel="noopener" href="http://127.0.0.1:8080/goods/%E6%9F%A5%E7%9C%8B%E3%80%82">http://127.0.0.1:8080/goods/查看。</a></p>
+</li>
+<li><p>快捷启动<br>为了方便，再创建一个 package.json 文件，写入</p>
+<pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+<span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+  <span class="token property">"mock"</span><span class="token operator">:</span> <span class="token string">"json-server db.json --port 3003"</span>
+<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后使用到 /mock 目录下执行 <code>npm run mock</code> 命令，如果成功会出现</p>
+</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell">$ npm run mock
 
-* 快捷启动
-为了方便，再创建一个 package.json 文件，写入
-</code></pre>
-<p>{<br>  “scripts”: {<br>    “mock”: “json-server db.json –port 3003”<br>  }<br>}</p>
-<pre><code>然后使用到 /mock 目录下执行 npm run mock 命令，如果成功会出现
-</code></pre>
-<p>$ npm run mock</p>
-<blockquote>
-<p>@ mock D:\Git\demo\vue\demo\mock<br>json-server db.json –port 8080</p>
-</blockquote>
-<p>  {^_^}/ hi!</p>
-<p>  Loading db.json<br>  Done</p>
-<p>  Resources<br>  <a target="_blank" rel="noopener" href="http://localhost:8080/list">http://localhost:8080/list</a><br>  <a target="_blank" rel="noopener" href="http://localhost:8080/users">http://localhost:8080/users</a><br>  <a target="_blank" rel="noopener" href="http://localhost:8080/user">http://localhost:8080/user</a><br>  <a target="_blank" rel="noopener" href="http://localhost:8080/posts">http://localhost:8080/posts</a><br>  <a target="_blank" rel="noopener" href="http://localhost:8080/comments">http://localhost:8080/comments</a><br>  <a target="_blank" rel="noopener" href="http://localhost:8080/profile">http://localhost:8080/profile</a><br>  <a target="_blank" rel="noopener" href="http://localhost:8080/goods">http://localhost:8080/goods</a></p>
-<p>  Home<br>  <a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080</a></p>
-<pre><code>如果不成功请检查 db.json 文件的格式是否正确。
-![api.png](https://upload-images.jianshu.io/upload_images/4109786-c06d3b4ab1951900.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+> @ mock D:\Git\demo\vue\demo\mock
+> json-server db.json --port 8080
 
-* 使用本地api
-代码：
-</code></pre>
-<p>  created () {   /* 这个是vue的钩子函数，当new Vue()实例创建完毕后执行的函数 <em>/<br>      const Http = new Vue;<br>      this.$http.get(‘<a target="_blank" rel="noopener" href="http://127.0.0.1:8080/goods').then((data)">http://127.0.0.1:8080/goods').then((data)</a> =&gt; {   /</em> 调用vue的ajax来请求数据，promise语法，并用es6的箭头函数 */<br>        console.log(‘===================================’)<br>        console.log(data);<br>        console.log(‘===================================’)<br>        this.items = data.body.data;<br>      })<br>  }</p>
-<p>```<br>但是这样操作会报错,错误如下：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-9d1db669c82ab3b1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="errorage.png"><br>这是因为没有引入vue-resource导致的，可以参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39581226/article/details/80682132">Cannot read property ‘get’ of undefined” in vuejs</a>和<a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000006984096/a-1020000006985045">vue引入vue-resource无法使用$http.get</a>。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-2ba83f83ce900744.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="vue-resource.png"></p>
-<p>最终实现的效果如图：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-ebd51623e83f04e1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="goods"></p>
+
+  \{^_^}/ hi!
+
+  Loading db.json
+  Done
+
+  Resources
+  http://localhost:8080/list
+  http://localhost:8080/users
+  http://localhost:8080/user
+  http://localhost:8080/posts
+  http://localhost:8080/comments
+  http://localhost:8080/profile
+  http://localhost:8080/goods
+
+  Home
+  http://localhost:8080
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果不成功请检查 db.json 文件的格式是否正确。<br><img src="/loading.gif" data-original="/images/fontend/vue-helloworld-api.png" alt="api.png"></p>
+<ul>
+<li>使用本地api<br>代码：<pre class="line-numbers language-js"><code class="language-js">created <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>   <span class="token comment" spellcheck="true">/* 这个是vue的钩子函数，当new Vue()实例创建完毕后执行的函数 */</span>
+    <span class="token keyword">const</span> Http <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vue</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>$http<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'http://127.0.0.1:8080/goods'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>   <span class="token comment" spellcheck="true">/* 调用vue的ajax来请求数据，promise语法，并用es6的箭头函数 */</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'==================================='</span><span class="token punctuation">)</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'==================================='</span><span class="token punctuation">)</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>items <span class="token operator">=</span> data<span class="token punctuation">.</span>body<span class="token punctuation">.</span>data<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+但是这样操作会报错,错误如下：<br><img src="/loading.gif" data-original="/images/fontend/vue-helloworld-errorage.png" alt="errorage.png"><br>这是因为没有引入vue-resource导致的，可以参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39581226/article/details/80682132">Cannot read property ‘get’ of undefined” in vuejs</a>和<a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000006984096/a-1020000006985045">vue引入vue-resource无法使用$http.get</a>。</li>
+</ul>
+<p><img src="/loading.gif" data-original="/images/fontend/vue-helloworld-resource.png" alt="vue-resource.png"></p>
+<p>最终实现的效果如图：<br><img src="/loading.gif" data-original="/images/fontend/vue-helloworld-success.png" alt="goods"></p>
 <p>核心参考文档：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7c5ccfac3fa8">https://www.jianshu.com/p/7c5ccfac3fa8</a></p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/itfantasy/p/6043111.html">https://www.cnblogs.com/itfantasy/p/6043111.html</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_17775997/article/details/77824878">https://blog.csdn.net/sinat_17775997/article/details/77824878</a></p>
 <h2 id="视频和源码"><a href="#视频和源码" class="headerlink" title="视频和源码"></a>视频和源码</h2><p>视频共享：<br>链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/18TFC0-VSCIWFo977p4YcTQ">https://pan.baidu.com/s/18TFC0-VSCIWFo977p4YcTQ</a><br>提取码: rjcp </p>
@@ -1134,74 +1170,25 @@ $ npm run dev
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2018/09/02/linux-an-zhuang-maven-si-fu/">
+                <a href="/2018/09/02/windows-shang-an-zhuang-nvm-node-ban-ben-guan-li-gong-ju-ge-chong-kan/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Linux 安装maven私服">
+                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="windows上安装nvm-node版本管理工具各种坎">
                         
-                        <span class="card-title">Linux 安装maven私服</span>
+                        <span class="card-title">windows上安装nvm-node版本管理工具各种坎</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            开发环境搭建—安装maven私服简书地址
+                            nodejs版本管理工具在windows环境上安装和使用简书地址
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
                             <i class="far fa-clock fa-fw icon-date"></i>2018-09-02
                         </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="post-category">
-                                    开发环境搭建
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/linux/">
-                        <span class="chip bg-color">linux</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2018/09/02/windows-vuejs-xue-xi-bi-ji-2/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="windows10 上浅尝vue js好记性不如烂笔头之二">
-                        
-                        <span class="card-title">windows10 上浅尝vue js好记性不如烂笔头之二</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            vuejs学习笔记—-父子组件传值、动态组件、自定义组件、vue-router、vue-link、state简书地址
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2018-09-02
-                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1221,8 +1208,61 @@ $ npm run dev
                         <span class="chip bg-color">windows</span>
                     </a>
                     
-                    <a href="/tags/vue/">
-                        <span class="chip bg-color">vue</span>
+                    <a href="/tags/tools/">
+                        <span class="chip bg-color">tools</span>
+                    </a>
+                    
+                    <a href="/tags/node/">
+                        <span class="chip bg-color">node</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/08/14/linux-an-zhuang-maven-jenkins-chi-xu-ji-cheng/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="Linux 安装maven，jenkins持续集成">
+                        
+                        <span class="card-title">Linux 安装maven，jenkins持续集成</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            开发环境搭建—安装maven和jenkins持续集成简书地址
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-08-14
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="post-category">
+                                    开发环境搭建
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/linux/">
+                        <span class="chip bg-color">linux</span>
                     </a>
                     
                 </div>

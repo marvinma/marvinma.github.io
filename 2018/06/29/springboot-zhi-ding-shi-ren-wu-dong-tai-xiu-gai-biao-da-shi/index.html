@@ -543,76 +543,75 @@
 <span id="more"></span>
 
 <p>（1）开启定时任务功能  </p>
-<pre><code>@Configuration  
-@EnableScheduling  
-public class SpringTaskScheduleConfig {  
-    @Bean  
-    public TaskScheduler poolScheduler() {  
-        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();  
-        scheduler.setThreadNamePrefix("poolScheduler");  
-        scheduler.setPoolSize(10);  
-        return scheduler;  
-    }  
-}  
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>  
+<span class="token annotation punctuation">@EnableScheduling</span>  
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SpringTaskScheduleConfig</span> <span class="token punctuation">{</span>  
+    <span class="token annotation punctuation">@Bean</span>  
+    <span class="token keyword">public</span> TaskScheduler <span class="token function">poolScheduler</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+        ThreadPoolTaskScheduler scheduler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadPoolTaskScheduler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        scheduler<span class="token punctuation">.</span><span class="token function">setThreadNamePrefix</span><span class="token punctuation">(</span><span class="token string">"poolScheduler"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        scheduler<span class="token punctuation">.</span><span class="token function">setPoolSize</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+        <span class="token keyword">return</span> scheduler<span class="token punctuation">;</span>  
+    <span class="token punctuation">}</span>  
+<span class="token punctuation">}</span>  
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>或者在运行类TaskApplication添加上**@EnableScheduling**注解。<br>（2）主角登场，添加定时任务</p>
 <ul>
 <li>简单方式：修改定时任务的执行周期；</li>
 </ul>
 <p> 按正常来讲，修改定时任务的执行周期，把服务停下来，改下任务的cron参数，再重启服务就搞搞定了。这种方式很简单，没有可说的，但是有没有一种可能，在不停服务的情况下，就可以动态的修改任务的cron参数呢？哈哈，那是必须的必。<br>比如：</p>
-<pre><code>import com.hczt.haier.task.service.UserTaskService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> com<span class="token punctuation">.</span>hczt<span class="token punctuation">.</span>haier<span class="token punctuation">.</span>task<span class="token punctuation">.</span>service<span class="token punctuation">.</span>UserTaskService<span class="token punctuation">;</span>
+<span class="token keyword">import</span> lombok<span class="token punctuation">.</span>extern<span class="token punctuation">.</span>slf4j<span class="token punctuation">.</span>Slf4j<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>scheduling<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Scheduled<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>stereotype<span class="token punctuation">.</span>Component<span class="token punctuation">;</span>
 
-import javax.annotation.Resource;
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Resource<span class="token punctuation">;</span>
 
-/**
+<span class="token comment" spellcheck="true">/**
  * 用户菜单定时设置
- */
-@Slf4j
-@Component
-public class UserMenuTask {
+ */</span>
+<span class="token annotation punctuation">@Slf4j</span>
+<span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserMenuTask</span> <span class="token punctuation">{</span>
 
-    @Resource
-    private UserTaskService userTaskService;
+    <span class="token annotation punctuation">@Resource</span>
+    <span class="token keyword">private</span> UserTaskService userTaskService<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 每天一点进行同步
-     */
-    @Scheduled(cron = "0 0 1 * * *")
-    public void setUserMenu(){
-        log.info("-----Start Set User Menus -----");
-        userTaskService.timeSetMenus();
-        log.info("-----End Set User Menus -----");
-    }
-}
-</code></pre>
+     */</span>
+    <span class="token annotation punctuation">@Scheduled</span><span class="token punctuation">(</span>cron <span class="token operator">=</span> <span class="token string">"0 0 1 * * *"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setUserMenu</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"-----Start Set User Menus -----"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        userTaskService<span class="token punctuation">.</span><span class="token function">timeSetMenus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"-----End Set User Menus -----"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>动态修改定时任务的执行周期；</li>
 </ul>
 <p>首先我们先会回顾下，我们之前是使用了@Scheduled(cron =“0/5 * * * * *”)这种方式适用于固定任务周期的任务，若要修改任务执行周期，只能走“停服务—修改任务执行周期—重启服务”这条路。那么如何动态修改呢，我们看下步骤：</p>
 <p>① 在定时任务类上增加@EnabledScheduling注解，并实现SchedulingConfigurer接口。<br>② 设置一个静态的cron，用于存放任务执行周期参数。<br>③ 开启一个线程，用于模拟实际业务中外部原因修改了任务执行周期。<br>④ 设置任务触发器，触发任务执行。<br> 本项目是基于spring data jpa的，数据检索使用的是repository，具体创建数据表：</p>
-<pre><code>CREATE TABLE `t_scheduled_task_cron` (
-    `task_cron_id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id自增',
-    `task_code` VARCHAR(40) NOT NULL DEFAULT '' COMMENT '定时任务编码',
-    `task_name` VARCHAR(40) NOT NULL DEFAULT '' COMMENT '定时任务名称',
-    `task_package` VARCHAR(400) NULL DEFAULT '' COMMENT '定时任务包名',
-    `task_cron` VARCHAR(40) NOT NULL DEFAULT '' COMMENT '定时任务执行表达式',
-    `task_cron_description` VARCHAR(400) NOT NULL DEFAULT '',
-    `remark` VARCHAR(400) NULL DEFAULT NULL COMMENT '备注',
-    PRIMARY KEY (`task_cron_id`)
-)
-COMMENT='定时任务执行时间存储表'
-COLLATE='utf8mb4_general_ci'
-ENGINE=InnoDB
-;
-</code></pre>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token punctuation">`</span>t_scheduled_task_cron<span class="token punctuation">`</span> <span class="token punctuation">(</span>
+    <span class="token punctuation">`</span>task_cron_id<span class="token punctuation">`</span> <span class="token keyword">INT</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">AUTO_INCREMENT</span> <span class="token keyword">COMMENT</span> <span class="token string">'id自增'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>task_code<span class="token punctuation">`</span> <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">DEFAULT</span> <span class="token string">''</span> <span class="token keyword">COMMENT</span> <span class="token string">'定时任务编码'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>task_name<span class="token punctuation">`</span> <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">DEFAULT</span> <span class="token string">''</span> <span class="token keyword">COMMENT</span> <span class="token string">'定时任务名称'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>task_package<span class="token punctuation">`</span> <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">400</span><span class="token punctuation">)</span> <span class="token boolean">NULL</span> <span class="token keyword">DEFAULT</span> <span class="token string">''</span> <span class="token keyword">COMMENT</span> <span class="token string">'定时任务包名'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>task_cron<span class="token punctuation">`</span> <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">DEFAULT</span> <span class="token string">''</span> <span class="token keyword">COMMENT</span> <span class="token string">'定时任务执行表达式'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>task_cron_description<span class="token punctuation">`</span> <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">400</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">DEFAULT</span> <span class="token string">''</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>remark<span class="token punctuation">`</span> <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">400</span><span class="token punctuation">)</span> <span class="token boolean">NULL</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span> <span class="token keyword">COMMENT</span> <span class="token string">'备注'</span><span class="token punctuation">,</span>
+    <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token punctuation">`</span>task_cron_id<span class="token punctuation">`</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">COMMENT</span><span class="token operator">=</span><span class="token string">'定时任务执行时间存储表'</span>
+<span class="token keyword">COLLATE</span><span class="token operator">=</span><span class="token string">'utf8mb4_general_ci'</span>
+<span class="token keyword">ENGINE</span><span class="token operator">=</span><span class="token keyword">InnoDB</span>
+<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>创建实体</p>
-<pre><code>
-import javax.persistence.*;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> javax<span class="token punctuation">.</span>persistence<span class="token punctuation">.</span>*<span class="token punctuation">;</span>
 
-/**
+<span class="token comment" spellcheck="true">/**
  * 精诚所至，金石为开。
  * 石の上にも三年;陽気の発する所金石亦透る。
  * Faith moves mountains.
@@ -620,29 +619,29 @@ import javax.persistence.*;
  * @author marvin.ma
  * @create 2018-06-28 22:35
  * @desc 定时任务表达式实体
- **/
-@Data
-@Entity
-@Table(name = "t_scheduled_task_cron")
-public class ScheduledTaskCron {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "task_cron_id")
-    private String taskCronId;
+ **/</span>
+<span class="token annotation punctuation">@Data</span>
+<span class="token annotation punctuation">@Entity</span>
+<span class="token annotation punctuation">@Table</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"t_scheduled_task_cron"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ScheduledTaskCron</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token annotation punctuation">@GeneratedValue</span><span class="token punctuation">(</span>strategy <span class="token operator">=</span> GenerationType<span class="token punctuation">.</span>IDENTITY<span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@Column</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"task_cron_id"</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> String taskCronId<span class="token punctuation">;</span>
 
-    private String taskCode;
-    private String taskName;
-    private String taskPackage;
-    private String taskCron;
-    private String taskCronDescription;
-    private String remark;
-}
-</code></pre>
+    <span class="token keyword">private</span> String taskCode<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String taskName<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String taskPackage<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String taskCron<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String taskCronDescription<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String remark<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>创建repository</p>
-<pre><code>import com.hczt.haier.db.user.entity.ScheduledTaskCron;
-import org.springframework.data.jpa.repository.JpaRepository;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> com<span class="token punctuation">.</span>hczt<span class="token punctuation">.</span>haier<span class="token punctuation">.</span>db<span class="token punctuation">.</span>user<span class="token punctuation">.</span>entity<span class="token punctuation">.</span>ScheduledTaskCron<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>jpa<span class="token punctuation">.</span>repository<span class="token punctuation">.</span>JpaRepository<span class="token punctuation">;</span>
 
-/**
+<span class="token comment" spellcheck="true">/**
  * 精诚所至，金石为开。
  * 石の上にも三年;陽気の発する所金石亦透る。
  * Faith moves mountains.
@@ -650,31 +649,30 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author marvin.ma
  * @create 2018-06-28 22:37
  * @desc 定时任务表达式dao
- **/
-public interface ScheduledTaskCronRepository extends JpaRepository&lt;ScheduledTaskCron, String&gt; {
+ **/</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">ScheduledTaskCronRepository</span> <span class="token keyword">extends</span> <span class="token class-name">JpaRepository</span><span class="token operator">&lt;</span>ScheduledTaskCron<span class="token punctuation">,</span> String<span class="token operator">></span> <span class="token punctuation">{</span>
 
-    ScheduledTaskCron findByTaskCode(String taskCode);
+    ScheduledTaskCron <span class="token function">findByTaskCode</span><span class="token punctuation">(</span>String taskCode<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-}
-</code></pre>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>创建定时任务</p>
-<pre><code>
-import com.hczt.haier.db.user.entity.ScheduledTaskCron;
-import com.hczt.haier.db.user.repository.ScheduledTaskCronRepository;
-import com.hczt.haier.task.service.UserTaskService;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.Trigger;
-import org.springframework.scheduling.TriggerContext;
-import org.springframework.scheduling.annotation.SchedulingConfigurer;
-import org.springframework.scheduling.config.ScheduledTaskRegistrar;
-import org.springframework.scheduling.support.CronTrigger;
-import org.springframework.stereotype.Component;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> com<span class="token punctuation">.</span>hczt<span class="token punctuation">.</span>haier<span class="token punctuation">.</span>db<span class="token punctuation">.</span>user<span class="token punctuation">.</span>entity<span class="token punctuation">.</span>ScheduledTaskCron<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>hczt<span class="token punctuation">.</span>haier<span class="token punctuation">.</span>db<span class="token punctuation">.</span>user<span class="token punctuation">.</span>repository<span class="token punctuation">.</span>ScheduledTaskCronRepository<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>hczt<span class="token punctuation">.</span>haier<span class="token punctuation">.</span>task<span class="token punctuation">.</span>service<span class="token punctuation">.</span>UserTaskService<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>commons<span class="token punctuation">.</span>lang3<span class="token punctuation">.</span>StringUtils<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>beans<span class="token punctuation">.</span>factory<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Autowired<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>scheduling<span class="token punctuation">.</span>Trigger<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>scheduling<span class="token punctuation">.</span>TriggerContext<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>scheduling<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>SchedulingConfigurer<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>scheduling<span class="token punctuation">.</span>config<span class="token punctuation">.</span>ScheduledTaskRegistrar<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>scheduling<span class="token punctuation">.</span>support<span class="token punctuation">.</span>CronTrigger<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>stereotype<span class="token punctuation">.</span>Component<span class="token punctuation">;</span>
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>text<span class="token punctuation">.</span>SimpleDateFormat<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Date<span class="token punctuation">;</span>
 
-/**
+<span class="token comment" spellcheck="true">/**
  * 精诚所至，金石为开。
  * 石の上にも三年;陽気の発する所金石亦透る。
  * Faith moves mountains.
@@ -682,52 +680,52 @@ import java.util.Date;
  * @author marvin.ma
  * @create 2018-06-28 13:27
  * @desc 动态表达式定时任务
- **/
-@Component
-public class DynamicScheduledTask implements SchedulingConfigurer {
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+ **/</span>
+<span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DynamicScheduledTask</span> <span class="token keyword">implements</span> <span class="token class-name">SchedulingConfigurer</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> SimpleDateFormat dateFormat <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span><span class="token string">"HH:mm:ss"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    private static final String DEFAULT_CRON = "0/5 * * * * ?";
-    private String cron = DEFAULT_CRON;
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String DEFAULT_CRON <span class="token operator">=</span> <span class="token string">"0/5 * * * * ?"</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String cron <span class="token operator">=</span> DEFAULT_CRON<span class="token punctuation">;</span>
 
-    @Autowired
-    private ScheduledTaskCronRepository scheduledTaskCronRepository;
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> ScheduledTaskCronRepository scheduledTaskCronRepository<span class="token punctuation">;</span>
 
-    @Autowired
-    private UserTaskService userTaskService;
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> UserTaskService userTaskService<span class="token punctuation">;</span>
 
-    @Override
-    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-        Runnable task = new Runnable() {
-            @Override
-            public void run() {
-                // 定时任务的业务逻辑
-                System.out.println("动态修改定时任务cron参数，当前时间：" + dateFormat.format(new Date()));
-                userTaskService.timeSetMenus();
-            }
-        };
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">configureTasks</span><span class="token punctuation">(</span>ScheduledTaskRegistrar taskRegistrar<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Runnable task <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 定时任务的业务逻辑</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"动态修改定时任务cron参数，当前时间："</span> <span class="token operator">+</span> dateFormat<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                userTaskService<span class="token punctuation">.</span><span class="token function">timeSetMenus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-        Trigger trigger = new Trigger() {
-            @Override
-            public Date nextExecutionTime(TriggerContext triggerContext) {
-                // 定时任务触发，可修改定时任务的执行周期
-                ScheduledTaskCron scheduledTaskCronEntity = scheduledTaskCronRepository.findByTaskCode("1");
-                if (null == scheduledTaskCronEntity || StringUtils.isEmpty(scheduledTaskCronEntity.getTaskCron())) {
-                    cron = DEFAULT_CRON;
-                }
-                CronTrigger trigger = new CronTrigger(cron);
-                Date nextExecDate = trigger.nextExecutionTime(triggerContext);
-                return nextExecDate;
-            }
-        };
-        taskRegistrar.addTriggerTask(task, trigger);
-    }
+        Trigger trigger <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Trigger</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> Date <span class="token function">nextExecutionTime</span><span class="token punctuation">(</span>TriggerContext triggerContext<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 定时任务触发，可修改定时任务的执行周期</span>
+                ScheduledTaskCron scheduledTaskCronEntity <span class="token operator">=</span> scheduledTaskCronRepository<span class="token punctuation">.</span><span class="token function">findByTaskCode</span><span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>null <span class="token operator">==</span> scheduledTaskCronEntity <span class="token operator">||</span> StringUtils<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>scheduledTaskCronEntity<span class="token punctuation">.</span><span class="token function">getTaskCron</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    cron <span class="token operator">=</span> DEFAULT_CRON<span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                CronTrigger trigger <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CronTrigger</span><span class="token punctuation">(</span>cron<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                Date nextExecDate <span class="token operator">=</span> trigger<span class="token punctuation">.</span><span class="token function">nextExecutionTime</span><span class="token punctuation">(</span>triggerContext<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> nextExecDate<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+        taskRegistrar<span class="token punctuation">.</span><span class="token function">addTriggerTask</span><span class="token punctuation">(</span>task<span class="token punctuation">,</span> trigger<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    public void setCron(String cron) {
-        this.cron = cron;
-    }
-}
-</code></pre>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setCron</span><span class="token punctuation">(</span>String cron<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>cron <span class="token operator">=</span> cron<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>修改数据库后定时任务立即生效。</p>
 <p>参考文章：<br><a target="_blank" rel="noopener" href="http://412887952-qq-com.iteye.com/blog/2367537">http://412887952-qq-com.iteye.com/blog/2367537</a><br><a target="_blank" rel="noopener" href="http://rensanning.iteye.com/blog/2361912">http://rensanning.iteye.com/blog/2361912</a></p>
 

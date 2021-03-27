@@ -508,7 +508,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.6k
+                    3.5k
                 </div>
                 
 
@@ -544,75 +544,77 @@
 <h1 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h1><p>作为一个前端打字员，除了绿茶婊之外，最讨厌的就是图表：一个让我伤心，一个让我难过；比这更讨厌的就是文档写得不清不楚的图表库（大概率是九年义务教育期间没有学好语文），让我又爱又恨！所以本篇博文会比较枯燥，只简单描述一下使用BizCharts的过程，当然，重要的是总结遇到的坑（遵从一个坑不踩两次，一个女生不泡两次原则）。</p>
 <p>By the way，提到BizCharts，让我们感谢一下阿里巴巴：其开源了这个好用的（虽然偶尔不那么好用，还偶得挺经常的）的react图表库供大家使用，对使用react技术栈的前端打字员来说简直就是福音。本文不会有过多的api解释，具体的接口可以看官网文档鬼门关。</p>
 <h2 id="正经篇幅"><a href="#正经篇幅" class="headerlink" title="正经篇幅"></a>正经篇幅</h2><p>刚开始，视觉设计师哄我说：“我的要求并不高，待我从前一样好”，啊呸，说错了，“我的要求是：只要能把数据用直方图展现出来就好了”，so easy</p>
-<p>// 引入相关的组件<br>    import { Chart, Axis, Tooltip, Geom } from ‘bizcharts’;</p>
-<pre><code>// 随便mock一下数据
-const str = ['we', 'are', 'the', 'black', 'gold', 'team'];
-const mockData = () =&gt; {
-    let result = [];
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 引入相关的组件</span>
+    <span class="token keyword">import</span> <span class="token punctuation">{</span> Chart<span class="token punctuation">,</span> Axis<span class="token punctuation">,</span> Tooltip<span class="token punctuation">,</span> Geom <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'bizcharts'</span><span class="token punctuation">;</span>
 
-    for (let i = 0, len = 6; i &lt; len; i++) {
-        result.push({
-            xAxis: ticks[i],
-            yAxis: Math.floor(Math.random() * 100)
-        });
-    }
+    <span class="token comment" spellcheck="true">// 随便mock一下数据</span>
+    <span class="token keyword">const</span> str <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'we'</span><span class="token punctuation">,</span> <span class="token string">'are'</span><span class="token punctuation">,</span> <span class="token string">'the'</span><span class="token punctuation">,</span> <span class="token string">'black'</span><span class="token punctuation">,</span> <span class="token string">'gold'</span><span class="token punctuation">,</span> <span class="token string">'team'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> mockData <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 
-    return result;
-};
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> len <span class="token operator">=</span> <span class="token number">6</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> len<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            result<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+                xAxis<span class="token punctuation">:</span> ticks<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span>
+                yAxis<span class="token punctuation">:</span> Math<span class="token punctuation">.</span><span class="token function">floor</span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-// 图表组件
-&lt;Chart
-    width={ 600 }
-    height={ 400 }
-    data={ mockData() }
-&gt;
-    {/* x轴，横轴，以data数据的xAxis属性值为柱子的值 */}
-    &lt;Axis name="xAxis" /&gt;
-    {/* y轴，纵轴，以data数据的yAxis属性值为柱子的值 */}
-    &lt;Axis name="yAxis" /&gt;
-    {/* 鼠标hover直方图柱子的时候，tooltip显示的值 */}
-    &lt;Tooltip /&gt;
-    {/* 几何标记对象，主要用以描述你要画的是什么图形（直方图、折线图、饼状图、区域图）：interval是直方图 */}
-    &lt;Geom
-        type="interval"
-        position="xAxis*yAxis"
-    /&gt;
-&lt;/Chart&gt;
-</code></pre>
+        <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 图表组件</span>
+    <span class="token operator">&lt;</span>Chart
+        width<span class="token operator">=</span><span class="token punctuation">{</span> <span class="token number">600</span> <span class="token punctuation">}</span>
+        height<span class="token operator">=</span><span class="token punctuation">{</span> <span class="token number">400</span> <span class="token punctuation">}</span>
+        data<span class="token operator">=</span><span class="token punctuation">{</span> <span class="token function">mockData</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">}</span>
+    <span class="token operator">></span>
+        <span class="token punctuation">{</span><span class="token comment" spellcheck="true">/* x轴，横轴，以data数据的xAxis属性值为柱子的值 */</span><span class="token punctuation">}</span>
+        <span class="token operator">&lt;</span>Axis name<span class="token operator">=</span><span class="token string">"xAxis"</span> <span class="token operator">/</span><span class="token operator">></span>
+        <span class="token punctuation">{</span><span class="token comment" spellcheck="true">/* y轴，纵轴，以data数据的yAxis属性值为柱子的值 */</span><span class="token punctuation">}</span>
+        <span class="token operator">&lt;</span>Axis name<span class="token operator">=</span><span class="token string">"yAxis"</span> <span class="token operator">/</span><span class="token operator">></span>
+        <span class="token punctuation">{</span><span class="token comment" spellcheck="true">/* 鼠标hover直方图柱子的时候，tooltip显示的值 */</span><span class="token punctuation">}</span>
+        <span class="token operator">&lt;</span>Tooltip <span class="token operator">/</span><span class="token operator">></span>
+        <span class="token punctuation">{</span><span class="token comment" spellcheck="true">/* 几何标记对象，主要用以描述你要画的是什么图形（直方图、折线图、饼状图、区域图）：interval是直方图 */</span><span class="token punctuation">}</span>
+        <span class="token operator">&lt;</span>Geom
+            type<span class="token operator">=</span><span class="token string">"interval"</span>
+            position<span class="token operator">=</span><span class="token string">"xAxis*yAxis"</span>
+        <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>Chart<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>一波操作猛如狗，让视觉设计师看看效果：</p>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-c9c57d84f1e0fd5c?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据可视化，BizCharts图表库入坑历程"></p>
+<p><img src="/loading.gif" data-original="/images/fontend/echart-1.png" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>note：此直方图每一根柱子都是单点的，也就是其反映了某个横坐标点的数据情况。加入我们需要一个连续区间柱子，那么作为xAxis的数据字段值应该为一个数组，包含两个元素，表明区间的起始值。</p>
-<pre><code>const mockData = () =&gt; {
-        let result = [];
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">const</span> mockData <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 
-        for (let i = 0, len = 6; i &lt; len; i++) {
-            result.push({
-                xAxis: [i + 0.01, i + 1 - 0.01], // 如果不加减0.01，那么第一根柱子的终点跟第二根柱子的起点是同一个，会感觉两个柱子粘在一起
-                yAxis: Math.floor(Math.random() * 100)
-            });
-        }
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> len <span class="token operator">=</span> <span class="token number">6</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> len<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            result<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+                xAxis<span class="token punctuation">:</span> <span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">0.01</span><span class="token punctuation">,</span> i <span class="token operator">+</span> <span class="token number">1</span> <span class="token operator">-</span> <span class="token number">0.01</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 如果不加减0.01，那么第一根柱子的终点跟第二根柱子的起点是同一个，会感觉两个柱子粘在一起</span>
+                yAxis<span class="token punctuation">:</span> Math<span class="token punctuation">.</span><span class="token function">floor</span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-        return result;
-    };
-</code></pre>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-0dad48ebdfaa6530.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="BizChart2.jpg"></p>
+        <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/fontend/BizChart2.png" alt="BizChart2.jpg"></p>
 <p>视觉设计师：“emmmmmm，图表长宽定死了会不会有点僵硬啊，高度可以写死，宽度总得来个自适应吧？”</p>
 <p>“毛闷台”</p>
-<pre><code>&lt;Chart
-        height={ 400 }
-        data={ mockData() }
-        forceFit // 我妈说了（guanfang wendang shuode），加上这个属性就可以使图表宽度自适应了，隔壁echart同学要学习一下
-    &gt;
-&lt;/Chart&gt;
-</code></pre>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>Chart
+        height<span class="token operator">=</span><span class="token punctuation">{</span> <span class="token number">400</span> <span class="token punctuation">}</span>
+        data<span class="token operator">=</span><span class="token punctuation">{</span> <span class="token function">mockData</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">}</span>
+        forceFit <span class="token comment" spellcheck="true">// 我妈说了（guanfang wendang shuode），加上这个属性就可以使图表宽度自适应了，隔壁echart同学要学习一下</span>
+    <span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>Chart<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>效果秀一波</p>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-665f13559b2ec2c4?imageMogr2/auto-orient/strip" alt="数据可视化，BizCharts图表库入坑历程"></p>
+<p><img src="/loading.gif" data-original="/images/fontend/echart3.gif" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>视觉（蜜汁微笑）：“猿子，你这玩意有bug啊”</p>
 <p>“胡说，你这傻*不会用吧”</p>
 <p>（理直气壮）“哼哼，放大窗口图表宽度确实会自适应，但是缩小就挂掉了（并不自适应），ahhhhhh”</p>
 <p>（谄媚）“讨厌，再给我两分钟~~让我把bug结成冰。。。”</p>
 <p>note: 实验表明，如果Chart组件的父组件Father采用flex布局，即Father使用flex自适应宽度，那么就会出现上述的问题；所以，如果有多个图表同行并列布局，请不要使用flex布局，给Father组件的宽度设置为百分比吧，此时的forceFit就会起作用了。同时，BizCharts对重绘设置了防抖，只有当停止缩放的时候才会重绘。</p>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-43c357642c979a0d?imageMogr2/auto-orient/strip" alt="数据可视化，BizCharts图表库入坑历程"></p>
+<p><img src="/loading.gif" data-original="/images/fontend/echart4.gif" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>（屌到飞起）“over，拿去用吧”</p>
 <p>（一脸鄙视）“哇喔~好棒棒呀，敢不敢让我调一点点小细节，我保证就一点点！”</p>
 <p>“Come on baby！”</p>
@@ -626,48 +628,48 @@ const mockData = () =&gt; {
 <p>”</p>
 <p>把视觉杀了之后，需求还是要做的，先解决死者的第一个遗愿。</p>
 <p>Tooltip组件提供了一个属性crosshairs，用以设置tooltip的辅助线和辅助框；默认情况下，此属性会为’line’、‘area’、‘path’、‘areaStack’类型的Geom组件开启垂直辅助线、为‘interval’类型的Geom组件展示矩形背景框。死者说的很丑的方框就是这个！</p>
-<pre><code>&lt;Tooltip crosshairs={ false }/&gt;
-</code></pre>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>Tooltip crosshairs<span class="token operator">=</span><span class="token punctuation">{</span> <span class="token boolean">false</span> <span class="token punctuation">}</span><span class="token operator">/</span><span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>好的，把框去掉了！咦，我们不是说要修改它的颜色吗？好的，改一下</p>
-<pre><code>&lt;Tooltip
-        crosshairs={{
-            type: "rect" // 可选值：rect、x、y、cross，分别对应辅助狂、平行x轴辅助线、平行y轴辅助线，十字辅助线
-            style: {
-                fill: 'red', // 辅助框颜色
-                shadowColor: 'red', // 辅助框周边阴影的颜色
-                shadowBlur: 1, // 辅助框周边阴影的透明度
-                opacity: 0 // 辅助框的透明度
-            }
-        }}
-    /&gt;
-</code></pre>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-5af64bd86b9114f7?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据可视化，BizCharts图表库入坑历程"></p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>Tooltip
+        crosshairs<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">{</span>
+            type<span class="token punctuation">:</span> <span class="token string">"rect"</span> <span class="token comment" spellcheck="true">// 可选值：rect、x、y、cross，分别对应辅助狂、平行x轴辅助线、平行y轴辅助线，十字辅助线</span>
+            style<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+                fill<span class="token punctuation">:</span> <span class="token string">'red'</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 辅助框颜色</span>
+                shadowColor<span class="token punctuation">:</span> <span class="token string">'red'</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 辅助框周边阴影的颜色</span>
+                shadowBlur<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 辅助框周边阴影的透明度</span>
+                opacity<span class="token punctuation">:</span> <span class="token number">0</span> <span class="token comment" spellcheck="true">// 辅助框的透明度</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">}</span>
+    <span class="token operator">/</span><span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/fontend/echart4.png" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>note：假如开启的是辅助线，即type不是“rect”，那么上述的样式定义将不起作用。究其原因，看了此组件的源码之后才发现，描述辅助线样式的属性不是style对象，而是lineStyle对象，官方文档并未说明这一点。</p>
-<pre><code>&lt;Tooltip
-        crosshairs={{
-            type: "y"
-            lineStyle: {
-                stroke: 'red', // 辅助线颜色
-                lineWidth: 4, // 辅助线宽度，单位为px
-                opacity: 1 // 辅助线透明度
-            }
-        }}
-    /&gt;
+<pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>Tooltip
+        crosshairs<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">{</span>
+            type<span class="token punctuation">:</span> <span class="token string">"y"</span>
+            lineStyle<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+                stroke<span class="token punctuation">:</span> <span class="token string">'red'</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 辅助线颜色</span>
+                lineWidth<span class="token punctuation">:</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 辅助线宽度，单位为px</span>
+                opacity<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token comment" spellcheck="true">// 辅助线透明度</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">}</span>
+    <span class="token operator">/</span><span class="token operator">></span>
 复制代码
-</code></pre>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-339319265bdb1d38?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据可视化，BizCharts图表库入坑历程"></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/fontend/echart5.png" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>看起来还是很容易就实现了死者的第一个遗愿，就这样怼死了视觉，是不是太残忍了点？事已至此，继续实现他的遗愿吧。</p>
 <p>第二个遗愿是给tooltip换个样式。既然要修改tooltip的样式，就应该继续对Tooltip组件下手。通过阅读文档，发现其还有一个itemTpl的属性，也就是可以通过这个属性定义tooltip的模板</p>
-<pre><code>// 定义一个模板
-    // name-value是相关柱子的key-value值
-    const tooltipsDisplayTpl = `
-        &lt;p class="chart-tooptip"&gt;
-            &lt;span class="chart-tooptip-right"&gt;{name}&lt;/span&gt;
-            &lt;span&gt;{value}&lt;/span&gt;
-        &lt;/p&gt;
-    `;
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 定义一个模板</span>
+    <span class="token comment" spellcheck="true">// name-value是相关柱子的key-value值</span>
+    <span class="token keyword">const</span> tooltipsDisplayTpl <span class="token operator">=</span> <span class="token template-string"><span class="token string">`
+        &lt;p class="chart-tooptip">
+            &lt;span class="chart-tooptip-right">{name}&lt;/span>
+            &lt;span>{value}&lt;/span>
+        &lt;/p>
+    `</span></span><span class="token punctuation">;</span>
 
-    /*
+    <span class="token comment" spellcheck="true">/*
         // 重写tooltip元素的样式
         // 因为视觉已死，样式是随便搞的，就弄点黑色背景当默哀一下吧
         .g2-tooltip {
@@ -682,72 +684,72 @@ const mockData = () =&gt; {
         .chart-tooptip-right {
             margin-right: 12px;
         }
-    */
+    */</span>
 
-    &lt;Tooltip
-        crosshairs={ false }
-        itemTpl={ tooltipsDisplayTpl }
-        showTitle={ false } // 去头（标题，即横轴对应的刻度），往往影响我颜值的不是我的身材，而是我的脸，所以不要脸了
-    /&gt;
-</code></pre>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-d3445d09d0d4f9d5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据可视化，BizCharts图表库入坑历程"></p>
+    <span class="token operator">&lt;</span>Tooltip
+        crosshairs<span class="token operator">=</span><span class="token punctuation">{</span> <span class="token boolean">false</span> <span class="token punctuation">}</span>
+        itemTpl<span class="token operator">=</span><span class="token punctuation">{</span> tooltipsDisplayTpl <span class="token punctuation">}</span>
+        showTitle<span class="token operator">=</span><span class="token punctuation">{</span> <span class="token boolean">false</span> <span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// 去头（标题，即横轴对应的刻度），往往影响我颜值的不是我的身材，而是我的脸，所以不要脸了</span>
+    <span class="token operator">/</span><span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/fontend/echart6.png" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>note：如果想自定义tooltip展示的内容，还需要设置Geom组件的tooltip属性，即将数据映射到Tooltip对象上；所以此属性值如果为false的话，就不会向Tooltip组件传递任何数据（此时Tooltip只会显示title）；还可设置为字符串，展示字符串对应的数据字段；But, it’s not the point，重点在于可自定义</p>
-<pre><code>// 定义数据返回的格式，name属性对应的是itemTpl里面的同名变量
-    const getTooltipData = (xAxis, yAxis) =&gt; {
-        return {
-            name: xAxis,
-            value: yAxis
-        };
-    }
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 定义数据返回的格式，name属性对应的是itemTpl里面的同名变量</span>
+    <span class="token keyword">const</span> getTooltipData <span class="token operator">=</span> <span class="token punctuation">(</span>xAxis<span class="token punctuation">,</span> yAxis<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">{</span>
+            name<span class="token punctuation">:</span> xAxis<span class="token punctuation">,</span>
+            value<span class="token punctuation">:</span> yAxis
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    &lt;Geom
-        type="interval"
-        position="xAxis*yAxis"
-        tooltip={["xAxis*yAxis", getTooltipData]}
-    /&gt;
-</code></pre>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-0dd8f81c11b9661a?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据可视化，BizCharts图表库入坑历程"></p>
+    <span class="token operator">&lt;</span>Geom
+        type<span class="token operator">=</span><span class="token string">"interval"</span>
+        position<span class="token operator">=</span><span class="token string">"xAxis*yAxis"</span>
+        tooltip<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token string">"xAxis*yAxis"</span><span class="token punctuation">,</span> getTooltipData<span class="token punctuation">]</span><span class="token punctuation">}</span>
+    <span class="token operator">/</span><span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/fontend/echart7.png" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>第二个遗愿也实现了，愧疚感也多了一点！最主要是写代码的时候老是觉得后面有人站着盯着我看。</p>
 <p>说不定实现所有遗愿就不会有这种感觉了呢，那就继续第三个遗愿吧：“改变鼠标hover柱子时候柱子的颜色”，翻遍了整个文档，发现没有关于hover的接口啊！看来视觉是要死不瞑目了，阿门。</p>
 <p>就在我感觉到后背越发的凉飕飕的时候，我发现Geom组件有一个属性active</p>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-028c6f5dac62214b?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据可视化，BizCharts图表库入坑历程"></p>
+<p><img src="/loading.gif" data-original="/images/fontend/echart8.png" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>文档就真的描述了那么两句话，也没例子。急病乱投医的我只能尝试一波，设置为true，得了，hover柱子的时候柱子颜色改变了！！！</p>
-<pre><code>&lt;Geom
-        type="interval"
-        position="xAxis*yAxis"
-        tooltip={["xAxis*yAxis", getTooltipData]}
-        active={ true }
-    /&gt;
-</code></pre>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-a774bafa416a3232?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据可视化，BizCharts图表库入坑历程"></p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>Geom
+        type<span class="token operator">=</span><span class="token string">"interval"</span>
+        position<span class="token operator">=</span><span class="token string">"xAxis*yAxis"</span>
+        tooltip<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token string">"xAxis*yAxis"</span><span class="token punctuation">,</span> getTooltipData<span class="token punctuation">]</span><span class="token punctuation">}</span>
+        active<span class="token operator">=</span><span class="token punctuation">{</span> <span class="token boolean">true</span> <span class="token punctuation">}</span>
+    <span class="token operator">/</span><span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/fontend/echart8.png" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>那如果需要自定义鼠标hover柱子的样式呢？对照着Geom文档的select属性，又尝试了一遍</p>
-<pre><code>&lt;Geom
-        type="interval"
-        position="xAxis*yAxis"
-        tooltip={["xAxis*yAxis", getTooltipData]}
-        style={{ cursor: 'pointer' }} //  鼠标hover上去的时候，显示小手手，免费送的
-        active={[
-            true,
-            {
-                style: {
-                    fill: 'black',  // 柱子颜色，继续默哀
-                    shadowColor: 'red',  // 整体阴影颜色，包括边缘
-                    shadowBlur: 1,  // 阴影的透明度
-                    opacity: 0 // 柱子颜色透明度
-                }
-            }
-        ]}
-    /&gt;
-</code></pre>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-1afd33ea4634fe1b?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据可视化，BizCharts图表库入坑历程"></p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>Geom
+        type<span class="token operator">=</span><span class="token string">"interval"</span>
+        position<span class="token operator">=</span><span class="token string">"xAxis*yAxis"</span>
+        tooltip<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token string">"xAxis*yAxis"</span><span class="token punctuation">,</span> getTooltipData<span class="token punctuation">]</span><span class="token punctuation">}</span>
+        style<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">{</span> cursor<span class="token punctuation">:</span> <span class="token string">'pointer'</span> <span class="token punctuation">}</span><span class="token punctuation">}</span> <span class="token comment" spellcheck="true">//  鼠标hover上去的时候，显示小手手，免费送的</span>
+        active<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">[</span>
+            <span class="token boolean">true</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span>
+                style<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+                    fill<span class="token punctuation">:</span> <span class="token string">'black'</span><span class="token punctuation">,</span>  <span class="token comment" spellcheck="true">// 柱子颜色，继续默哀</span>
+                    shadowColor<span class="token punctuation">:</span> <span class="token string">'red'</span><span class="token punctuation">,</span>  <span class="token comment" spellcheck="true">// 整体阴影颜色，包括边缘</span>
+                    shadowBlur<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>  <span class="token comment" spellcheck="true">// 阴影的透明度</span>
+                    opacity<span class="token punctuation">:</span> <span class="token number">0</span> <span class="token comment" spellcheck="true">// 柱子颜色透明度</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span><span class="token punctuation">}</span>
+    <span class="token operator">/</span><span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/fontend/echart9.png" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>（神气的）“狗子，别死了，老子搞定啦”</p>
 <p>“靠，我都装死两天了，你敢不敢再慢一点”</p>
 <p>“那官方文档就写了一行字：只可意会不可言传！我天分有限，意会了比较久”</p>
 <p>“嘚瑟，看，又出bug了吧！你的表子一闪一闪的”</p>
 <p>（掐着他脖子使劲晃）“那TM不是bug！！！”</p>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-af7f2f907bde7e95?imageMogr2/auto-orient/strip" alt="数据可视化，BizCharts图表库入坑历程"></p>
+<p><img src="/loading.gif" data-original="/images/fontend/echart10.gif" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>不过话说回来，当数据更新时，从旧数据切换到新数据，会很突兀，没有缓冲过程，看着特别不舒服。我寻思着，在数据更新的时候，加个动画呗！但是初始动画生效了，更新动画就不生效了（如看官们知道解决办法，请不吝赐教）。由于赶着下班，我决定使用DataSet：一个用于管理表格数据的神器，据说更新数据的时候，其会给我弄个动画（除此以外有方便地导入非&nbsp;<a target="_blank" rel="noopener" href="http://www.codercto.com/category/json.html">json</a>&nbsp;数据等等功能，下文有一些例子，具体细节我没有详细去研究，以后学习了再分享）。唔好理，总之好犀利！</p>
-<pre><code>// 安装
+<pre class="line-numbers language-shell"><code class="language-shell">// 安装
     // npm install @antv/data-set
 
     // 引入
@@ -759,14 +761,14 @@ const mockData = () =&gt; {
     render() {
         this.dv.source(data);
 
-        &lt;Chart
+        <Chart
             height={ 400 }
             data={ this.dv }
             forceFit
-        &gt;&lt;/Chart&gt;
+        ></Chart>
     }
-</code></pre>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-4a4cae8695534afe?imageMogr2/auto-orient/strip" alt="数据可视化，BizCharts图表库入坑历程"></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/fontend/echart11.gif" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>“猿子，6啊！吃宵夜吗？我的”</p>
 <p>“虽然不怎么饿，但是你请就不一样了，go”</p>
 <p>吃了一桶泡面后……</p>
@@ -779,29 +781,29 @@ const mockData = () =&gt; {
 <p>”……“</p>
 <p>”我就知道你对我最好了，我给你捶背捏大腿吧~“</p>
 <p>”滚一边去“</p>
-<pre><code>&lt;Geom
-        type="interval"
-        position="xAxis*yAxis"
-        tooltip={["xAxis*yAxis", getTooltipData]}
-        color={['xAxis', '#3DA4FF-#FFFFFF']}
-    /&gt;
-</code></pre>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-f433b41909ae67aa?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据可视化，BizCharts图表库入坑历程"></p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>Geom
+        type<span class="token operator">=</span><span class="token string">"interval"</span>
+        position<span class="token operator">=</span><span class="token string">"xAxis*yAxis"</span>
+        tooltip<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token string">"xAxis*yAxis"</span><span class="token punctuation">,</span> getTooltipData<span class="token punctuation">]</span><span class="token punctuation">}</span>
+        color<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token string">'xAxis'</span><span class="token punctuation">,</span> <span class="token string">'#3DA4FF-#FFFFFF'</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
+    <span class="token operator">/</span><span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/fontend/echart12.png" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>（掐着我脖子使劲晃）”老子要的是从上往下渐变，不是从左往右渐变“</p>
 <p>“别…..别…..掐…..我….改….改…..”</p>
-<pre><code>&lt;Geom
-        type="interval"
-        position="xAxis*yAxis"
-        tooltip={["xAxis*yAxis", getTooltipData]}
-        color={['xAxis', 'l(90) 0:#3DA4FF 1:#FFFFFF']}
-    /&gt;
-</code></pre>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-617e2a759c4b65d0?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据可视化，BizCharts图表库入坑历程"></p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>Geom
+        type<span class="token operator">=</span><span class="token string">"interval"</span>
+        position<span class="token operator">=</span><span class="token string">"xAxis*yAxis"</span>
+        tooltip<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token string">"xAxis*yAxis"</span><span class="token punctuation">,</span> getTooltipData<span class="token punctuation">]</span><span class="token punctuation">}</span>
+        color<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token string">'xAxis'</span><span class="token punctuation">,</span> <span class="token string">'l(90) 0:#3DA4FF 1:#FFFFFF'</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
+    <span class="token operator">/</span><span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/fontend/echart13.png" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>note：l是指线性渐变，90是指旋转九十度（即从上到下渐变，看官们可以多试试几个姿势，啊呸，多试试几个角度）</p>
 <p>0和1标定的色值标明初始色值和终止色值，注意一点，色值不可以使用颜色名字，如“red”、“blue”等</p>
 <p>可添加多个渐变色值，如</p>
-<pre><code>color="l(90) 0:#000000 0.5:#FFFFFF 1:#000000"
-</code></pre>
+<pre class="line-numbers language-js"><code class="language-js">color<span class="token operator">=</span><span class="token string">"l(90) 0:#000000 0.5:#FFFFFF 1:#000000"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>note：如果是area类型的Geom，那么第一种渐变方式是不起作用的，只能选用第二种</p>
 <p>“狗子，我真要下班了”</p>
 <p>“那个，你看都搞着渐变了，要不搞一波颜色分类”</p>
@@ -812,37 +814,37 @@ const mockData = () =&gt; {
 <p>”emmmmmm…..“</p>
 <p>既然提到颜色分类，我们就接着提一下dv.transform 吧, dv.transform内置了一些基础的函数：filter，map，pick，rename，reverse …… 具体可自行查看文档</p>
 <p>只需要添加 groupBy 字段，并且在传入的原始数据data中添加对应的字段classify即可轻松搞定。</p>
-<pre><code>dv.transform({
-        groupBy: ['classify'],  // 以classify字段进行分组 
-    });
-</code></pre>
+<pre class="line-numbers language-js"><code class="language-js">dv<span class="token punctuation">.</span><span class="token function">transform</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        groupBy<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'classify'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>  <span class="token comment" spellcheck="true">// 以classify字段进行分组 </span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>”猿子，颜色还是要自定义的哦“</p>
 <p>（白眼）</p>
-<pre><code>&lt;Geom
-        position={'xAxis*yAxis'}
-        color={['classify', classify =&gt; {
-            // 这里根据不同字段返回不同颜色
-            return classify === 'test' ? 'red' : 'yellow';
-        }]}
-        style={{ cursor: 'pointer' }}
-    /&gt;
-</code></pre>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-bdfc4803cf241315?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据可视化，BizCharts图表库入坑历程"></p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>Geom
+        position<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">'xAxis*yAxis'</span><span class="token punctuation">}</span>
+        color<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token string">'classify'</span><span class="token punctuation">,</span> classify <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 这里根据不同字段返回不同颜色</span>
+            <span class="token keyword">return</span> classify <span class="token operator">===</span> <span class="token string">'test'</span> <span class="token operator">?</span> <span class="token string">'red'</span> <span class="token punctuation">:</span> <span class="token string">'yellow'</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
+        style<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">{</span> cursor<span class="token punctuation">:</span> <span class="token string">'pointer'</span> <span class="token punctuation">}</span><span class="token punctuation">}</span>
+    <span class="token operator">/</span><span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/fontend/echart14.png" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>作为一个有责任的前端打字员，有一点即使设计不要求的，我还是需要说明的，横轴的刻度值是可以自定义的</p>
-<pre><code>&lt;Axis
-        name={xAxis}
-        label={{
-            textStyle: {
-                fill: 'red',  // 颜色
-                textBaseline: 'top'  // 对齐基线
-            },
-            formatter: (val) =&gt; {
-                return `${ val }\n换行了`
-            }
-        }}
-    /&gt; 
-</code></pre>
-<p><img src="/loading.gif" data-original="http://upload-images.jianshu.io/upload_images/4109786-1cbe7ec0710bd1f5?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="数据可视化，BizCharts图表库入坑历程"></p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>Axis
+        name<span class="token operator">=</span><span class="token punctuation">{</span>xAxis<span class="token punctuation">}</span>
+        label<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">{</span>
+            textStyle<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+                fill<span class="token punctuation">:</span> <span class="token string">'red'</span><span class="token punctuation">,</span>  <span class="token comment" spellcheck="true">// 颜色</span>
+                textBaseline<span class="token punctuation">:</span> <span class="token string">'top'</span>  <span class="token comment" spellcheck="true">// 对齐基线</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            formatter<span class="token punctuation">:</span> <span class="token punctuation">(</span>val<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> val <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">\n换行了`</span></span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">}</span>
+    <span class="token operator">/</span><span class="token operator">></span> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/fontend/echart15.png" alt="数据可视化，BizCharts图表库入坑历程"></p>
 <p>”狗子，撸串去！！！“</p>
 <p>”要不还是吃个泡面？？？？“</p>
 <p>狗子，卒！</p>
@@ -850,44 +852,44 @@ const mockData = () =&gt; {
 <h1 id="以下内容来自自己的总结"><a href="#以下内容来自自己的总结" class="headerlink" title="以下内容来自自己的总结"></a>以下内容来自自己的总结</h1><hr>
 <p>很显然，本人没有博主这枚猿有文化底蕴，辞藻上既不华丽丽，也没有故事性，纯属就是论事，记笔记的形式。</p>
 <h4 id="1-柱状图-点图上显示文字及格式化内容"><a href="#1-柱状图-点图上显示文字及格式化内容" class="headerlink" title="1. 柱状图/点图上显示文字及格式化内容"></a>1. 柱状图/点图上显示文字及格式化内容</h4><p>该需求需要用到<code>Label</code>组件，她是Geon的子组件，上代码</p>
-<pre><code>      &lt;div&gt;
-        &lt;Chart height={400} data={dv} forceFit&gt;
-          &lt;Axis name="月份" /&gt;
-          &lt;Axis name="月均降雨量" /&gt;
-          &lt;Legend /&gt;
-          &lt;Tooltip
-            crosshairs={{
-              type: "y"
-            }}
-          /&gt;
-          &lt;Geom
-            type="interval"
-            position="月份*月均降雨量"
-            color={"name"}
-            adjust={[
-              {
-                type: "dodge",
-                marginRatio: 1 / 32
-              }
-            ]}
-          &gt;
-            &lt;Label
-                content={['月份*月均降雨量', (月份, 月均降雨量) =&gt; (`${月均降雨量}`)]}
-                textStyle={{
-                  textAlign: 'center', // 文本对齐方向，可取值为： start middle end
-                  fill: '#404040', // 文本的颜色
-                  fontSize: '14', // 文本大小
-                  fontWeight: 'normal', // 文本粗细
-                  rotate: 0, // 文字旋转
-                  textBaseline: 'top', // 文本基准线，可取 top middle bottom，默认为middle
-                }}
-              /&gt;
-            &lt;/Geom&gt;
-        &lt;/Chart&gt;
-      &lt;/div&gt;
-</code></pre>
+<pre class="line-numbers language-js"><code class="language-js">      <span class="token operator">&lt;</span>div<span class="token operator">></span>
+        <span class="token operator">&lt;</span>Chart height<span class="token operator">=</span><span class="token punctuation">{</span><span class="token number">400</span><span class="token punctuation">}</span> data<span class="token operator">=</span><span class="token punctuation">{</span>dv<span class="token punctuation">}</span> forceFit<span class="token operator">></span>
+          <span class="token operator">&lt;</span>Axis name<span class="token operator">=</span><span class="token string">"月份"</span> <span class="token operator">/</span><span class="token operator">></span>
+          <span class="token operator">&lt;</span>Axis name<span class="token operator">=</span><span class="token string">"月均降雨量"</span> <span class="token operator">/</span><span class="token operator">></span>
+          <span class="token operator">&lt;</span>Legend <span class="token operator">/</span><span class="token operator">></span>
+          <span class="token operator">&lt;</span>Tooltip
+            crosshairs<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">{</span>
+              type<span class="token punctuation">:</span> <span class="token string">"y"</span>
+            <span class="token punctuation">}</span><span class="token punctuation">}</span>
+          <span class="token operator">/</span><span class="token operator">></span>
+          <span class="token operator">&lt;</span>Geom
+            type<span class="token operator">=</span><span class="token string">"interval"</span>
+            position<span class="token operator">=</span><span class="token string">"月份*月均降雨量"</span>
+            color<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">"name"</span><span class="token punctuation">}</span>
+            adjust<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">[</span>
+              <span class="token punctuation">{</span>
+                type<span class="token punctuation">:</span> <span class="token string">"dodge"</span><span class="token punctuation">,</span>
+                marginRatio<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token operator">/</span> <span class="token number">32</span>
+              <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span><span class="token punctuation">}</span>
+          <span class="token operator">></span>
+            <span class="token operator">&lt;</span>Label
+                content<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">[</span><span class="token string">'月份*月均降雨量'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>月份<span class="token punctuation">,</span> 月均降雨量<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>月均降雨量<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
+                textStyle<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">{</span>
+                  textAlign<span class="token punctuation">:</span> <span class="token string">'center'</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 文本对齐方向，可取值为： start middle end</span>
+                  fill<span class="token punctuation">:</span> <span class="token string">'#404040'</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 文本的颜色</span>
+                  fontSize<span class="token punctuation">:</span> <span class="token string">'14'</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 文本大小</span>
+                  fontWeight<span class="token punctuation">:</span> <span class="token string">'normal'</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 文本粗细</span>
+                  rotate<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 文字旋转</span>
+                  textBaseline<span class="token punctuation">:</span> <span class="token string">'top'</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// 文本基准线，可取 top middle bottom，默认为middle</span>
+                <span class="token punctuation">}</span><span class="token punctuation">}</span>
+              <span class="token operator">/</span><span class="token operator">></span>
+            <span class="token operator">&lt;</span><span class="token operator">/</span>Geom<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>Chart<span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>效果：</p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-0e85d86d2f725d2f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="/loading.gif" data-original="/images/fontend/echart16.png" alt="image.png"></p>
 <p>原文地址：<br><a target="_blank" rel="noopener" href="https://juejin.im/post/5c0f45edf265da61327f285c">数据可视化，BizCharts图表库入坑历程</a></p>
 
                 

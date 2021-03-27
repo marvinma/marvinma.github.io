@@ -544,20 +544,20 @@
 
 <p>最近测试服务器tomcat发布一次很慢，为了解决这个问题，特地看了tomcat的log文件，启动日志在tomcat/logs/catalina.out文件中。</p>
 <h3 id="1、INFO：org-apache-catalina-startup-HostConfig-deployDirectory-Deploying-web-application-directory-xxx-war卡顿"><a href="#1、INFO：org-apache-catalina-startup-HostConfig-deployDirectory-Deploying-web-application-directory-xxx-war卡顿" class="headerlink" title="1、INFO：org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory  xxx.war卡顿"></a>1、INFO：org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory  xxx.war卡顿</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/mycifeng/p/6972446.html">刺风</a>同学就是<strong>好记性不如烂笔头</strong>的实践者，被我也用上了。<br>找到jdk1.x.x_xx/jre/lib/security/<a target="_blank" rel="noopener" href="http://lib.csdn.net/base/java" title="Java 知识库">Java</a>.security文件，在文件中找到securerandom.source这个设置项，将其改为：</p>
-<pre><code>securerandom.source=file:/dev/./urandom
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">securerandom.source=file:/dev/./urandom
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>重启tomcat,这一步的速度明显加快。<br>原理据说是这样的：</p>
 <blockquote>
 <p>linux或者部分unix系统提供随机数设备是/dev/random 和/dev/urandom ，<br>两个有区别，urandom安全性没有random高，但random需要时间间隔生成随机数。jdk默认调用random。</p>
 </blockquote>
 <h3 id="2、-WARN-Establishing-SSL-connection-without-server’s-identity-verification-is-not-recommended"><a href="#2、-WARN-Establishing-SSL-connection-without-server’s-identity-verification-is-not-recommended" class="headerlink" title="2、 WARN: Establishing SSL connection without server’s identity verification is not recommended."></a>2、 WARN: Establishing SSL connection without server’s identity verification is not recommended.</h3><p>具体错误是这样的：</p>
-<pre><code>Mon Jul 09 09:30:13 CST 2018 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
+<pre class="line-numbers language-shell"><code class="language-shell">Mon Jul 09 09:30:13 CST 2018 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
 Mon Jul 09 09:30:13 CST 2018 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
 Mon Jul 09 09:30:14 CST 2018 WARN: Establishing SSL connection without server's identity verification is not recommended. According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established by default if explicit option isn't set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>这个错误会打几遍，每一遍都会卡一会儿，应该是在验证mysql的SSL配置。<br>查阅资料说mysql的高版本默认要求使用SSL链接，所以在没有配置SSL也没有说SSL不需要时，就会一直验证，验证好几遍以后放弃。<br>这个时间大概有1分钟。<br>当然，方案就是在jdbc的链接上加上userSSL=false这个参数，<br><code>jdbc:p6spy:mysql://127.0.0.1:3306/chuangke?characterEncoding=utf-8&amp;useSSL=false&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Hongkong&amp;autoReconnect=true</code><br>类似这样。</p>
 <h3 id="3、-禁用Springboot的JNDI功能"><a href="#3、-禁用Springboot的JNDI功能" class="headerlink" title="3、 禁用Springboot的JNDI功能"></a>3、 禁用Springboot的JNDI功能</h3><p>原来的log</p>
-<pre><code>10:40:24.103 [localhost-startStop-1] DEBUG org.springframework.web.context.support.StandardServletEnvironment - Replacing PropertySource 'servletContextInitParams' with 'servletContextInitParams'
+<pre class="line-numbers language-shell"><code class="language-shell">10:40:24.103 [localhost-startStop-1] DEBUG org.springframework.web.context.support.StandardServletEnvironment - Replacing PropertySource 'servletContextInitParams' with 'servletContextInitParams'
 10:40:24.685 [localhost-startStop-1] DEBUG org.springframework.jndi.JndiTemplate - Looking up JNDI object with name [java:comp/env/logging.exception-conversion-word]
 10:40:24.686 [localhost-startStop-1] DEBUG org.springframework.jndi.JndiLocatorDelegate - Converted JNDI name [java:comp/env/logging.exception-conversion-word] not found - trying original name [logging.exception-conversion-word]. javax.naming.NameNotFoundException: Name [logging.exception-conversion-word] is not bound in this Context. Unable to find [logging.exception-conversion-word].
 10:40:24.687 [localhost-startStop-1] DEBUG org.springframework.jndi.JndiTemplate - Looking up JNDI object with name [logging.exception-conversion-word]
@@ -602,95 +602,95 @@ Mon Jul 09 09:30:14 CST 2018 WARN: Establishing SSL connection without server's 
 10:40:24.692 [localhost-startStop-1] DEBUG org.springframework.jndi.JndiLocatorDelegate - Converted JNDI name [java:comp/env/logging_exceptionconversionword] not found - trying original name [logging_exceptionconversionword]. javax.naming.NameNotFoundException: Name [logging_exceptionconversionword] is not bound in this Context. Unable to find [logging_exceptionconversionword].
 10:40:24.692 [localhost-startStop-1] DEBUG org.springframework.jndi.JndiTemplate - Looking up JNDI object with name [logging_exceptionconversionword]
            
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_30739519/article/details/78536965">配置教程</a>修改。</p>
 <p>摘要：在实际项目开发中使用springboot的时候，可以使用jar包的方式运行项目，也可以将springboot项目打成war包使用。springboot war包运行可能会出现</p>
-<pre><code>&nbsp;[localhost-startStop-1] DEBUG org.springframework.jndi.JndiLocatorDelegate - Converted JNDI name [java:comp/env/LOGGING.pattern_level] not found - trying original name [LOGGING.pattern_level]. javax.naming.NameNotFoundException: Name [LOGGING.pattern_level] is not bound in this Context. Unable to find [LOGGING.pattern_level]。
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">&nbsp;[localhost-startStop-1] DEBUG org.springframework.jndi.JndiLocatorDelegate - Converted JNDI name [java:comp/env/LOGGING.pattern_level] not found - trying original name [LOGGING.pattern_level]. javax.naming.NameNotFoundException: Name [LOGGING.pattern_level] is not bound in this Context. Unable to find [LOGGING.pattern_level]。
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>反正就是诸如此类的问题吧。</p>
 <p>上述的问题，在高版本的spring boot中会出现的，低版本不会出现这个问题。因为高版本中引入了JNDI查询的操作。</p>
 <p>解决方案：</p>
 <p>在项目的根目录中新建<code>spring.properties</code>配置文件，如下图所示：</p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-3d6174c65226a0c5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="/loading.gif" data-original="/images/java/springboot/spring.properties.png" alt="spring.properties"></p>
 <p>添加属性以及值，如下所示：</p>
-<pre><code>spring.jndi.ignore=true
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">spring.jndi.ignore=true
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>原理:</p>
 <p>打开<code>StandardServletEnvironment</code>类，该类中的<code>customizePropertySources</code>方法如下：</p>
-<pre><code>public static final String JNDI_PROPERTY_SOURCE_NAME = "jndiProperties";
-protected void customizePropertySources(MutablePropertySources propertySources) {
-propertySources.addLast(new StubPropertySource(SERVLET_CONFIG_PROPERTY_SOURCE_NAME));
-propertySources.addLast(new StubPropertySource(SERVLET_CONTEXT_PROPERTY_SOURCE_NAME));
-if (JndiLocatorDelegate.isDefaultJndiEnvironmentAvailable()) {
-propertySources.addLast(new JndiPropertySource(JNDI_PROPERTY_SOURCE_NAME));
-}
-    super.customizePropertySources(propertySources);
-}
-JndiLocatorDelegate.isDefaultJndiEnvironmentAvailable()代码如下：
-public static final String IGNORE_JNDI_PROPERTY_NAME = "spring.jndi.ignore";
-private static final boolean shouldIgnoreDefaultJndiEnvironment =
-SpringProperties.getFlag(IGNORE_JNDI_PROPERTY_NAME);
-public static boolean isDefaultJndiEnvironmentAvailable() {
-//如果忽略jndi则返回false
-if (shouldIgnoreDefaultJndiEnvironment) {
-return false;
-}
-    try {
-                  //准备jndi环境
-        new InitialContext().getEnvironment();
-        return true;
-}
-catch (Throwable ex) {
-        return false;
-}
-}
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String JNDI_PROPERTY_SOURCE_NAME <span class="token operator">=</span> <span class="token string">"jndiProperties"</span><span class="token punctuation">;</span>
+<span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">customizePropertySources</span><span class="token punctuation">(</span>MutablePropertySources propertySources<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+propertySources<span class="token punctuation">.</span><span class="token function">addLast</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">StubPropertySource</span><span class="token punctuation">(</span>SERVLET_CONFIG_PROPERTY_SOURCE_NAME<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+propertySources<span class="token punctuation">.</span><span class="token function">addLast</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">StubPropertySource</span><span class="token punctuation">(</span>SERVLET_CONTEXT_PROPERTY_SOURCE_NAME<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>JndiLocatorDelegate<span class="token punctuation">.</span><span class="token function">isDefaultJndiEnvironmentAvailable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+propertySources<span class="token punctuation">.</span><span class="token function">addLast</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">JndiPropertySource</span><span class="token punctuation">(</span>JNDI_PROPERTY_SOURCE_NAME<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">customizePropertySources</span><span class="token punctuation">(</span>propertySources<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+JndiLocatorDelegate<span class="token punctuation">.</span><span class="token function">isDefaultJndiEnvironmentAvailable</span><span class="token punctuation">(</span><span class="token punctuation">)</span>代码如下：
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String IGNORE_JNDI_PROPERTY_NAME <span class="token operator">=</span> <span class="token string">"spring.jndi.ignore"</span><span class="token punctuation">;</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">boolean</span> shouldIgnoreDefaultJndiEnvironment <span class="token operator">=</span>
+SpringProperties<span class="token punctuation">.</span><span class="token function">getFlag</span><span class="token punctuation">(</span>IGNORE_JNDI_PROPERTY_NAME<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">isDefaultJndiEnvironmentAvailable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token comment" spellcheck="true">//如果忽略jndi则返回false</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>shouldIgnoreDefaultJndiEnvironment<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                  <span class="token comment" spellcheck="true">//准备jndi环境</span>
+        <span class="token keyword">new</span> <span class="token class-name">InitialContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getEnvironment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Throwable</span> ex<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>通过上文可知：</p>
 <p>1、如果我们需要忽略jndi则可以配置<code>spring.jndi.ignore</code>值为true即可。</p>
 <p>2、在哪里配置呢？我们不妨跟进<code>SpringProperties</code>类中的getFlag方法。</p>
 <p>spring.jndi.ignore获取原理</p>
 <p>SpringProperties类的getFlag方法如下所示：</p>
-<pre><code>public static boolean getFlag(String key) {
-    return Boolean.parseBoolean(getProperty(key));
-}
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">getFlag</span><span class="token punctuation">(</span>String key<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> Boolean<span class="token punctuation">.</span><span class="token function">parseBoolean</span><span class="token punctuation">(</span><span class="token function">getProperty</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>继续跟进getProperty方法，如下所示：</p>
-<pre><code>public static String getProperty(String key) {
-       //获取spring.jndi.ignore值
-String value = localProperties.getProperty(key);
-if (value == null) {
-    try {//获取系统的变量
-    value = System.getProperty(key);
-    }
-        catch (Throwable ex) {
-    }
-    }
-    return value;
-}
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">getProperty</span><span class="token punctuation">(</span>String key<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+       <span class="token comment" spellcheck="true">//获取spring.jndi.ignore值</span>
+String value <span class="token operator">=</span> localProperties<span class="token punctuation">.</span><span class="token function">getProperty</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>value <span class="token operator">==</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span><span class="token comment" spellcheck="true">//获取系统的变量</span>
+    value <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">getProperty</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+        <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Throwable</span> ex<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> value<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>上述的方法可以总结如下：</p>
 <p>从localProperties集合中获取<code>spring.jndi.ignore</code>属性，如果没有获取到则直接从环境变量中进行获取。localProperties集合在哪里初始化的呢？我们看一下SpringProperties类中的静态代码块，如下所示：</p>
-<pre><code>private static final String PROPERTIES_RESOURCE_LOCATION = "spring.properties";
-static {
-try {
-    ClassLoader cl = SpringProperties.class.getClassLoader();
-    URL url = (cl != null ? cl.getResource(PROPERTIES_RESOURCE_LOCATION) :ClassLoader.getSystemResource(PROPERTIES_RESOURCE_LOCATION));
-    if (url != null) {
-        logger.info("Found 'spring.properties' file in local classpath");
-        InputStream is = url.openStream();
-        try {
-            localProperties.load(is);
-        }
-        finally {
-            is.close();
-            }
-    }
-    }
-catch (IOException ex) {
-}
-}
-}
-</code></pre>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String PROPERTIES_RESOURCE_LOCATION <span class="token operator">=</span> <span class="token string">"spring.properties"</span><span class="token punctuation">;</span>
+<span class="token keyword">static</span> <span class="token punctuation">{</span>
+<span class="token keyword">try</span> <span class="token punctuation">{</span>
+    ClassLoader cl <span class="token operator">=</span> SpringProperties<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    URL url <span class="token operator">=</span> <span class="token punctuation">(</span>cl <span class="token operator">!=</span> null <span class="token operator">?</span> cl<span class="token punctuation">.</span><span class="token function">getResource</span><span class="token punctuation">(</span>PROPERTIES_RESOURCE_LOCATION<span class="token punctuation">)</span> <span class="token operator">:</span>ClassLoader<span class="token punctuation">.</span><span class="token function">getSystemResource</span><span class="token punctuation">(</span>PROPERTIES_RESOURCE_LOCATION<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>url <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"Found 'spring.properties' file in local classpath"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        InputStream is <span class="token operator">=</span> url<span class="token punctuation">.</span><span class="token function">openStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            localProperties<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>is<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+            is<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> ex<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>看到上面的代码，我们明白了，原来这里是直接读取跟目录中的spring.properties文件中的所有属性。看到这里，焕然大悟。原来如此。</p>
 <ul>
 <li>调试中，我修改了<code>application.yml</code>或者<code>application-dev.yml</code>配置文件，在文件中加入了<code>spring.jndi.ignore=true</code>均为生效，必须新建一个<code>spring.properties</code>，我没有验证<code>spring.yml</code>行不行。</li>

@@ -508,7 +508,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    518
+                    517
                 </div>
                 
 
@@ -539,24 +539,25 @@
 <span id="more"></span>
 
 <h4 id="1、安装JDK"><a href="#1、安装JDK" class="headerlink" title="1、安装JDK"></a>1、安装JDK</h4><p>我本地已经装好了jdk9，没装好的自己百度下，文章多到烂了。<br>使用<code>java -version</code>查看是否安装妥当。</p>
-<pre><code>C:\Users\marvin&gt;java -version
+<pre class="line-numbers language-shell"><code class="language-shell">C:\Users\marvin>java -version
 java version "9.0.4"
 Java(TM) SE Runtime Environment (build 9.0.4+11)
 Java HotSpot(TM) 64-Bit Server VM (build 9.0.4+11, mixed mode)
 
-C:\Users\marvin&gt;
-</code></pre>
-<h4 id="2、安装leiningen-win-installer"><a href="#2、安装leiningen-win-installer" class="headerlink" title="2、安装leiningen-win-installer"></a>2、安装leiningen-win-installer</h4><p><a target="_blank" rel="noopener" href="https://djpowell.github.io/leiningen-win-installer/">点我进入下载页</a>，或者直接<a target="_blank" rel="noopener" href="https://bitbucket.org/djpowell/leiningen-win-installer/downloads/leiningen-installer-1.0.exe">点我下载</a>下载一个.exe的windows可执行文件，安装时使用默认配置，不然可能缺少self-installs文件夹。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-09a81b57b43dda3e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="leiningen-win-installer.png"></p>
-<h4 id="3、运行安装好的clojure-REPL，不出意外的话会闪退，闪退的话去cmd运行-lein-version-会提示你要先安装，安装命令看提示，但该命令因为有墙基本上都执行不了，按照下一步安装。"><a href="#3、运行安装好的clojure-REPL，不出意外的话会闪退，闪退的话去cmd运行-lein-version-会提示你要先安装，安装命令看提示，但该命令因为有墙基本上都执行不了，按照下一步安装。" class="headerlink" title="3、运行安装好的clojure REPL，不出意外的话会闪退，闪退的话去cmd运行 lein -version 会提示你要先安装，安装命令看提示，但该命令因为有墙基本上都执行不了，按照下一步安装。"></a>3、运行安装好的clojure REPL，不出意外的话会闪退，闪退的话去cmd运行 lein -version 会提示你要先安装，安装命令看提示，但该命令因为有墙基本上都执行不了，按照下一步安装。</h4><h4 id="4、手动配置leiningen"><a href="#4、手动配置leiningen" class="headerlink" title="4、手动配置leiningen"></a>4、手动配置leiningen</h4><p>去<a target="_blank" rel="noopener" href="https://link.jianshu.com/?t=https://github.com/technomancy/leiningen/releases">https://github.com/technomancy/leiningen/releases</a>下载[<strong>leiningen-2.8.1-standalone.zip</strong>]，找到上一步安装lein安装目录，放在self-install文件夹下（C:\Users\marvin.lein\self-installs），把文件后缀名改成.jar。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-671c9a315513e5b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="手动配置leiningen"></p>
-<h4 id="5、在cmd中执行lein-repl即可进入clojure命令行，执行lein-repl"><a href="#5、在cmd中执行lein-repl即可进入clojure命令行，执行lein-repl" class="headerlink" title="5、在cmd中执行lein repl即可进入clojure命令行，执行lein repl"></a>5、在cmd中执行lein repl即可进入clojure命令行，执行<code>lein repl</code></h4><p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-20ffd9b9bad4482b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>或者可以直接在windows开始栏搜索安装的程序，点击打开。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-5f895343c37b9180.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="lein"></p>
+C:\Users\marvin>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2、安装leiningen-win-installer"><a href="#2、安装leiningen-win-installer" class="headerlink" title="2、安装leiningen-win-installer"></a>2、安装leiningen-win-installer</h4><p><a target="_blank" rel="noopener" href="https://djpowell.github.io/leiningen-win-installer/">点我进入下载页</a>，或者直接<a target="_blank" rel="noopener" href="https://bitbucket.org/djpowell/leiningen-win-installer/downloads/leiningen-installer-1.0.exe">点我下载</a>下载一个.exe的windows可执行文件，安装时使用默认配置，不然可能缺少self-installs文件夹。<br><img src="/loading.gif" data-original="/images/clojure/leiningen-win-installer.png" alt="leiningen-win-installer.png"></p>
+<h4 id="3、运行安装好的clojure-REPL"><a href="#3、运行安装好的clojure-REPL" class="headerlink" title="3、运行安装好的clojure REPL"></a>3、运行安装好的clojure REPL</h4><p>不出意外的话会闪退，闪退的话去cmd运行 <code>lein -version </code>会提示你要先安装，安装命令看提示，但该命令因为有墙基本上都执行不了，按照下一步安装。</p>
+<h4 id="4、手动配置leiningen"><a href="#4、手动配置leiningen" class="headerlink" title="4、手动配置leiningen"></a>4、手动配置leiningen</h4><p>去<a target="_blank" rel="noopener" href="https://link.jianshu.com/?t=https://github.com/technomancy/leiningen/releases">https://github.com/technomancy/leiningen/releases</a>下载[<strong>leiningen-2.8.1-standalone.zip</strong>]，找到上一步安装lein安装目录，放在self-install文件夹下（C:\Users\marvin\.lein\self-installs），把文件后缀名改成.jar。<br><img src="/loading.gif" data-original="/images/clojure/lein-win-setting.png" alt="手动配置leiningen"></p>
+<h4 id="5、在cmd中执行lein-repl即可进入clojure命令行，执行lein-repl"><a href="#5、在cmd中执行lein-repl即可进入clojure命令行，执行lein-repl" class="headerlink" title="5、在cmd中执行lein repl即可进入clojure命令行，执行lein repl"></a>5、在cmd中执行lein repl即可进入clojure命令行，执行<code>lein repl</code></h4><p><img src="/loading.gif" data-original="/images/clojure/lein-win-repl.png" alt="lein-win-repl"></p>
+<p>或者可以直接在windows开始栏搜索安装的程序，点击打开。<br><img src="/loading.gif" data-original="/images/clojure/lein-win.png" alt="lein"></p>
 <p>更进一步，输出个Hello World吧</p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-cde910d31fbbe374.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="/loading.gif" data-original="/images/clojure/lein-win-helloword.png" alt="hello world"></p>
 <h4 id="6、使用Intellij-Idea作为开发IED"><a href="#6、使用Intellij-Idea作为开发IED" class="headerlink" title="6、使用Intellij Idea作为开发IED"></a>6、使用Intellij Idea作为开发IED</h4><p>需要安装<a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/8090-cursive">Cursive插件</a></p>
 <p>注意：如果在线安装安装不上的话，可以<a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/8090-cursive">下载</a>你的IDE对应版本插件的zip包，进行本地导入安装。</p>
-<p>如图是本地新建的一个demo工程，可以在.clj文件上直接右击运行。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-9970d54533aa214b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Hello world"></p>
+<p>如图是本地新建的一个demo工程，可以在.clj文件上直接右击运行。<br><img src="/loading.gif" data-original="/images/clojure/hexo-hello-world.png" alt="Hello world"></p>
 <p>代码：</p>
-<pre><code>(ns firstclojure.core)
+<pre class="line-numbers language-clojure"><code class="language-clojure">(ns firstclojure.core)
 
 (defn foo
   "I don't do a whole lot."
@@ -564,9 +565,11 @@ C:\Users\marvin&gt;
   (println x "Hello, World!"))
 
 (println (foo "Hello Clojure \n"))
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>通过lein run的方式也可以很方便的执行代码，但是如果要将我们的代码share出去，就需要生成一个jar文件了，我们使用lein uberjar来生成jar，生成的jar文件为target/uberjar/clojure-noob-0.1.0-SNAPSHOT-standalone.jar，我们可以在java里面直接运行了。</p>
-<p>java -jar target/uberjar/clojure-noob-0.1.0-SNAPSHOT-standalone.jar<br>Hello, Clojure!</p>
+<pre class="line-numbers language-shell"><code class="language-shell">java -jar target/uberjar/clojure-noob-0.1.0-SNAPSHOT-standalone.jar 
+Hello, Clojure!
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h4 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h4><p><a target="_blank" rel="noopener" href="https://blog.3vyd.com/blog/posts-output/2018-10-31-Clojure-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">Mac 下 Clojure 环境搭建</a></p>
 
                 

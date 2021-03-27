@@ -545,7 +545,7 @@
 
 <h2 id="怕啥来啥"><a href="#怕啥来啥" class="headerlink" title="怕啥来啥"></a>怕啥来啥</h2><p>昨天晚上约定的晚上11点发布测试环境的热更，小杨同学说了：“怕啥来啥”，果然，安卓测试的app周一就扔出去了，约定好的今天晚上热更，结果发了热更移动端却检测不到。</p>
 <p>晚上跟ios前端同事折腾了两次，但是无果而终，甲方粑粑不乐意了。</p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-193e5a0a2cb2ac76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="客户有意见了哈.png"></p>
+<p><img src="/loading.gif" data-original="/images/fontend/%E5%AE%A2%E6%88%B7%E6%9C%89%E6%84%8F%E8%A7%81%E4%BA%86%E5%93%88.png" alt="客户有意见了哈.png"></p>
 <p>今天开始解决这个问题。</p>
 <h2 id="解决方案过程讨论"><a href="#解决方案过程讨论" class="headerlink" title="解决方案过程讨论"></a>解决方案过程讨论</h2><ul>
 <li><p>背景：</p>
@@ -556,39 +556,39 @@
 <li><p>第一步，热更是否推送成功？<br>1、小杨同学在他的环境下发了ios的推送，测试完美以后，又发了android的热更。遗憾的是手机上启动检测不到更新。<br>后来再更新代码，发了几次，无果。</p>
 </li>
 </ul>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-d4fe04039ff8a48f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="/loading.gif" data-original="/images/fontend/rn-codepush-his.png" alt="热更history"></p>
 <ul>
 <li><p>第二步，app检查逻辑是否正常？<br>app启动时做了检查日志处理：</p>
-<pre><code>// 热更-检查更新
-codePushCheckForUpdate = () =&gt; {
-  CodePush.checkForUpdate().then((update) =&gt; {
-    if (!update) {
-      console.log('已是最新版本...');
-    } else {
-      console.log('有新版本-------', update);
-      const packageSize = parseFloat(update.packageSize / 1024 / 1024).toFixed(2);
-      console.log('packageSize', packageSize);
-      this.setState({ totalSize: packageSize });
-      this.showUpdateInfoAlert(update);
-    }
-  });
-}
-</code></pre>
-<p>安卓手机启动查看log，结果确实是匹配的<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-ad35e21cbd77976c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token comment" spellcheck="true">// 热更-检查更新</span>
+codePushCheckForUpdate <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  CodePush<span class="token punctuation">.</span><span class="token function">checkForUpdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span>update<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>update<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'已是最新版本...'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'有新版本-------'</span><span class="token punctuation">,</span> update<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">const</span> packageSize <span class="token operator">=</span> <span class="token function">parseFloat</span><span class="token punctuation">(</span>update<span class="token punctuation">.</span>packageSize <span class="token operator">/</span> <span class="token number">1024</span> <span class="token operator">/</span> <span class="token number">1024</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toFixed</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'packageSize'</span><span class="token punctuation">,</span> packageSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> totalSize<span class="token punctuation">:</span> packageSize <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">showUpdateInfoAlert</span><span class="token punctuation">(</span>update<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>安卓手机启动查看log，结果确实是匹配的<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-app-log.png" alt="安卓logcat日志"></p>
 </li>
-<li><p>第三步，发送推送的环境和已有app的原生代码有区别导致的？<br>把本地所有代码暂存，直接发布热更。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-1d03ea70c655f1ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<li><p>第三步，发送推送的环境和已有app的原生代码有区别导致的？<br>把本地所有代码暂存，直接发布热更。<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-push.png" alt="发布热更"></p>
 </li>
 </ul>
-<p>结果是一样的。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-444058d3a56932ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>结果是一样的。<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-app-log2.png" alt="image.png"></p>
 <ul>
-<li>第四步，把代码切换到打包时的commit，然后发热更。<br>怀疑是如下的这种代码有区别导致的。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-b00c9e9bb5f1620f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
+<li>第四步，把代码切换到打包时的commit，然后发热更。<br>怀疑是如下的这种代码有区别导致的。<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-reset.png" alt="image.png"></li>
 </ul>
-<p>切换到当时打包的那次commit，重新发热更。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-3d402ffac39e6a5c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>切换到当时打包的那次commit，重新发热更。<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-reset2.png" alt="image.png"></p>
 <p>很遗憾，结论是一样的。</p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-1e3e5866e4f81a91.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="/loading.gif" data-original="/images/fontend/rn-codepush-app-log3.png" alt="image.png"></p>
 <p>告诉甲方粑粑，然后用最新的代码打个包，这就睡觉了。</p>
 <h2 id="热更记录硬删除测试"><a href="#热更记录硬删除测试" class="headerlink" title="热更记录硬删除测试"></a>热更记录硬删除测试</h2><p>在热更数据库强制删除热更记录</p>
-<pre><code>DELETE FROM codepush.deployments_historyWHERE  id=192;
+<pre class="line-numbers language-shell"><code class="language-shell">DELETE FROM codepush.deployments_historyWHERE  id=192;
 DELETE FROM codepush.deployments_historyWHERE  id=193;
 DELETE FROM codepush.deployments_historyWHERE  id=194;
 DELETE FROM codepush.deployments_history WHERE  id=195;
@@ -611,57 +611,57 @@ DELETE FROM codepush.packages_diff WHERE  id=454;
 DELETE FROM codepush.packages_diff WHERE  id=455;
 
 DELETE FROM codepush.deployments_versions WHERE  id=43;
-</code></pre>
-<p>删除4次1.5.1的code-push后<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-a181962baaa60483.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>重新发起热更<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-adc01ed9bc8ae368.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>删除4次1.5.1的code-push后<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-his2.png" alt="code push history"></p>
+<p>重新发起热更<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-push2.png" alt="code push"></p>
 <p>很遗憾仍然没有生效。此时本地的debug环境一个app启动后，发现居然提示更新。</p>
 <p><strong>问题来了，可能是热更和检查热更不在一个频道上</strong></p>
 <p>检查安卓热更配置，果然验证了这一猜测。</p>
-<pre><code>    buildTypes {
-        debug {
-            ext.alwaysUpdateBuildId = false // 避免 crashLytics 的alwaysUpdateBuildId每次编译都重新生成 加快编译速度
-            buildConfigField "String", "CODEPUSH_KEY", '"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"' // Staging
-        }
-        release {
-            signingConfig signingConfigs.release
+<pre class="line-numbers language-js"><code class="language-js">    buildTypes <span class="token punctuation">{</span>
+        debug <span class="token punctuation">{</span>
+            ext<span class="token punctuation">.</span>alwaysUpdateBuildId <span class="token operator">=</span> <span class="token boolean">false</span> <span class="token comment" spellcheck="true">// 避免 crashLytics 的alwaysUpdateBuildId每次编译都重新生成 加快编译速度</span>
+            buildConfigField <span class="token string">"String"</span><span class="token punctuation">,</span> <span class="token string">"CODEPUSH_KEY"</span><span class="token punctuation">,</span> <span class="token string">'"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"'</span> <span class="token comment" spellcheck="true">// Staging</span>
+        <span class="token punctuation">}</span>
+        release <span class="token punctuation">{</span>
+            signingConfig signingConfigs<span class="token punctuation">.</span>release
             minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            buildConfigField "String", "CODEPUSH_KEY", '"pppppppppppppppppppppppppppppp"' //Production
-        }
-    }
-</code></pre>
-<h5 id="一个解释：配置里只有debug（Staging）和release（Production）的配置-配置了不同的deployment"><a href="#一个解释：配置里只有debug（Staging）和release（Production）的配置-配置了不同的deployment" class="headerlink" title="一个解释：配置里只有debug（Staging）和release（Production）的配置,配置了不同的deployment"></a>一个解释：配置里只有debug（Staging）和release（Production）的配置,配置了不同的deployment</h5><p> key，但因为打测试环境的app时，选择的是release，所以，按照这个配置，只有发在Production的上的热更，app启动时才能检查到，而现在一直在用Staging发。</p>
-<h2 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h2><pre><code>    buildTypes {
-        debug {
-            ext.alwaysUpdateBuildId = false // 避免 crashLytics 的alwaysUpdateBuildId每次编译都重新生成 加快编译速度
-            buildConfigField "String", "CODEPUSH_KEY", '"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"' // Staging
-        }
-        beta {
-            signingConfig signingConfigs.release
+            proguardFiles <span class="token function">getDefaultProguardFile</span><span class="token punctuation">(</span><span class="token string">"proguard-android.txt"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"proguard-rules.pro"</span>
+            buildConfigField <span class="token string">"String"</span><span class="token punctuation">,</span> <span class="token string">"CODEPUSH_KEY"</span><span class="token punctuation">,</span> <span class="token string">'"pppppppppppppppppppppppppppppp"'</span> <span class="token comment" spellcheck="true">//Production</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="一个解释"><a href="#一个解释" class="headerlink" title="一个解释"></a>一个解释</h5><p>配置里只有debug（Staging）和release（Production）的配置,配置了不同的deployment key，但因为打测试环境的app时，选择的是release，所以，按照这个配置，只有发在Production的上的热更，app启动时才能检查到，而现在一直在用Staging发。</p>
+<h2 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h2><pre class="line-numbers language-js"><code class="language-js">    buildTypes <span class="token punctuation">{</span>
+        debug <span class="token punctuation">{</span>
+            ext<span class="token punctuation">.</span>alwaysUpdateBuildId <span class="token operator">=</span> <span class="token boolean">false</span> <span class="token comment" spellcheck="true">// 避免 crashLytics 的alwaysUpdateBuildId每次编译都重新生成 加快编译速度</span>
+            buildConfigField <span class="token string">"String"</span><span class="token punctuation">,</span> <span class="token string">"CODEPUSH_KEY"</span><span class="token punctuation">,</span> <span class="token string">'"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"'</span> <span class="token comment" spellcheck="true">// Staging</span>
+        <span class="token punctuation">}</span>
+        beta <span class="token punctuation">{</span>
+            signingConfig signingConfigs<span class="token punctuation">.</span>release
             minifyEnabled enableProguardInReleaseBuilds
-            buildConfigField "String", "CODEPUSH_KEY", '"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"' //Staging
-        }
-        release {
-            signingConfig signingConfigs.release
+            buildConfigField <span class="token string">"String"</span><span class="token punctuation">,</span> <span class="token string">"CODEPUSH_KEY"</span><span class="token punctuation">,</span> <span class="token string">'"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"'</span> <span class="token comment" spellcheck="true">//Staging</span>
+        <span class="token punctuation">}</span>
+        release <span class="token punctuation">{</span>
+            signingConfig signingConfigs<span class="token punctuation">.</span>release
             minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            buildConfigField "String", "CODEPUSH_KEY", '"pppppppppppppppppppppppppppppp"' //Production
-        }
-    }
-</code></pre>
-<p>sync时报错，所有的库都找不到，错误信息如下：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-5437b9111c4fc5ea.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+            proguardFiles <span class="token function">getDefaultProguardFile</span><span class="token punctuation">(</span><span class="token string">"proguard-android.txt"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"proguard-rules.pro"</span>
+            buildConfigField <span class="token string">"String"</span><span class="token punctuation">,</span> <span class="token string">"CODEPUSH_KEY"</span><span class="token punctuation">,</span> <span class="token string">'"pppppppppppppppppppppppppppppp"'</span> <span class="token comment" spellcheck="true">//Production</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>sync时报错，所有的库都找不到，错误信息如下：<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-sync-error.png" alt="android sync error"></p>
 <p>参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/47001656/unable-to-resolve-dependency-android-studio-3-0/47021147">本文提示</a>，发现配置少了一项<code>matchingFallbacks = ['release', 'debug']</code>，添加到beta配置后，build成功。</p>
-<pre><code>beta {
-    signingConfig signingConfigs.release
+<pre class="line-numbers language-js"><code class="language-js">beta <span class="token punctuation">{</span>
+    signingConfig signingConfigs<span class="token punctuation">.</span>release
     minifyEnabled enableProguardInReleaseBuilds
-    buildConfigField "String", "CODEPUSH_KEY", '"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"' //Staging
-   matchingFallbacks = ['release', 'debug']
-}
-</code></pre>
-<p>build后，重新打包，选择beta包，<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-5b90e2e5d7b74ae0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
-<p>首页菜单改成【专属应用】，发热更，而且强更。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-aa67873a475b3bfd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="code-push.png"></p>
-<p>app启动测试：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-1daf4b5c2e362d34.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/400" alt="suceess"></p>
-<p>检查应用更新数，果然有更新（此处我截图时已经成功了两次）<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-701334f8f694fc75.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+    buildConfigField <span class="token string">"String"</span><span class="token punctuation">,</span> <span class="token string">"CODEPUSH_KEY"</span><span class="token punctuation">,</span> <span class="token string">'"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"'</span> <span class="token comment" spellcheck="true">//Staging</span>
+   matchingFallbacks <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'release'</span><span class="token punctuation">,</span> <span class="token string">'debug'</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>build后，重新打包，选择beta包，<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-build.png" alt="重新打包"></p>
+<p>首页菜单改成【专属应用】，发热更，而且强更。<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-push3.png" alt="code-push.png"></p>
+<p>app启动测试：<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-app.gif" alt="suceess"></p>
+<p>检查应用更新数，果然有更新（此处我截图时已经成功了两次）<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-deployment.png" alt="image.png"></p>
 <p>success！！！</p>
 <p>前端路漫漫，且采坑且记录~~~~</p>
 <h2 id="相关文档"><a href="#相关文档" class="headerlink" title="相关文档"></a>相关文档</h2><ul>

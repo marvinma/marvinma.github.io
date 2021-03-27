@@ -508,7 +508,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    480
+                    476
                 </div>
                 
 
@@ -540,43 +540,43 @@
 
 
 <p>profile报告命令</p>
-<pre><code>./gradlew clean app:assembleDebug --profile
-</code></pre>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-7b7ba59721e695fb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="1.png"></p>
+<pre class="line-numbers language-shell"><code class="language-shell">./gradlew clean app:assembleDebug --profile
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/android/build-profile.png" alt="profile报告"></p>
 <p>1、debug环境禁止crashLytics上报<br>2、避免Legacy Multidex</p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-41af75052b667ba6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-8e48236839f406c6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2.png"></p>
+<p><img src="/loading.gif" data-original="/images/android/build-profile-diff.png" alt="diff修改代码"></p>
+<p><img src="/loading.gif" data-original="/images/android/build-profile2.png" alt="profile报告2"></p>
 <h3 id="记录"><a href="#记录" class="headerlink" title="记录"></a>记录</h3><p>2018-11-06  11:05  clean<br>gradlew clean app:assembleDebug –profile</p>
 <p>1、修改参数，加快build<br>org.gradle.jvmargs=-Xmx4608M -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8<br>安卓：非发布版禁用fabric上报，修改jvmargs参数，使开发环境build时间降至2min以内<br><a target="_blank" rel="noopener" href="http://www.easemob.com/news/852">http://www.easemob.com/news/852</a><br><a target="_blank" rel="noopener" href="https://medium.com/exploring-code/how-to-decrease-your-gradle-build-time-by-65-310b572b0c43">https://medium.com/exploring-code/how-to-decrease-your-gradle-build-time-by-65-310b572b0c43</a></p>
 <p>debug环境禁用fabric<br>非发布版本关闭Fabirc</p>
-<pre><code>android {
+<pre class="line-numbers language-conf"><code class="language-conf">android {
     buildTypes {
         debug {
           // Disable fabric build ID generation for debug builds
           ext.enableCrashlytics = false
           ...
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhou-guobao/p/disable-crashlytics-for-debug-builds.html">https://www.cnblogs.com/zhou-guobao/p/disable-crashlytics-for-debug-builds.html</a></p>
 <p>2、配置不同的图标<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/MAIMIHO/article/details/76106700?utm_source=blogxgwz4">https://blog.csdn.net/MAIMIHO/article/details/76106700?utm_source=blogxgwz4</a></p>
 <p>配置不同app名称<br>遇到一个错误：</p>
-<pre><code>
+<pre class="line-numbers language-shell"><code class="language-shell">
 FAILURE: Build failed with an exception.
 
 * What went wrong:
 Execution failed for task ':app:processDebugManifest'.
-&gt; Manifest merger failed : Attribute application@label value=(@string/app_name_debug) from AndroidManifest.xml:86:9-37
+> Manifest merger failed : Attribute application@label value=(@string/app_name_debug) from AndroidManifest.xml:86:9-37
       is also present at [:react-native-fetch-blob] AndroidManifest.xml:11:18-50 value=(@string/app_name).
-      Suggestion: add 'tools:replace="android:label"' to &lt;application&gt; element at AndroidManifest.xml:80:5-324:19 to override.
+      Suggestion: add 'tools:replace="android:label"' to <application> element at AndroidManifest.xml:80:5-324:19 to override.
 
 * Try:
 Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.
 
 * Get more help at https://help.gradle.org
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>按照提示解决，解释：<a target="_blank" rel="noopener" href="https://www.2cto.com/kf/201712/702939.html">https://www.2cto.com/kf/201712/702939.html</a></p>
 <p>3、配置不同applicationId<br>fileprovider  修改，<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1afa7d4c0afd">https://www.jianshu.com/p/1afa7d4c0afd</a> 提醒<br>FileHelp.java中使用父项目的BuildConf.applicationId</p>
 <p>4、打jsbundle后生成的这个垃圾文件<br>D:\Git\pingtai\Portal\android\app\src\main\res\drawable-mdpi\js_commonview_echarts_tpl.html</p>
-<p>5、android studio 中distributionUrl使用本地文件<br>D:\Git\pingtai\Portal\android\gradle\wrapper\gradle-wrapper.properties<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-e5ce7fbaa9752cbf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="distributionUrl.png"></p>
+<p>5、android studio 中distributionUrl使用本地文件<br>D:\Git\pingtai\Portal\android\gradle\wrapper\gradle-wrapper.properties<br><img src="/loading.gif" data-original="/images/android/build-gradle.png" alt="distributionUrl.png"></p>
 <p>6、修改combile</p>
 <p>7、开发环境使用比android studio 自带的【apply changes】更牛逼的【JRebel for Android】</p>
 <ul>
@@ -586,7 +586,7 @@ Run with --stacktrace option to get the stack trace. Run with --info or --debug 
 </blockquote>
 </li>
 </ul>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-3145e44d01ddda49.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="activate.png"><br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-ebf0d845e5b2b91b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="activated.png"></p>
+<p><img src="/loading.gif" data-original="/images/android/build-activate.png" alt="activate.png"><br><img src="/loading.gif" data-original="/images/android/build-activated.png" alt="activated.png"></p>
 <ul>
 <li>3、配置参考博客地址：<a target="_blank" rel="noopener" href="http://www.czhzero.com/2016/08/10/jrebel-for-android-guide/">http://www.czhzero.com/2016/08/10/jrebel-for-android-guide/</a></li>
 </ul>
@@ -1052,6 +1052,67 @@ Run with --stacktrace option to get the stack trace. Run with --info or --debug 
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
+                <a href="/2018/06/26/shi-yong-ngrok-yi-fen-zhong-shi-xian-nei-wang-chuan-tou/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="使用ngrok一分钟实现内网穿透">
+                        
+                        <span class="card-title">使用ngrok一分钟实现内网穿透</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            一分钟有点夸张，5分钟总可以将本地web服务映射到公网了吧。简书地址
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-06-26
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" class="post-category">
+                                    工具使用
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/tools/">
+                        <span class="chip bg-color">tools</span>
+                    </a>
+                    
+                    <a href="/tags/server/">
+                        <span class="chip bg-color">server</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%BD%91%E7%BB%9C/">
+                        <span class="chip bg-color">网络</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">
+                        <span class="chip bg-color">内网穿透</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
                 <a href="/2018/06/15/react-native-xiang-mu-bian-yi-da-bao-cheng-android-app/">
                     <div class="card-image">
                         
@@ -1068,9 +1129,9 @@ Run with --stacktrace option to get the stack trace. Run with --info or --debug 
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2018-06-15
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-06-15
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1092,59 +1153,6 @@ Run with --stacktrace option to get the stack trace. Run with --info or --debug 
                     
                     <a href="/tags/android/">
                         <span class="chip bg-color">android</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2018/06/15/mysql-shu-ju-ku-an-zhuang-he-yi-ban-pei-zhi/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="mysql数据库安装和一般配置">
-                        
-                        <span class="card-title">mysql数据库安装和一般配置</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            在linux上安装mysql server，进行常规设置简书地址
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2018-06-15
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
-                                    数据库
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/linux/">
-                        <span class="chip bg-color">linux</span>
-                    </a>
-                    
-                    <a href="/tags/mysql/">
-                        <span class="chip bg-color">mysql</span>
                     </a>
                     
                 </div>

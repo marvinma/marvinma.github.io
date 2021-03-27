@@ -512,7 +512,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.2k
+                    1.1k
                 </div>
                 
 
@@ -545,73 +545,81 @@
 
 <h3 id="开发环境准备"><a href="#开发环境准备" class="headerlink" title="开发环境准备"></a>开发环境准备</h3><ol>
 <li>下载安装android studio</li>
-<li>启动运行<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-6f03a30bbbc894d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="start studio"></li>
-<li>配置代理<br>如果能翻墙最好了，因为一些资源都需要爬墙，实在没有吗，只能选择不代理。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-639c5d002829ce04.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="设置代理"></li>
+<li>启动运行<br><img src="/loading.gif" data-original="/images/android/start-android-studio.png" alt="start studio"></li>
+<li>配置代理<br>如果能翻墙最好了，因为一些资源都需要爬墙，实在没有吗，只能选择不代理。<br><img src="/loading.gif" data-original="/images/android/set-proxy.png" alt="设置代理"></li>
 </ol>
-<p>选择标准安装，下一步，等待下载<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-67d174d8609b6a65.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="下载"><br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-e793cad7c2935a19.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"></p>
-<p>import到Portal的android目录，导入项目<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-127d4e761db56467.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="下载2"></p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-735bbb68af8f0d78.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="下载3"><br>4. build完成以后在命令窗口启动打包jsbundle<br>打包成jsbundle文件的方式可以参照另一篇-<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/cb25e817ba36">海尔创客汇笔记—-安卓生产环境打包配置</a>。<br>主要是下面这个命令<br>打包IOS：</p>
-<pre><code>"bundle-ios": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ./ios/main.jsbundle --assets-dest ./ios",
-</code></pre>
+<p>选择标准安装，下一步，等待下载<br><img src="/loading.gif" data-original="/images/android/download-components.png" alt="下载"><br><img src="/loading.gif" data-original="/images/android/download-components-suc.png" alt="下载结束"></p>
+<p>import到Portal的android目录，导入项目<br><img src="/loading.gif" data-original="/images/android/import-project.png" alt="导入工程"></p>
+<p><img src="/loading.gif" data-original="/images/android/gradle-download.png" alt="gradle下载"></p>
+<ol start="4">
+<li><p>build完成以后在命令窗口启动打包jsbundle<br>打包成jsbundle文件的方式可以参照另一篇-<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/cb25e817ba36">海尔创客汇笔记—-安卓生产环境打包配置</a>。<br>主要是下面这个命令<br>打包IOS：</p>
+<pre class="line-numbers language-json"><code class="language-json"><span class="token property">"bundle-ios"</span><span class="token operator">:</span> <span class="token string">"react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ./ios/main.jsbundle --assets-dest ./ios"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>打包安卓：</p>
-<pre><code> "bundle-android": "react-native bundle --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle --platform android --assets-dest ./android/app/src/main/res/ --dev false",
-</code></pre>
+<pre class="line-numbers language-json"><code class="language-json"><span class="token property">"bundle-android"</span><span class="token operator">:</span> <span class="token string">"react-native bundle --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle --platform android --assets-dest ./android/app/src/main/res/ --dev false"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>该项目有个没有配置好的地方，会导致生成.html文件，需要删除后，再进行后面的操作。</p>
-<h3 id="启动项目"><a href="#启动项目" class="headerlink" title="启动项目"></a>启动项目</h3><ol start="5">
+<h3 id="启动项目"><a href="#启动项目" class="headerlink" title="启动项目"></a>启动项目</h3></li>
 <li><p>yarn</p>
-<pre><code>Portal git:(master) yarn
+<pre class="line-numbers language-shell"><code class="language-shell">Portal git:(master) yarn
 yarn install v1.15.2
 [1/4] 🔍  Resolving packages...
 [2/4] 🚚  Fetching packages...
 [3/4] 🔗  Linking dependencies...
-warning " &gt; react-native-doc-viewer@2.7.8" has incorrect peer dependency "react@^16.3.0-alpha.1".
-warning " &gt; react-native-doc-viewer@2.7.8" has incorrect peer dependency "react-native@0.54.3".
-warning " &gt; react-native-fs@2.9.12" has incorrect peer dependency "react@^16.2.0".
-warning " &gt; react-native-fs@2.9.12" has incorrect peer dependency "react-native@^0.51.0".
-warning " &gt; react-native-fs@2.9.12" has unmet peer dependency "prop-types@15.6.0".
-warning " &gt; react-native-fs@2.9.12" has unmet peer dependency "create-react-class@^15.6.2".
-warning " &gt; react-native-pdf@5.0.8" has incorrect peer dependency "rn-fetch-blob@^0.10.13".
-warning " &gt; react-native-svg@6.5.2" has unmet peer dependency "prop-types@^15.5.7".
-warning " &gt; react-native-svg-uri@1.2.3" has incorrect peer dependency "react-native-svg@^5.3.0".
-warning " &gt; babel-jest@22.0.4" has unmet peer dependency "babel-core@^6.0.0 || ^7.0.0-0".
+warning " > react-native-doc-viewer@2.7.8" has incorrect peer dependency "react@^16.3.0-alpha.1".
+warning " > react-native-doc-viewer@2.7.8" has incorrect peer dependency "react-native@0.54.3".
+warning " > react-native-fs@2.9.12" has incorrect peer dependency "react@^16.2.0".
+warning " > react-native-fs@2.9.12" has incorrect peer dependency "react-native@^0.51.0".
+warning " > react-native-fs@2.9.12" has unmet peer dependency "prop-types@15.6.0".
+warning " > react-native-fs@2.9.12" has unmet peer dependency "create-react-class@^15.6.2".
+warning " > react-native-pdf@5.0.8" has incorrect peer dependency "rn-fetch-blob@^0.10.13".
+warning " > react-native-svg@6.5.2" has unmet peer dependency "prop-types@^15.5.7".
+warning " > react-native-svg-uri@1.2.3" has incorrect peer dependency "react-native-svg@^5.3.0".
+warning " > babel-jest@22.0.4" has unmet peer dependency "babel-core@^6.0.0 || ^7.0.0-0".
 [4/4] 🔨  Building fresh packages...
 warning Your current version of Yarn is out of date. The latest version is "1.16.0", while you're on "1.15.2".
 info To upgrade, run the following command:
 $ curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
 ✨  Done in 169.93s.
 ➜  Portal git:(master)
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li><p> 启动js<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-89a4a517903bf500.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="yarn start"></p>
+<li><p> 启动js<br><img src="/loading.gif" data-original="/images/android/yarn-start.png" alt="yarn start"></p>
 </li>
-<li><p>运行app<br>因为项目加入了IM的一些东西导致不能用模拟器运行，真机连接后选择USB调试，然后运行项目<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-e69e92ed5654e0c1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"><br>选择不使用instant<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-264e7b09e16f4da4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"><br>查看日志：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-679dc031e89fac7a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="logcat"></p>
+<li><p>运行app<br>因为项目加入了IM的一些东西导致不能用模拟器运行，真机连接后选择USB调试，然后运行项目<br><img src="/loading.gif" data-original="/images/android/project-run.png" alt="运行工程"><br>选择不使用instant<br><img src="/loading.gif" data-original="/images/android/%E4%B8%8D%E4%BD%BF%E7%94%A8instant.png" alt="不使用instant"><br>查看日志：<br><img src="/loading.gif" data-original="/images/android/logcat.png" alt="logcat"></p>
 </li>
 </ol>
 <h3 id="配置JS调试模式"><a href="#配置JS调试模式" class="headerlink" title="配置JS调试模式"></a>配置JS调试模式</h3><ol start="8">
-<li>配置端口映射，让手机端连接到PC的js server上<br>首先，电脑要有ADB，作为一名Android终端开发，这个是必备的。但是不巧我是客串的，所以手动安装了一下，MAC上通过homebrew安装很简单，一句命令：<pre><code>brew cask install android-platform-tools
-</code></pre>
-手动安装配置classpath的可以参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1b3fb1f27b67">在 MAC OS X 安装 ADB (Android调试桥)</a>。<br>安装成功，并且真机设置好了开发者模式，允许调试的话，可以用以下命令看到设备：<pre><code>➜  ~ adb devices
+<li><p>配置端口映射，让手机端连接到PC的js server上<br>首先，电脑要有ADB，作为一名Android终端开发，这个是必备的。但是不巧我是客串的，所以手动安装了一下，MAC上通过homebrew安装很简单，一句命令：</p>
+<pre class="line-numbers language-shell"><code class="language-shell">brew cask install android-platform-tools
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>手动安装配置classpath的可以参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1b3fb1f27b67">在 MAC OS X 安装 ADB (Android调试桥)</a>。<br>安装成功，并且真机设置好了开发者模式，允许调试的话，可以用以下命令看到设备：</p>
+<pre class="line-numbers language-shell"><code class="language-shell">➜  ~ adb devices
 List of devices attached
 c752c893    device
 ➜  ~
-</code></pre>
-有了adb以后，用下面的命令设置映射关系,将本地的8081映射到client的8081<pre><code>➜  ~ adb reverse tcp:8081 tcp:8081
-</code></pre>
-如果adb没有配置到classpath里，可以这样<pre><code>➜  ~ cd ~/Library/Android/sdk/platform-tools/
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>有了adb以后，用下面的命令设置映射关系,将本地的8081映射到client的8081</p>
+<pre class="line-numbers language-shell"><code class="language-shell">➜  ~ adb reverse tcp:8081 tcp:8081
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果adb没有配置到classpath里，可以这样</p>
+<pre class="line-numbers language-shell"><code class="language-shell">➜  ~ cd ~/Library/Android/sdk/platform-tools/
 ➜  ~ ./adb reverse tcp:8081 tcp:8081
-</code></pre>
-更多adb命令可以参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/bravesnail/articles/5850335.html">Android常用的adb命令总结</a></li>
-<li>配置到以上映射，一般真机上会自动启动应用，启动后摇一摇，弹出菜单，查看最新的修改。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-ba74e29aa69bb628.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/400" alt="手机摇一摇"></li>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>更多adb命令可以参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/bravesnail/articles/5850335.html">Android常用的adb命令总结</a></p>
+</li>
+<li><p>配置到以上映射，一般真机上会自动启动应用，启动后摇一摇，弹出菜单，查看最新的修改。<br><img src="/loading.gif" data-original="/images/android/rn-reload.png" alt="手机摇一摇"></p>
+</li>
 </ol>
-<p>可以先来个reload试试。<br>可以看到手机上开始reload<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-f33d82d21bb3666d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/400" alt="reload"></p>
-<p>再看看服务端：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-d8dc5fcad1a88b0f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="reload"></p>
+<p>可以先来个reload试试。<br>可以看到手机上开始reload<br><img src="/loading.gif" data-original="/images/android/rn-reloading.png" alt="rn-reloading"></p>
+<p>再看看服务端：<br><img src="/loading.gif" data-original="/images/android/rn-reloading-server.png" alt="服务端reload"></p>
 <ol start="10">
-<li>开始调试<br>在刚才手机摇一摇出来的菜单中选择<code>Debug JS Remotely</code>，应用重启，同时看到server端启动的Dev Tools<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-7e71927678c45375.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="debug"><br>默认的浏览器也打开了一个新的tab，如下：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-221aa944e71dd2bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"></li>
+<li>开始调试<br>在刚才手机摇一摇出来的菜单中选择<code>Debug JS Remotely</code>，应用重启，同时看到server端启动的Dev Tools<br><img src="/loading.gif" data-original="/images/android/rn-debug.png" alt="debug"><br>默认的浏览器也打开了一个新的tab，如下：<br><img src="/loading.gif" data-original="/images/android/rn-debugger-ui.png" alt="debugger ui"></li>
 </ol>
-<p>默认不会打开开发者模式，需要手动打开。我们清除一下默认的log，加载下首页，看到如下效果：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-fb3679d573a40a1d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="image.png"></p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-4faeb1152bdcd1ba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/800" alt="debug log"><br>调试配置成功。</p>
+<p>默认不会打开开发者模式，需要手动打开。我们清除一下默认的log，加载下首页，看到如下效果：<br><img src="/loading.gif" data-original="/images/android/rn-debugger-ui2.png" alt="debug ui"></p>
+<p><img src="/loading.gif" data-original="/images/android/rn-debugger-ui-console.png" alt="debug log"><br>调试配置成功。</p>
 <ol start="11">
-<li>有时候一边撸代码，改两行还要拿起手机看看效果，确实不便，于是有了安卓手机投屏这种神一样的工具。也许工具很多，不过我这里就用过一种<a target="_blank" rel="noopener" href="http://www.vysor.io/">vysor</a>，我用了谷歌浏览器的vysor插件。<br>手机USB调试设置好以后会自己检测<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-389ee3883c725ee7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/400" alt="vysor"><br>同时第一次会提示手机安装该软件，安装完成后打开，效果如下，与手机同步。<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-9750e07d8078e721.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/400" alt="image.png"></li>
+<li>有时候一边撸代码，改两行还要拿起手机看看效果，确实不便，于是有了安卓手机投屏这种神一样的工具。也许工具很多，不过我这里就用过一种<a target="_blank" rel="noopener" href="http://www.vysor.io/">vysor</a>，我用了谷歌浏览器的vysor插件。<br>手机USB调试设置好以后会自己检测<br><img src="/loading.gif" data-original="/images/android/vysor.png" alt="vysor设置"><br>同时第一次会提示手机安装该软件，安装完成后打开，效果如下，与手机同步。<br><img src="/loading.gif" data-original="/images/android/vysor2.png" alt="vysor成功"></li>
 </ol>
 <p>效果还是不错的，就是没有[摇一摇]这个功能，美中不足亦。</p>
 <ol start="12">

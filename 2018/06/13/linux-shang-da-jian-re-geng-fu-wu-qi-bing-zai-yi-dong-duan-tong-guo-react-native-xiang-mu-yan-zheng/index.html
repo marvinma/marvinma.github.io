@@ -512,14 +512,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.7k
+                    3.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    16 分
+                    15 分
                 </div>
                 
 
@@ -543,21 +543,26 @@
 <span id="more"></span>
 
 <h2 id="安装MySQL"><a href="#安装MySQL" class="headerlink" title="安装MySQL"></a><a target="_blank" rel="noopener" href="https://link.jianshu.com/?t=https://www.mysql.com/downloads/">安装MySQL</a></h2><p>安装完成后，会弹出初始密码，粗细的我，随手点了OK，此处挖坑半天。<br><a target="_blank" rel="noopener" href="https://link.jianshu.com/?t=http://blog.csdn.net/u014410695/article/details/50630233">权限密码问题可以参考这篇博客，其它的都是小问题</a></p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-429725387cd40b07.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="app热更原理.png"></p>
+<p><img src="/loading.gif" data-original="/images/fontend/rn-codepush-server-yuanli.png" alt="app热更原理.png"></p>
 <h2 id="code-push热更服务器搭建："><a href="#code-push热更服务器搭建：" class="headerlink" title="code-push热更服务器搭建："></a>code-push热更服务器搭建：</h2><h4 id="安装code-push-server"><a href="#安装code-push-server" class="headerlink" title="安装code-push-server"></a>安装code-push-server</h4><ul>
-<li>npm安装<pre><code># 安装code-push-server
+<li>npm安装</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell"># 安装code-push-server
 npm install code-push-server -g
-</code></pre>
-</li>
-<li>源码安装（推荐）<pre><code># 从git库下载最新代码
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>源码安装（推荐）</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell"># 从git库下载最新代码
 git clone https://github.com/lisong/code-push-server.git
 # 进入到code-push-server目录
 cd code-push-server
 # 安装
 npm install
-</code></pre>
-<h4 id="Code-Push-Server配置"><a href="#Code-Push-Server配置" class="headerlink" title="Code-Push-Server配置"></a>Code-Push-Server配置</h4>修改config/config.js文件，指定数据库，数据存放位置</li>
-<li>配置数据库<pre><code>db: {
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="Code-Push-Server配置"><a href="#Code-Push-Server配置" class="headerlink" title="Code-Push-Server配置"></a>Code-Push-Server配置</h4><p>修改config/config.js文件，指定数据库，数据存放位置</p>
+<ul>
+<li>配置数据库<pre class="line-numbers language-conf"><code class="language-conf">db: {
 username: "root",
 password: "Your PWD",
 database: "codepush",
@@ -565,228 +570,330 @@ host: "127.0.0.1",
 port: 3306,
 dialect: "mysql"
 }
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li>配置存储（默认为local,本次也采用local）<br>```<br>common: {<br> // dataDir用于进行存放比对文件<br> dataDir: “/Users/tablee/workspaces/data”,<br> // 存储类型，可选值有local,oss,qiniu,s3<br> storageType: “local”<br>},</li>
+<li>配置存储（默认为local,本次也采用local）</li>
 </ul>
-<p>// 文件存储在本地 当storageType为local时需要配置<br>local: {<br>   // 二进制文件存放目录，文件下载目录，不要使用临时目录<br>   storageDir: “/Users/tablee/workspaces/storage”,<br>   // 文件下载地址 CodePushServer地址 + ’/download‘,download对应app.js里面的地址<br>   //默认此处的下载地址是127.0.0.1:3000这个自然是错误的，要外网ip地址<br>   downloadUrl: “<a target="_blank" rel="noopener" href="https://tech.haier.net:7788/download&quot;">https://tech.haier.net:7788/download"</a>,<br>   // public static download spacename<br>   public: ‘/download’<br>},</p>
-<p>//七牛云存储配置 当storageType为qiniu时需要配置<br>qiniu: {<br>  accessKey: “”,<br>  secretKey: “”,<br>  bucketName: “”,<br>  //文件下载域名地址<br>  downloadUrl: “”<br>},<br>//阿里云存储配置 当storageType为oss时需要配置<br>oss: {<br>  accessKeyId: “”,<br>  secretAccessKey: “”,<br>  endpoint: “”,<br>  bucketName: “”,<br>  // 对象Key的前缀，允许放到子文件夹里面<br>  prefix: “”,<br>  // 文件下载域名地址，需要包含前缀<br>  downloadUrl: “”,<br>}</p>
-<pre><code>* 配置签名,可以不修改，但是推荐更改
-</code></pre>
-<p>jwt: {<br>    // 登录jwt签名密钥，必须更改，否则有安全隐患，可以使用随机生成的字符串<br>    // Recommended: 63 random alpha-numeric characters<br>    // Generate using: <a target="_blank" rel="noopener" href="https://www.grc.com/passwords.htm">https://www.grc.com/passwords.htm</a><br>    tokenSecret: ‘<a target="_blank" rel="noopener" href="https://www.grc.com/passwords.htm'">https://www.grc.com/passwords.htm'</a><br>}</p>
-<pre><code>####  初始化数据库
-配置完成后，进行数据初始化工作
-* npm安装
-</code></pre>
-<h1 id="初始化数据库-替换为数据库密码（参考后面配置说明）"><a href="#初始化数据库-替换为数据库密码（参考后面配置说明）" class="headerlink" title="初始化数据库,替换为数据库密码（参考后面配置说明）"></a>初始化数据库,<strong>替换为数据库密码</strong>（参考后面配置说明）</h1><p>code-push-server-db init –dbhost localhost –dbuser root –dbpassword <strong>Your PWD</strong> –dbport 3306</p>
-<pre><code>* 源码安装
-</code></pre>
-<h1 id="初始化数据库"><a href="#初始化数据库" class="headerlink" title="初始化数据库"></a>初始化数据库</h1><p>./bin/db init –dbhost localhost –dbuser root –dbpassword <strong>Your PWD</strong> –dbport 3306</p>
-<pre><code>**注意事项**：
-* 1.  不论采取哪种安装方式，初始化数据库时要保证数据库用户名密码正确；数据库中不能存在codepush数据库(默认数据库为codepush)
-* 2. 采用源码安装，执行bin目录下的db命令时，要保证此文件具有可执行权限，如果没有，需要添加权限
-</code></pre>
-<h1 id="添加db文件的可执行权限"><a href="#添加db文件的可执行权限" class="headerlink" title="添加db文件的可执行权限"></a>添加db文件的可执行权限</h1><p>chmod +x bin/db</p>
-<pre><code>* 3. 如果数据库密码复杂，带有特殊符号，初始化语句将执行失败。此时因为是第一次安装，可以在数据库服务器手动创建名为**`codepush`**(必须是这个名字)的数据库，然后执行`/opt/chuangke/code-push-server/sql/`目录下的`codepush-all.sql`脚本来初始化数据库。
-初始化成功后数据库中的表如下：
-![codepush database](http://upload-images.jianshu.io/upload_images/4109786-4975e1c5d8e408c8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-####  服务启动
-安装配置文件中的目录结构，到/Users目录中建立如下文件夹 /Users/tablee/workspaces/storage 
-* npm启动
-</code></pre>
-<h1 id="启动服务，默认使用3000端口-可以在浏览器中打开-http-127-0-0-1-3000"><a href="#启动服务，默认使用3000端口-可以在浏览器中打开-http-127-0-0-1-3000" class="headerlink" title="启动服务，默认使用3000端口,可以在浏览器中打开 http://127.0.0.1:3000"></a>启动服务，默认使用3000端口,可以在浏览器中打开 <a target="_blank" rel="noopener" href="http://127.0.0.1:3000/">http://127.0.0.1:3000</a></h1><p>code-push-server</p>
-<h1 id="指定端口号运行"><a href="#指定端口号运行" class="headerlink" title="指定端口号运行"></a>指定端口号运行</h1><p>PORT=3000 HOST=127.0.0.1 NODE_ENV=production code-push-server</p>
-<pre><code>* 源码启动
-</code></pre>
-<h1 id="启动服务-保证www具有可执行权限-，在浏览器中打开-http-127-0-0-1-3000"><a href="#启动服务-保证www具有可执行权限-，在浏览器中打开-http-127-0-0-1-3000" class="headerlink" title="启动服务(保证www具有可执行权限)，在浏览器中打开 http://127.0.0.1:3000"></a>启动服务(保证www具有可执行权限)，在浏览器中打开 <a target="_blank" rel="noopener" href="http://127.0.0.1:3000/">http://127.0.0.1:3000</a></h1><p>./bin/www</p>
-<h1 id="以守护进程的方式运行"><a href="#以守护进程的方式运行" class="headerlink" title="以守护进程的方式运行"></a>以守护进程的方式运行</h1><p>nohup ./bin/www &amp;</p>
-<h1 id="指定端口号运行-1"><a href="#指定端口号运行-1" class="headerlink" title="指定端口号运行"></a>指定端口号运行</h1><p>PORT=3000 HOST=127.0.0.1 NODE_ENV=production node ./bin/www</p>
-<pre><code>* forever 后台启动（推荐）
-**先安装forever**
-当然，有人说forever已经过时了，推荐使用pm2代替forever，请参考[linux npm start 保持后台运行](https://www.jianshu.com/p/420ec3665d2f)
-</code></pre>
-<h1 id="全局安装"><a href="#全局安装" class="headerlink" title="全局安装"></a>全局安装</h1><p>$ npm install forever -g</p>
-<h1 id="查看是否安装成功"><a href="#查看是否安装成功" class="headerlink" title="查看是否安装成功"></a>查看是否安装成功</h1><p>$ forever list<br>info:    No forever processes running</p>
-<pre><code>很抱歉，如果不顺利的话，会有这么个情况
-</code></pre>
-<p>[root@izm5e3m6sxwr4dw9w7r6h4z lib]# npm install forever -g<br>/opt/software/node-v10.0.0-linux-x64/bin/forever -&gt; /opt/software/node-v10.0.0-linux-x64/lib/node_modules/forever/bin/forever<br>npm WARN optional SKIPPING OPTIONAL DEPENDENCY: <a href="mailto:fsevents@1.2.7">fsevents@1.2.7</a> (node_modules/forever/node_modules/fsevents):<br>npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for <a href="mailto:fsevents@1.2.7">fsevents@1.2.7</a>: wanted {“os”:”darwin”,”arch”:”any”} (current: {“os”:”linux”,”arch”:”x64”})</p>
-<ul>
-<li><a href="mailto:forever@0.15.3">forever@0.15.3</a><br>updated 1 package in 2.109s<br>[root@izm5e3m6sxwr4dw9w7r6h4z lib]# forever list</li>
-</ul>
-<p>-bash: forever: 未找到命令<br>[root@izm5e3m6sxwr4dw9w7r6h4z lib]# </p>
-<pre><code>不美丽了，命名安装成功了，但是还是提示找不到命令，怎么办呢？我来教你，这个是因为这个-g是吧命令安装到了node所在目录，可以看看具体在哪
-</code></pre>
-<p>[root@izm5e3m6sxwr4dw9w7r6h4z ~]# npm list -g –depth 0<br>/opt/software/node-v10.0.0-linux-x64/lib<br>├── <a href="mailto:forever@0.15.3">forever@0.15.3</a><br>└── <a href="mailto:npm@5.6.0">npm@5.6.0</a></p>
-<p>[root@izm5e3m6sxwr4dw9w7r6h4z ~]# cd /opt/software/node-v10.0.0-linux-x64/lib<br>[root@izm5e3m6sxwr4dw9w7r6h4z lib]# ls<br>node_modules<br>[root@izm5e3m6sxwr4dw9w7r6h4z lib]# cd node_modules/forever/bin/<br>[root@izm5e3m6sxwr4dw9w7r6h4z bin]# ls<br>forever  monitor<br>[root@izm5e3m6sxwr4dw9w7r6h4z bin]#</p>
-<pre><code>这次是真的看见forever被安装到哪里，接下来就来个软链到`/usr/bin`下就可以了
-</code></pre>
-<p>[root@izm5e3m6sxwr4dw9w7r6h4z bin]# ln -s /opt/software/node-v10.0.0-linux-x64/lib/node_modules/forever/bin/forever /usr/bin/forever<br>[root@izm5e3m6sxwr4dw9w7r6h4z bin]# forever list<br>info:    No forever processes running<br>[root@izm5e3m6sxwr4dw9w7r6h4z bin]#</p>
-<pre><code>完美，接着使用forever启动应用啦。
-比如我的server源码的位置在`/opt/chuangke/code-push-server/`，在当前目录下执行如下命令启动
-</code></pre>
-<p>NODE_ENV=production forever start -l log/forever.log -o log/info.log -e log/err.log bin/www</p>
-<pre><code>可以用如下绝对路径命令启动：
-</code></pre>
-<p>NODE_ENV=production forever start -l /opt/chuangke/code-push-server/log/forever.log -o /home/haieradmin/codepush/code-push-server/log/info.log -e /home/haieradmin/codepush/code-push-server/log/err.log /home/haieradmin/codepush/code-push-server/bin/www</p>
-<pre><code>* 服务启动验证
-命令行验证
-</code></pre>
-<p>$ forever list<br>info:    Forever processes running<br>data:        uid  command                   script                                 forever pid   id logfile                                        uptime<br>data:    [0] 8Or8 /usr/local/node8/bin/node /opt/chuangke/code-push-server/bin/www 60199   60209    /opt/chuangke/code-push-server/log/forever.log 0:15:2:21.503 </p>
-<pre><code>如果服务器启动成功，则用浏览器访问默认的3000端口，可以看到如下效果
-![首页](http://upload-images.jianshu.io/upload_images/4109786-3c67822345f455b2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-到此服务器端到配置就完成了。
+<pre class="line-numbers language-conf"><code class="language-conf">common: {
+   // dataDir用于进行存放比对文件
+   dataDir: "/Users/tablee/workspaces/data",
+   // 存储类型，可选值有local,oss,qiniu,s3
+   storageType: "local"
+},
 
-##  客户端热更验证
-客户端测试代码以 https://github.com/lisong/code-push-demo-app 为例
-#### 客户端安装code-push-cli
-</code></pre>
-<h1 id="全局安装-1"><a href="#全局安装-1" class="headerlink" title="全局安装"></a>全局安装</h1><p>$ npm install -g code-push-cli </p>
-<h1 id="查看版本"><a href="#查看版本" class="headerlink" title="查看版本"></a>查看版本</h1><p>$ code-push -v<br>2.1.8</p>
-<pre><code>#### 下载客户端验证程序，并安装第一版
-1. clone程序并install
-</code></pre>
-<p>$ git clone <a href="mailto:git@github.com">git@github.com</a>:lisong/code-push-demo-app.git</p>
-<h1 id="cd-到demo路径，执行npm-install-安装node依赖包"><a href="#cd-到demo路径，执行npm-install-安装node依赖包" class="headerlink" title="cd  到demo路径，执行npm install 安装node依赖包"></a>cd  到demo路径，执行npm install 安装node依赖包</h1><p>$ cd code-push-demo-app<br>$ npm install</p>
-<pre><code>
-打开命令终端，登录code-push-server服务器，这里配置为local，所以登录地址为http://127.0.0.1:3000 
-</code></pre>
-<p>$ code-push login <a target="_blank" rel="noopener" href="http://127.0.0.1:3000/">http://127.0.0.1:3000</a>  //账号密码为博主提供  account:  admin password:  123456<br>登录成功之后获取token</p>
-<pre><code>将文本框中的key复制粘贴到登录终端，点击回车登录成功
-![登录页面](http://upload-images.jianshu.io/upload_images/4109786-5ed0dd3b34e078e6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-输入账号密码，点击登录。获取token：
-![获取token](http://upload-images.jianshu.io/upload_images/4109786-a0dc9ad5f2a2231f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-</code></pre>
-<p>$ code-push login <a target="_blank" rel="noopener" href="http://127.0.0.1:3000/">http://127.0.0.1:3000</a><br>Please login to Mobile Center in the browser window we’ve just opened.<br>Enter your token from the browser:  HugyOJpzvzhEhB05galUftoL4zrz4ksvOXqog<br>Successfully logged-in. Your session file was written to C:\Users\marvin\AppData\Local.code-push.config. You can run the code-push logout command at any time to delete this file and terminate your session.</p>
-<pre><code>在命令行查看当前热更服务器的部署信息，
-</code></pre>
-<p>$ code-push app list<br>┌──────┬─────────────┐<br>│ Name │ Deployments │<br>└──────┴─────────────┘</p>
-<pre><code>
- 2. 添加新的APP（以安卓为例）
-</code></pre>
-<h1 id="安卓版"><a href="#安卓版" class="headerlink" title="安卓版"></a>安卓版</h1><p>$ code-push app add CodePushReactNativeDemo-android android react-native<br>Successfully added the “CodePushReactNativeDemo-android” app, along with the following default deployments:<br>┌────────────┬───────────────────────────────────────┐<br>│ Name       │ Deployment Key                        │<br>├────────────┼───────────────────────────────────────┤<br>│ Production │ VKNbn9Oe5Wj9bPoGkYCUVuzRuqHV4ksvOXqog │<br>├────────────┼───────────────────────────────────────┤<br>│ Staging    │ 6KfLoVvhgdsnFzFCIohRb2t5grmD4ksvOXqog │<br>└────────────┴───────────────────────────────────────┘</p>
-<h1 id="再运行命令查看"><a href="#再运行命令查看" class="headerlink" title="再运行命令查看"></a>再运行命令查看</h1><p>$ code-push app list<br>┌─────────────────────────────────┬─────────────────────┐<br>│ Name                            │ Deployments         │<br>├─────────────────────────────────┼─────────────────────┤<br>│ CodePushReactNativeDemo-android │ Production, Staging │<br>└─────────────────────────────────┴─────────────────────┘</p>
-<pre><code> 3. 修改配置
-添加完成之后可以用code-push app list命令查看创建好的app，并将测试的Staging key拷贝到MainApplication.java中的 “Your Key“ 的位置，推送的时候通过key将app和服务器端关联。
+// 文件存储在本地 当storageType为local时需要配置
+local: {
+   // 二进制文件存放目录，文件下载目录，不要使用临时目录
+   storageDir: "/Users/tablee/workspaces/storage",
+   // 文件下载地址 CodePushServer地址 + ’/download‘,download对应app.js里面的地址
+   //默认此处的下载地址是127.0.0.1:3000这个自然是错误的，要外网ip地址
+   downloadUrl: "https://tech.haier.net:7788/download",
+   // public static download spacename
+   public: '/download'
+},
 
-用Android Studio打开`code-push-demo-app/android`目录到MainApplication.java里面修改以下代码：
-</code></pre>
-<p>@Override</p>
-<p>protected List<reactpackage> getPackages() {</reactpackage></p>
-<p>  return Arrays.<reactpackage>asList(</reactpackage></p>
-<pre><code>  new MainReactPackage(),
 
-  new CodePush(
-
-     "YourKey",  // code-push app add项目后生成的app 推送key
-
-     MainApplication.this,
-
-     BuildConfig.DEBUG,
-
-     "YourCodePushServerUrl"   // config.js中配置的downloadUrl 地址 不需要/download后缀
-
-  )
-</code></pre>
-<p>  );<br>}</p>
-<pre><code>我的配置是：
-修改MainApplication.java的代码如下：
-</code></pre>
-<pre><code>@Override
-protected List&lt;ReactPackage&gt; getPackages() {
-  return Arrays.&lt;ReactPackage&gt;asList(
-      new MainReactPackage(),
-      new CodePushBuilder(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey),getApplicationContext())
-            .setIsDebugMode(BuildConfig.DEBUG)
-            .setServerUrl(getResources().getString(R.string.reactNativeCodePush_androidServerURL))
-            .build()
-  );
+//七牛云存储配置 当storageType为qiniu时需要配置
+qiniu: {
+  accessKey: "",
+  secretKey: "",
+  bucketName: "",
+  //文件下载域名地址
+  downloadUrl: ""
+},
+//阿里云存储配置 当storageType为oss时需要配置
+oss: {
+  accessKeyId: "",
+  secretAccessKey: "",
+  endpoint: "",
+  bucketName: "",
+  // 对象Key的前缀，允许放到子文件夹里面
+  prefix: "", 
+  // 文件下载域名地址，需要包含前缀
+  downloadUrl: "",
 }
-</code></pre>
-<pre><code>修改`android/app/src/main/res/values/strings.xml`文件，指定reactNativeCodePush_androidDeploymentKey和reactNativeCodePush_androidServerURL的值。
-</code></pre>
-<resources>
-    <string moduleconfig="true" name="reactNativeCodePush_androidDeploymentKey">6KfLoVvhgdsnFzFCIohRb2t5grmD4ksvOXqog</string>
-    <string moduleconfig="true" name="reactNativeCodePush_androidServerURL">http://xxx.xxx:3000/</string>
-    <string name="app_name">CodePushDemoApp</string>
-</resources>
-```
- 4. cd 到code-push-demo-app目录，允许react-native start 启动react-native 服务。可以选择用数据线连接手机，手机开启开发者模式。也可以直接将`code-push-demo-app\android\app\build\outputs\apk\debug`以后的apk包发送到手机上，直接打开安装。
-```
-$ react-native run-android
-```
-在手机上运行app的截图如下：
-![code-push-demo-app](http://upload-images.jianshu.io/upload_images/4109786-50b93d71f61fe113.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
- 5. Android Studio编译并将项目运行到手机上，reload更新到最新js包在code-push-demo-app中首页随意做一些修改，这里是将CodePushDemoApp/App.js文件做了如下修改。
-![一些修改](http://upload-images.jianshu.io/upload_images/4109786-dc556461f48bcdef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-执行推送命令
-```
-# 测试环境执行：
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>配置签名,可以不修改，但是推荐更改<pre class="line-numbers language-conf"><code class="language-conf">jwt: {
+  // 登录jwt签名密钥，必须更改，否则有安全隐患，可以使用随机生成的字符串
+  // Recommended: 63 random alpha-numeric characters
+  // Generate using: https://www.grc.com/passwords.htm
+  tokenSecret: 'https://www.grc.com/passwords.htm'
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="初始化数据库"><a href="#初始化数据库" class="headerlink" title="初始化数据库"></a>初始化数据库</h4>配置完成后，进行数据初始化工作</li>
+<li>npm安装<pre class="line-numbers language-shell"><code class="language-shell"># 初始化数据库,**替换为数据库密码**（参考后面配置说明）
+code-push-server-db init --dbhost localhost --dbuser root --dbpassword **Your PWD** --dbport 3306
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+<li>源码安装<pre class="line-numbers language-shell"><code class="language-shell"># 初始化数据库
+./bin/db init --dbhost localhost --dbuser root --dbpassword **Your PWD** --dbport 3306
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+<li>*注意事项**：</li>
+</ul>
+<ol>
+<li> 不论采取哪种安装方式，初始化数据库时要保证数据库用户名密码正确；数据库中不能存在codepush数据库(默认数据库为codepush)</li>
+<li>采用源码安装，执行bin目录下的db命令时，要保证此文件具有可执行权限，如果没有，需要添加权限<pre class="line-numbers language-shell"><code class="language-shell"># 添加db文件的可执行权限
+chmod +x bin/db
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+<li>如果数据库密码复杂，带有特殊符号，初始化语句将执行失败。此时因为是第一次安装，可以在数据库服务器手动创建名为**<code>codepush</code>**(必须是这个名字)的数据库，然后执行<code>/opt/chuangke/code-push-server/sql/</code>目录下的<code>codepush-all.sql</code>脚本来初始化数据库。<br>初始化成功后数据库中的表如下：<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-server-db.png" alt="codepush database"><h4 id="服务启动"><a href="#服务启动" class="headerlink" title="服务启动"></a>服务启动</h4>安装配置文件中的目录结构，到/Users目录中建立如下文件夹 /Users/tablee/workspaces/storage </li>
+</ol>
+<ul>
+<li>npm启动</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell"># 启动服务，默认使用3000端口,可以在浏览器中打开 http://127.0.0.1:3000
+code-push-server
+
+# 指定端口号运行
+PORT=3000 HOST=127.0.0.1 NODE_ENV=production code-push-server
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>源码启动</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell"># 启动服务(保证www具有可执行权限)，在浏览器中打开 http://127.0.0.1:3000
+./bin/www
+
+# 以守护进程的方式运行
+nohup ./bin/www &
+
+# 指定端口号运行
+PORT=3000 HOST=127.0.0.1 NODE_ENV=production node ./bin/www
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>forever 后台启动（推荐）</li>
+<li><em>先安装forever</em>*<br>当然，有人说forever已经过时了，推荐使用pm2代替forever，请参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/420ec3665d2f">linux npm start 保持后台运行</a><pre class="line-numbers language-shell"><code class="language-shell"># 全局安装
+$ npm install forever -g
+# 查看是否安装成功
+$ forever list
+info:    No forever processes running
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+很抱歉，如果不顺利的话，会有这么个情况</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@izm5e3m6sxwr4dw9w7r6h4z lib]# npm install forever -g
+/opt/software/node-v10.0.0-linux-x64/bin/forever -> /opt/software/node-v10.0.0-linux-x64/lib/node_modules/forever/bin/forever
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.7 (node_modules/forever/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.7: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+
++ forever@0.15.3
+updated 1 package in 2.109s
+[root@izm5e3m6sxwr4dw9w7r6h4z lib]# forever list
+-bash: forever: 未找到命令
+[root@izm5e3m6sxwr4dw9w7r6h4z lib]# 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>不美丽了，命名安装成功了，但是还是提示找不到命令，怎么办呢？我来教你，这个是因为这个-g是吧命令安装到了node所在目录，可以看看具体在哪</p>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@izm5e3m6sxwr4dw9w7r6h4z ~]# npm list -g --depth 0
+/opt/software/node-v10.0.0-linux-x64/lib
+├── forever@0.15.3
+└── npm@5.6.0
+
+[root@izm5e3m6sxwr4dw9w7r6h4z ~]# cd /opt/software/node-v10.0.0-linux-x64/lib
+[root@izm5e3m6sxwr4dw9w7r6h4z lib]# ls
+node_modules
+[root@izm5e3m6sxwr4dw9w7r6h4z lib]# cd node_modules/forever/bin/
+[root@izm5e3m6sxwr4dw9w7r6h4z bin]# ls
+forever  monitor
+[root@izm5e3m6sxwr4dw9w7r6h4z bin]#
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这次是真的看见forever被安装到哪里，接下来就来个软链到<code>/usr/bin</code>下就可以了</p>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@izm5e3m6sxwr4dw9w7r6h4z bin]# ln -s /opt/software/node-v10.0.0-linux-x64/lib/node_modules/forever/bin/forever /usr/bin/forever
+[root@izm5e3m6sxwr4dw9w7r6h4z bin]# forever list
+info:    No forever processes running
+[root@izm5e3m6sxwr4dw9w7r6h4z bin]#
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>完美，接着使用forever启动应用啦。<br>比如我的server源码的位置在<code>/opt/chuangke/code-push-server/</code>，在当前目录下执行如下命令启动</p>
+<pre class="line-numbers language-shell"><code class="language-shell">NODE_ENV=production forever start -l log/forever.log -o log/info.log -e log/err.log bin/www
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可以用如下绝对路径命令启动：</p>
+<pre class="line-numbers language-shell"><code class="language-shell">NODE_ENV=production forever start -l /opt/chuangke/code-push-server/log/forever.log -o /home/haieradmin/codepush/code-push-server/log/info.log -e /home/haieradmin/codepush/code-push-server/log/err.log /home/haieradmin/codepush/code-push-server/bin/www
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>服务启动验证<br>命令行验证</li>
+</ul>
+<pre class="line-numbers language-shell"><code class="language-shell">$ forever list
+info:    Forever processes running
+data:        uid  command                   script                                 forever pid   id logfile                                        uptime        
+data:    [0] 8Or8 /usr/local/node8/bin/node /opt/chuangke/code-push-server/bin/www 60199   60209    /opt/chuangke/code-push-server/log/forever.log 0:15:2:21.503 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果服务器启动成功，则用浏览器访问默认的3000端口，可以看到如下效果<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-server-index.png" alt="首页"><br>到此服务器端到配置就完成了。</p>
+<h2 id="客户端热更验证"><a href="#客户端热更验证" class="headerlink" title="客户端热更验证"></a>客户端热更验证</h2><p>客户端测试代码以 <a target="_blank" rel="noopener" href="https://github.com/lisong/code-push-demo-app">https://github.com/lisong/code-push-demo-app</a> 为例</p>
+<h4 id="客户端安装code-push-cli"><a href="#客户端安装code-push-cli" class="headerlink" title="客户端安装code-push-cli"></a>客户端安装code-push-cli</h4><pre class="line-numbers language-shell"><code class="language-shell"># 全局安装
+$ npm install -g code-push-cli 
+# 查看版本
+$ code-push -v
+2.1.8
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="下载客户端验证程序，并安装第一版"><a href="#下载客户端验证程序，并安装第一版" class="headerlink" title="下载客户端验证程序，并安装第一版"></a>下载客户端验证程序，并安装第一版</h4><ol>
+<li>clone程序并install</li>
+</ol>
+<pre class="line-numbers language-shell"><code class="language-shell">$ git clone git@github.com:lisong/code-push-demo-app.git
+#  cd  到demo路径，执行npm install 安装node依赖包
+$ cd code-push-demo-app
+$ npm install
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>打开命令终端，登录code-push-server服务器，这里配置为local，所以登录地址为<a target="_blank" rel="noopener" href="http://127.0.0.1:3000/">http://127.0.0.1:3000</a> </p>
+<pre class="line-numbers language-shell"><code class="language-shell">$ code-push login http://127.0.0.1:3000  //账号密码为博主提供  account:  admin password:  123456
+登录成功之后获取token
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>将文本框中的key复制粘贴到登录终端，点击回车登录成功<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-server-login.png" alt="登录页面"><br>输入账号密码，点击登录。获取token：<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-server-token.png" alt="获取token"></p>
+<pre class="line-numbers language-shell"><code class="language-shell">$ code-push login http://127.0.0.1:3000
+Please login to Mobile Center in the browser window we've just opened.
+Enter your token from the browser:  HugyOJpzvzhEhB05galUftoL4zrz4ksvOXqog
+Successfully logged-in. Your session file was written to C:\Users\marvin\AppData\Local\.code-push.config. You can run the code-push logout command at any time to delete this file and terminate your session.
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在命令行查看当前热更服务器的部署信息，</p>
+<pre class="line-numbers language-shell"><code class="language-shell">$ code-push app list
+┌──────┬─────────────┐
+│ Name │ Deployments │
+└──────┴─────────────┘
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="2">
+<li>添加新的APP（以安卓为例）<pre class="line-numbers language-shell"><code class="language-shell"># 安卓版
+$ code-push app add CodePushReactNativeDemo-android android react-native
+Successfully added the "CodePushReactNativeDemo-android" app, along with the following default deployments:
+┌────────────┬───────────────────────────────────────┐
+│ Name       │ Deployment Key                        │
+├────────────┼───────────────────────────────────────┤
+│ Production │ VKNbn9Oe5Wj9bPoGkYCUVuzRuqHV4ksvOXqog │
+├────────────┼───────────────────────────────────────┤
+│ Staging    │ 6KfLoVvhgdsnFzFCIohRb2t5grmD4ksvOXqog │
+└────────────┴───────────────────────────────────────┘
+# 再运行命令查看
+$ code-push app list
+┌─────────────────────────────────┬─────────────────────┐
+│ Name                            │ Deployments         │
+├─────────────────────────────────┼─────────────────────┤
+│ CodePushReactNativeDemo-android │ Production, Staging │
+└─────────────────────────────────┴─────────────────────┘
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>修改配置<br>添加完成之后可以用code-push app list命令查看创建好的app，并将测试的Staging key拷贝到MainApplication.java中的 “Your Key“ 的位置，推送的时候通过key将app和服务器端关联。</li>
+</ol>
+<p>用Android Studio打开<code>code-push-demo-app/android</code>目录到MainApplication.java里面修改以下代码：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
+
+<span class="token keyword">protected</span> List<span class="token operator">&lt;</span>ReactPackage<span class="token operator">></span> <span class="token function">getPackages</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+  <span class="token keyword">return</span> Arrays<span class="token punctuation">.</span>&lt;ReactPackage<span class="token operator">></span><span class="token function">asList</span><span class="token punctuation">(</span>
+
+      <span class="token keyword">new</span> <span class="token class-name">MainReactPackage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+
+      <span class="token keyword">new</span> <span class="token class-name">CodePush</span><span class="token punctuation">(</span>
+
+         <span class="token string">"YourKey"</span><span class="token punctuation">,</span>  <span class="token comment" spellcheck="true">// code-push app add项目后生成的app 推送key</span>
+
+         MainApplication<span class="token punctuation">.</span><span class="token keyword">this</span><span class="token punctuation">,</span>
+
+         BuildConfig<span class="token punctuation">.</span>DEBUG<span class="token punctuation">,</span>
+
+         <span class="token string">"YourCodePushServerUrl"</span>   <span class="token comment" spellcheck="true">// config.js中配置的downloadUrl 地址 不需要/download后缀</span>
+
+      <span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我的配置是：<br>修改MainApplication.java的代码如下：</p>
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> List<span class="token operator">&lt;</span>ReactPackage<span class="token operator">></span> <span class="token function">getPackages</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> Arrays<span class="token punctuation">.</span>&lt;ReactPackage<span class="token operator">></span><span class="token function">asList</span><span class="token punctuation">(</span>
+          <span class="token keyword">new</span> <span class="token class-name">MainReactPackage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          <span class="token keyword">new</span> <span class="token class-name">CodePushBuilder</span><span class="token punctuation">(</span><span class="token function">getResources</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getString</span><span class="token punctuation">(</span>R<span class="token punctuation">.</span>string<span class="token punctuation">.</span>reactNativeCodePush_androidDeploymentKey<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">getApplicationContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">setIsDebugMode</span><span class="token punctuation">(</span>BuildConfig<span class="token punctuation">.</span>DEBUG<span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">setServerUrl</span><span class="token punctuation">(</span><span class="token function">getResources</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getString</span><span class="token punctuation">(</span>R<span class="token punctuation">.</span>string<span class="token punctuation">.</span>reactNativeCodePush_androidServerURL<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>修改<code>android/app/src/main/res/values/strings.xml</code>文件，指定reactNativeCodePush_androidDeploymentKey和reactNativeCodePush_androidServerURL的值。</p>
+<pre class="line-numbers language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>resources</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>string</span> <span class="token attr-name">moduleConfig</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>reactNativeCodePush_androidDeploymentKey<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>6KfLoVvhgdsnFzFCIohRb2t5grmD4ksvOXqog<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>string</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>string</span> <span class="token attr-name">moduleConfig</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>reactNativeCodePush_androidServerURL<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>http://xxx.xxx:3000/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>string</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>string</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>app_name<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>CodePushDemoApp<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>string</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>resources</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="4">
+<li><p>cd 到code-push-demo-app目录，允许react-native start 启动react-native 服务。可以选择用数据线连接手机，手机开启开发者模式。也可以直接将<code>code-push-demo-app\android\app\build\outputs\apk\debug</code>以后的apk包发送到手机上，直接打开安装。</p>
+<pre class="line-numbers language-shell"><code class="language-shell">$ react-native run-android
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>在手机上运行app的截图如下：<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-server-demo-app.png" alt="code-push-demo-app"></p>
+</li>
+<li><p>Android Studio编译并将项目运行到手机上，reload更新到最新js包在code-push-demo-app中首页随意做一些修改，这里是将CodePushDemoApp/App.js文件做了如下修改。<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-server-demo-source.png" alt="一些修改"><br>执行推送命令</p>
+</li>
+</ol>
+<pre class="line-numbers language-shell"><code class="language-shell"># 测试环境执行：
 $ code-push release-react CodePushReactNativeDemo-android android
 Detecting android app version:
 
-<p>Using the target binary version value “2.1.0” from “android\app\build.gradle”.</p>
-<p>Running “react-native bundle” command:</p>
-<p>node node_modules\react-native\local-cli\cli.js bundle –assets-dest C:\Users\marvin\AppData\Local\Temp\CodePush\CodePush –bundle-output C:\Users\marvin\AppData\Local\Temp\CodePush\CodePush\index.android.bundle –dev false –entry-file index.js –platform android<br>Scanning folders for symlinks in D:\Git\oschina\react\code-push-demo-app\node_modules (101ms)<br>Scanning folders for symlinks in D:\Git\oschina\react\code-push-demo-app\node_modules (48ms)<br>Loading dependency graph, done.<br>bundle: Writing bundle output to: C:\Users\marvin\AppData\Local\Temp\CodePush\CodePush\index.android.bundle<br>bundle: Done writing bundle output<br>bundle: Copying 1 asset files<br>bundle: Done copying assets</p>
-<p>Releasing update contents to CodePush:</p>
-<p>Successfully released an update containing the “C:\Users\marvin\AppData\Local\Temp\CodePush\CodePush” directory to the “Staging” deployment of the “CodePushReactNativeDemo-android” app.</p>
-<h1 id="生产环境执行："><a href="#生产环境执行：" class="headerlink" title="生产环境执行："></a>生产环境执行：</h1><p>$ code-push release-react CodePushReactNativeDemo-android android -d Production</p>
-<p>#指定版本，添加注释<br>$ code-push release-react CodePushReactNativeDemo-android android -d Production –des “marvin code push testing” -t “1.0.0”</p>
-<pre><code>Successfully 表示热更包推送成功，然后在手机上点击**Press for dialog-driven sync**链接。
-弹出下载确认
-![确认更新](http://upload-images.jianshu.io/upload_images/4109786-18c3d1a89c799c81.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+Using the target binary version value "2.1.0" from "android\app\build.gradle".
 
-点击【install】
-![已更新](http://upload-images.jianshu.io/upload_images/4109786-66fcf62d7789c8da.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-至此，热更服务器搭建，及android版app体验完毕。
+Running "react-native bundle" command:
 
+node node_modules\react-native\local-cli\cli.js bundle --assets-dest C:\Users\marvin\AppData\Local\Temp\CodePush\CodePush --bundle-output C:\Users\marvin\AppData\Local\Temp\CodePush\CodePush\index.android.bundle --dev false --entry-file index.js --platform android
+Scanning folders for symlinks in D:\Git\oschina\react\code-push-demo-app\node_modules (101ms)
+Scanning folders for symlinks in D:\Git\oschina\react\code-push-demo-app\node_modules (48ms)
+Loading dependency graph, done.
+bundle: Writing bundle output to: C:\Users\marvin\AppData\Local\Temp\CodePush\CodePush\index.android.bundle
+bundle: Done writing bundle output
+bundle: Copying 1 asset files
+bundle: Done copying assets
 
-## 扩展
-1、产看更新包安装情况
-</code></pre>
-<h1 id="code-push-deployment-history-appName-deploymentName"><a href="#code-push-deployment-history-appName-deploymentName" class="headerlink" title="code-push deployment history appName deploymentName"></a>code-push deployment history appName deploymentName</h1><p>code-push deployment history CodePushReactNativeDemo-android Staging</p>
-<pre><code>Staging 或者 Production
-![image.png](https://upload-images.jianshu.io/upload_images/4109786-7912f2739b4edd06.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-2、列表部署名称
-</code></pre>
-<p>code-push deployment ls CodePushReactNativeDemo-android</p>
-<pre><code>![部署名](https://upload-images.jianshu.io/upload_images/4109786-1ec0da855309e131.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+Releasing update contents to CodePush:
 
 
-3、常见错误
-3.1、 download地址写错，默认是http://127.0.0.1:3000 如果不改成外网域名和端口，下载将失败。
-app启动抓包查看的结果就是，返回的下载地址无法下载到资源。
-![image.png](https://upload-images.jianshu.io/upload_images/4109786-f32d3631189ba63b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+Successfully released an update containing the "C:\Users\marvin\AppData\Local\Temp\CodePush\CodePush" directory to the "Staging" deployment of the "CodePushReactNativeDemo-android" app.
 
-3.2、nginx限制资源大小
-需要修改配置，我们的一个app打包后约70M，上传时就报错了，后来才知道是nginx指定的上传大小是50M，所以要修改nginx配置文件，加上`client_max_body_size 100M;  `这个样配置。
+# 生产环境执行：
+$ code-push release-react CodePushReactNativeDemo-android android -d Production
 
-3.3、数据库配置错误
-将数据库的端口，或者用户名密码写错也很常见
+#指定版本，添加注释
+$ code-push release-react CodePushReactNativeDemo-android android -d Production --des "marvin code push testing" -t "1.0.0"
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Successfully 表示热更包推送成功，然后在手机上点击<strong>Press for dialog-driven sync</strong>链接。<br>弹出下载确认<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-server-demo-app-update.png" alt="确认更新"></p>
+<p>点击【install】<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-server-demo-app-updated.png" alt="已更新"><br>至此，热更服务器搭建，及android版app体验完毕。</p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>1、产看更新包安装情况</p>
+<pre class="line-numbers language-shell"><code class="language-shell"># code-push deployment history appName deploymentName
+code-push deployment history CodePushReactNativeDemo-android Staging
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>Staging 或者 Production<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-server-push.png" alt="code push Staging"></p>
+<p>2、列表部署名称</p>
+<pre class="line-numbers language-shell"><code class="language-shell">code-push deployment ls CodePushReactNativeDemo-android
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/fontend/rn-codepush-server-deployment.png" alt="部署名"></p>
+<p>3、常见错误<br>3.1、 download地址写错，默认是<a target="_blank" rel="noopener" href="http://127.0.0.1:3000/">http://127.0.0.1:3000</a> 如果不改成外网域名和端口，下载将失败。<br>app启动抓包查看的结果就是，返回的下载地址无法下载到资源。<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-server-addr-error.png" alt="下载地址错误"></p>
+<p>3.2、nginx限制资源大小<br>需要修改配置，我们的一个app打包后约70M，上传时就报错了，后来才知道是nginx指定的上传大小是50M，所以要修改nginx配置文件，加上<code>client_max_body_size 100M;  </code>这个样配置。</p>
+<p>3.3、数据库配置错误<br>将数据库的端口，或者用户名密码写错也很常见</p>
+<p>3.4、目录权限问题<br>配置文件里默认的dataDir和storeage目录必须有code-push运行用户的操作权限，否则会有以下错误。<br><img src="/loading.gif" data-original="/images/fontend/rn-codepush-server-dir-permission.png" alt="目录权限问题"></p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><pre class="line-numbers language-shell"><code class="language-shell">// 账户相关
+code-push login 登陆
+code-push loout 注销
+code-push access-key ls 列出登陆的token
+code-push access-key rm <accessKye> 删除某个 access-key
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">// app操作相关
+code-push app add <appName> <platform> react-native  在账号里面添加一个新的app
+code-push app remove 或者 rm 在账号里移除一个 app
+code-push app rename 重命名一个存在 app
+code-push app list 或则 ls 列出账号下面的所有 app
+code-push app transfer 把app的所有权转移到另外一个账号
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">// 应用信息相关
+code-push deployment add <appName> 部署
+code-push deployment rm <appName> 删除部署
+code-push deployment rename <appName> 重命名
+code-push deployment ls <appName> 列出应用的部署情况
+code-push deployment ls <appName> -k 查看部署的key
+code-push deployment history <appName> <deploymentName> 查看历史版本
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">// 发布
+code-push release-react <appName> <platform> -t 版本  -d 环境  --des 描述 -m true （强制更新）
 
-3.4、目录权限问题
-配置文件里默认的dataDir和storeage目录必须有code-push运行用户的操作权限，否则会有以下错误。
-![image.png](https://upload-images.jianshu.io/upload_images/4109786-13c3240c61b7afde.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+// 清除历史部署记录
+code-push deployment clear <appName> Production or Staging
 
-
-
-## 常用命令
-</code></pre>
-<p>// 账户相关<br>code-push login 登陆<br>code-push loout 注销<br>code-push access-key ls 列出登陆的token<br>code-push access-key rm <accesskye> 删除某个 access-key</accesskye></p>
-<pre><code>
-
-</code></pre>
-<p>// app操作相关<br>code-push app add <appname> <platform> react-native  在账号里面添加一个新的app<br>code-push app remove 或者 rm 在账号里移除一个 app<br>code-push app rename 重命名一个存在 app<br>code-push app list 或则 ls 列出账号下面的所有 app<br>code-push app transfer 把app的所有权转移到另外一个账号</platform></appname></p>
-<pre><code>
-</code></pre>
-<p>// 应用信息相关<br>code-push deployment add <appname> 部署<br>code-push deployment rm <appname> 删除部署<br>code-push deployment rename <appname> 重命名<br>code-push deployment ls <appname> 列出应用的部署情况<br>code-push deployment ls <appname> -k 查看部署的key<br>code-push deployment history <appname> <deploymentname> 查看历史版本</deploymentname></appname></appname></appname></appname></appname></appname></p>
-<pre><code>
-
-</code></pre>
-<p>// 发布<br>code-push release-react <appname> <platform> -t 版本  -d 环境  –des 描述 -m true （强制更新）</platform></appname></p>
-<p>// 清除历史部署记录<br>code-push deployment clear <appname> Production or Staging</appname></p>
-<p>// 回滚<br>code-push rollback <appname> Production –targetRelease v4(codepush服务部署的版本号)</appname></p>
-<p>```</p>
+// 回滚
+code-push rollback <appName> Production --targetRelease v4(codepush服务部署的版本号)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>注意事项：</p>
 <ol>
 <li><p>更新规则<br>  1&gt; CodePush部署版本 &gt; App版本</p>

@@ -542,42 +542,41 @@
 <h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p>一个业务场景，最近微信小程序如日中天，大有一发不可收拾之局势，我司新接的一些业务也是趁热打铁以微信小程序的形式公诸于世，因此也有了这个场景。</p>
 <p>与之前玩APP不一样了，之前的app用户注册，基本上都是手机号+验证码的形式，也就是说用户上来都有手机号登录的过程，登陆以后放回token，访问替他页面会带着这个token，后台也就通过token识别出这个用户是谁了。</p>
 <p>现在小程序，自然是微信登录最方便，而且不用麻烦用户再绑定手机号，那么就会有一个用户唯一标识的问题，这就是微信提供的openId，我们现在的做法就是在所有要请求的接口上在head里都带着这个openId，后台通过这个openId检查是新用户还是老用户，用户的信息也就相应的拿到了。</p>
-<h3 id="业务处理"><a href="#业务处理" class="headerlink" title="业务处理"></a>业务处理</h3><p>举个例子，前端请求是这样的：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-9e8432431308c4e3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h3 id="业务处理"><a href="#业务处理" class="headerlink" title="业务处理"></a>业务处理</h3><p>举个例子，前端请求是这样的：<br><img src="/loading.gif" data-original="/images/java/springboot/springboot-api-header.png" alt="postman api header"></p>
 <p><strong>1、各自接口分别处理</strong><br>在需要判读当前用户是谁的接口逻辑里分别加上，本次实验，放在controller层，实际写代码时下面的逻辑应该在service代码里实现。</p>
-<pre><code> @GetMapping("/public/api/demo1")
-    public Object getUser1(HttpServletRequest request) {
-        String mobile = request.getHeader("openId");
-        CurrentUser currentUser = (CurrentUser) redisService.find(mobile);
-        if(currentUser == null){
-            List&lt;HaierUser&gt; userList = userRepository.findByMobileAndUserState(mobile, "1");
-            if(userList.size() &gt; 0 ){
-                currentUser = new CurrentUser();
-                BeanUtils.copyProperties(userList.get(0), currentUser);
-                redisService.add(mobile, currentUser);
-            }
-        }
-        return new RtnResult&lt;&gt;(currentUser);
-    }
-</code></pre>
-<p> 结果：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-66e1b1f15cad95a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<pre class="line-numbers language-java"><code class="language-java"> <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/public/api/demo1"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> Object <span class="token function">getUser1</span><span class="token punctuation">(</span>HttpServletRequest request<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        String mobile <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getHeader</span><span class="token punctuation">(</span><span class="token string">"openId"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        CurrentUser currentUser <span class="token operator">=</span> <span class="token punctuation">(</span>CurrentUser<span class="token punctuation">)</span> redisService<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>mobile<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>currentUser <span class="token operator">==</span> null<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            List<span class="token operator">&lt;</span>HaierUser<span class="token operator">></span> userList <span class="token operator">=</span> userRepository<span class="token punctuation">.</span><span class="token function">findByMobileAndUserState</span><span class="token punctuation">(</span>mobile<span class="token punctuation">,</span> <span class="token string">"1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>userList<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+                currentUser <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CurrentUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                BeanUtils<span class="token punctuation">.</span><span class="token function">copyProperties</span><span class="token punctuation">(</span>userList<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> currentUser<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                redisService<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>mobile<span class="token punctuation">,</span> currentUser<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">RtnResult</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>currentUser<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p> 结果：<br><img src="/loading.gif" data-original="/images/java/springboot/springboot-api-response.png" alt="postman api 得到response"></p>
 <p><strong>2、自定义方法参数解析器实现</strong><br>先定义一个方法参数解析器</p>
-<pre><code>
-import com.hczt.haier.db.user.entity.HaierUser;
-import com.hczt.haier.db.user.repository.HaierUserRepository;
-import com.hczt.haier.mobileoffice.usercenter.service.api.RedisService;
-import org.springframework.beans.BeanUtils;
-import org.springframework.core.MethodParameter;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.support.WebDataBinderFactory;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.method.support.ModelAndViewContainer;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> com<span class="token punctuation">.</span>hczt<span class="token punctuation">.</span>haier<span class="token punctuation">.</span>db<span class="token punctuation">.</span>user<span class="token punctuation">.</span>entity<span class="token punctuation">.</span>HaierUser<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>hczt<span class="token punctuation">.</span>haier<span class="token punctuation">.</span>db<span class="token punctuation">.</span>user<span class="token punctuation">.</span>repository<span class="token punctuation">.</span>HaierUserRepository<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>hczt<span class="token punctuation">.</span>haier<span class="token punctuation">.</span>mobileoffice<span class="token punctuation">.</span>usercenter<span class="token punctuation">.</span>service<span class="token punctuation">.</span>api<span class="token punctuation">.</span>RedisService<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>beans<span class="token punctuation">.</span>BeanUtils<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>core<span class="token punctuation">.</span>MethodParameter<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>stereotype<span class="token punctuation">.</span>Component<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>support<span class="token punctuation">.</span>WebDataBinderFactory<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>context<span class="token punctuation">.</span>request<span class="token punctuation">.</span>NativeWebRequest<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>method<span class="token punctuation">.</span>support<span class="token punctuation">.</span>HandlerMethodArgumentResolver<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>method<span class="token punctuation">.</span>support<span class="token punctuation">.</span>ModelAndViewContainer<span class="token punctuation">;</span>
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Resource<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span>HttpServletRequest<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>List<span class="token punctuation">;</span>
 
-/**
+<span class="token comment" spellcheck="true">/**
  * 精诚所至，金石为开。
  * 石の上にも三年;陽気の発する所金石亦透る。
  * Faith moves mountains.
@@ -586,49 +585,48 @@ import java.util.List;
  * @create 2018-08-03 14:38
  * @desc 方法参数解析器
  * 使用
- **/
-@Component
-public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolver {
-    @Resource
-    private RedisService redisService;
+ **/</span>
+<span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CurrentUserArgumentResolver</span> <span class="token keyword">implements</span> <span class="token class-name">HandlerMethodArgumentResolver</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Resource</span>
+    <span class="token keyword">private</span> RedisService redisService<span class="token punctuation">;</span>
 
-    @Resource
-    private HaierUserRepository userRepository;
+    <span class="token annotation punctuation">@Resource</span>
+    <span class="token keyword">private</span> HaierUserRepository userRepository<span class="token punctuation">;</span>
 
-    @Override
-    public boolean supportsParameter(MethodParameter methodParameter) {
-        return methodParameter.getParameterType().equals(CurrentUser.class);
-    }
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">supportsParameter</span><span class="token punctuation">(</span>MethodParameter methodParameter<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> methodParameter<span class="token punctuation">.</span><span class="token function">getParameterType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>CurrentUser<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    @Override
-    public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
-        HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
-        String openId = request.getHeader("openId");
-        CurrentUser currentUser = (CurrentUser) redisService.find(openId);
-        if(currentUser == null){
-            List&lt;HaierUser&gt; userList = userRepository.findByMobileAndUserState(openId, "1");
-            if(userList.size() &gt; 0 ){
-                currentUser = new CurrentUser();
-                BeanUtils.copyProperties(userList.get(0), currentUser);
-                redisService.add(openId, currentUser);
-            }
-        }
-        return currentUser;
-    }
-}
-</code></pre>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> Object <span class="token function">resolveArgument</span><span class="token punctuation">(</span>MethodParameter methodParameter<span class="token punctuation">,</span> ModelAndViewContainer modelAndViewContainer<span class="token punctuation">,</span> NativeWebRequest nativeWebRequest<span class="token punctuation">,</span> WebDataBinderFactory webDataBinderFactory<span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
+        HttpServletRequest request <span class="token operator">=</span> nativeWebRequest<span class="token punctuation">.</span><span class="token function">getNativeRequest</span><span class="token punctuation">(</span>HttpServletRequest<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        String openId <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getHeader</span><span class="token punctuation">(</span><span class="token string">"openId"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        CurrentUser currentUser <span class="token operator">=</span> <span class="token punctuation">(</span>CurrentUser<span class="token punctuation">)</span> redisService<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>openId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>currentUser <span class="token operator">==</span> null<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            List<span class="token operator">&lt;</span>HaierUser<span class="token operator">></span> userList <span class="token operator">=</span> userRepository<span class="token punctuation">.</span><span class="token function">findByMobileAndUserState</span><span class="token punctuation">(</span>openId<span class="token punctuation">,</span> <span class="token string">"1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>userList<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+                currentUser <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CurrentUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                BeanUtils<span class="token punctuation">.</span><span class="token function">copyProperties</span><span class="token punctuation">(</span>userList<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> currentUser<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                redisService<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>openId<span class="token punctuation">,</span> currentUser<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> currentUser<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>别忘了要将自定义的参数解析器配置到spring容器中，新建一个config类，继承<code>WebMvcConfigurationSupport</code>,，内容如下：</p>
-<pre><code>
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Configuration<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>web<span class="token punctuation">.</span>PageableHandlerMethodArgumentResolver<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>method<span class="token punctuation">.</span>support<span class="token punctuation">.</span>HandlerMethodArgumentResolver<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>config<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>ResourceHandlerRegistry<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>config<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>WebMvcConfigurationSupport<span class="token punctuation">;</span>
 
-import javax.annotation.Resource;
-import java.util.List;
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Resource<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>List<span class="token punctuation">;</span>
 
-/**
+<span class="token comment" spellcheck="true">/**
  * 精诚所至，金石为开。
  * 石の上にも三年;陽気の発する所金石亦透る。
  * Faith moves mountains.
@@ -636,153 +634,152 @@ import java.util.List;
  * @author 马海强
  * @create 2018-08-03 16:23
  * @desc ${DESCRIPTION}
- **/
-@Configuration
-public class WebConfig extends WebMvcConfigurationSupport {
-    @Resource
-    private CurrentUserArgumentResolver currentUserArgumentResolver;
+ **/</span>
+<span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">WebConfig</span> <span class="token keyword">extends</span> <span class="token class-name">WebMvcConfigurationSupport</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Resource</span>
+    <span class="token keyword">private</span> CurrentUserArgumentResolver currentUserArgumentResolver<span class="token punctuation">;</span>
 
-    @Override
-    protected void addArgumentResolvers(List&lt;HandlerMethodArgumentResolver&gt; argumentResolvers) {
-        argumentResolvers.add(currentUserArgumentResolver);
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">addArgumentResolvers</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>HandlerMethodArgumentResolver<span class="token operator">></span> argumentResolvers<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        argumentResolvers<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>currentUserArgumentResolver<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        // 注册Spring data jpa pageable的参数分解器
-        argumentResolvers.add(new PageableHandlerMethodArgumentResolver());
-    }
+        <span class="token comment" spellcheck="true">// 注册Spring data jpa pageable的参数分解器</span>
+        argumentResolvers<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">PageableHandlerMethodArgumentResolver</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    // swagger2 访问
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-        super.addResourceHandlers(registry);
-    }
-}
-</code></pre>
+    <span class="token comment" spellcheck="true">// swagger2 访问</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">addResourceHandlers</span><span class="token punctuation">(</span>ResourceHandlerRegistry registry<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        registry<span class="token punctuation">.</span><span class="token function">addResourceHandler</span><span class="token punctuation">(</span><span class="token string">"swagger-ui.html"</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">addResourceLocations</span><span class="token punctuation">(</span><span class="token string">"classpath:/META-INF/resources/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        registry<span class="token punctuation">.</span><span class="token function">addResourceHandler</span><span class="token punctuation">(</span><span class="token string">"/**"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addResourceLocations</span><span class="token punctuation">(</span><span class="token string">"classpath:/static/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        registry<span class="token punctuation">.</span><span class="token function">addResourceHandler</span><span class="token punctuation">(</span><span class="token string">"/webjars/**"</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">addResourceLocations</span><span class="token punctuation">(</span><span class="token string">"classpath:/META-INF/resources/webjars/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">addResourceHandlers</span><span class="token punctuation">(</span>registry<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>然后访问的controller里接收current这个参数，将变得如此简单：</p>
-<pre><code>    @GetMapping("/public/api/demo2")
-    public Object getUser2(CurrentUser currentUser) {
-        System.out.println(currentUser);
-        return new RtnResult&lt;&gt;(currentUser);
-    }
-</code></pre>
-<p>检测结果<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-53f1ace69a388b40.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<pre class="line-numbers language-java"><code class="language-java">    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/public/api/demo2"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> Object <span class="token function">getUser2</span><span class="token punctuation">(</span>CurrentUser currentUser<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>currentUser<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">RtnResult</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>currentUser<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>检测结果<br><img src="/loading.gif" data-original="/images/java/springboot/springboot-api-ArgumentResolver.png" alt="api"></p>
 <p>贴上Current类：</p>
-<pre><code>
-import lombok.Data;
-import lombok.ToString;
+<pre class="line-numbers language-java"><code class="language-java">
+<span class="token keyword">import</span> lombok<span class="token punctuation">.</span>Data<span class="token punctuation">;</span>
+<span class="token keyword">import</span> lombok<span class="token punctuation">.</span>ToString<span class="token punctuation">;</span>
 
-import java.io.Serializable;
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>Serializable<span class="token punctuation">;</span>
 
-/**
+<span class="token comment" spellcheck="true">/**
  * 
  * @Auther: marvin.mma
  * @Date: 2018/8/3 14:38
  * @return   
- */
-@Data
-@ToString
-public class CurrentUser implements Serializable{
-    private static final long serialVersionUID = 1L;
-    private String userId;
+ */</span>
+<span class="token annotation punctuation">@Data</span>
+<span class="token annotation punctuation">@ToString</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CurrentUser</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> serialVersionUID <span class="token operator">=</span> 1L<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String userId<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 手机号
-     */
-    private String mobile;
+     */</span>
+    <span class="token keyword">private</span> String mobile<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 邮箱
-     */
-    private String mail;
+     */</span>
+    <span class="token keyword">private</span> String mail<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 用户工牌号
-     */
-    private String cardNo;
+     */</span>
+    <span class="token keyword">private</span> String cardNo<span class="token punctuation">;</span>
 
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 用户姓名
-     */
-    private String fullName;
+     */</span>
+    <span class="token keyword">private</span> String fullName<span class="token punctuation">;</span>
 
-    /**
+    <span class="token comment" spellcheck="true">/**
      * 用户姓名拼音
-     */
-    private String fullNamePinyin;
+     */</span>
+    <span class="token keyword">private</span> String fullNamePinyin<span class="token punctuation">;</span>
 
-}
-</code></pre>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>1、为什么不用拦截器或者过滤器？<br>拦截器或者过滤器都能实现获取request的header的openId，也能校验redis和数据库中有没有该数据，没有的话新建到数据库或者redis中，但是就是返回一个对象实现起来麻烦一些。上重点了，最主要是不是每个接口都需要根据openId获取用户信息，这样的话拦截器就有点多余了，配置哪些需要哪些不需要又太麻烦。所以使用方法参数解析器最合适了。</p>
 <p>2、自定的方法参数解析器要创建一个继承<code>WebMvcConfigurationSupport</code>的配置类，然后添加到解析器中，否则是不会生效的。</p>
 <p>3、在使用spring-data-jpa的框架里，因为使用了自定义解析器，导致了自带分分页不好使的问题，其原因是自定义解析器以后，往 <code>HandlerMethodArgumentResolver</code>里面添加了什么解析器，容器就有了什么解析器，没添加的不会默认添加了，因此需要手动添加,就是下面这样的意思</p>
-<pre><code>
-import java.io.IOException;
-import java.util.List;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>IOException<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>List<span class="token punctuation">;</span>
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Configuration<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>web<span class="token punctuation">.</span>PageableHandlerMethodArgumentResolver<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>http<span class="token punctuation">.</span>converter<span class="token punctuation">.</span>HttpMessageConverter<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>http<span class="token punctuation">.</span>converter<span class="token punctuation">.</span>StringHttpMessageConverter<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>http<span class="token punctuation">.</span>converter<span class="token punctuation">.</span>json<span class="token punctuation">.</span>MappingJackson2HttpMessageConverter<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>method<span class="token punctuation">.</span>support<span class="token punctuation">.</span>HandlerMethodArgumentResolver<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>config<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>WebMvcConfigurationSupport<span class="token punctuation">;</span>
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>fasterxml<span class="token punctuation">.</span>jackson<span class="token punctuation">.</span>core<span class="token punctuation">.</span>JsonGenerator<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>fasterxml<span class="token punctuation">.</span>jackson<span class="token punctuation">.</span>core<span class="token punctuation">.</span>JsonProcessingException<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>fasterxml<span class="token punctuation">.</span>jackson<span class="token punctuation">.</span>databind<span class="token punctuation">.</span>JsonSerializer<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>fasterxml<span class="token punctuation">.</span>jackson<span class="token punctuation">.</span>databind<span class="token punctuation">.</span>ObjectMapper<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>fasterxml<span class="token punctuation">.</span>jackson<span class="token punctuation">.</span>databind<span class="token punctuation">.</span>SerializerProvider<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>fasterxml<span class="token punctuation">.</span>jackson<span class="token punctuation">.</span>databind<span class="token punctuation">.</span>module<span class="token punctuation">.</span>SimpleModule<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>fasterxml<span class="token punctuation">.</span>jackson<span class="token punctuation">.</span>databind<span class="token punctuation">.</span>ser<span class="token punctuation">.</span>std<span class="token punctuation">.</span>ToStringSerializer<span class="token punctuation">;</span>
 
-/**
+<span class="token comment" spellcheck="true">/**
  * 
  * @Auther: marvin.mma
  * @Date: 2018/8/3 16:38
  * @return   
- */
-@Configuration
-public class WebConfig extends WebMvcConfigurationSupport {
-    @Override
-    protected void addArgumentResolvers(List&lt;HandlerMethodArgumentResolver&gt; argumentResolvers) {
-        // 注册Spring data jpa pageable的参数分解器
-        argumentResolvers.add(new PageableHandlerMethodArgumentResolver());
-    }
+ */</span>
+<span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">WebConfig</span> <span class="token keyword">extends</span> <span class="token class-name">WebMvcConfigurationSupport</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">addArgumentResolvers</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>HandlerMethodArgumentResolver<span class="token operator">></span> argumentResolvers<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 注册Spring data jpa pageable的参数分解器</span>
+        argumentResolvers<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">PageableHandlerMethodArgumentResolver</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
     
-    @Override
-    protected void configureMessageConverters(List&lt;HttpMessageConverter&lt;?&gt;&gt; converters) {
-        MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
-        ObjectMapper objectMapper = new ObjectMapper();
-        /**
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">configureMessageConverters</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>HttpMessageConverter<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">>></span> converters<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        MappingJackson2HttpMessageConverter jackson2HttpMessageConverter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MappingJackson2HttpMessageConverter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ObjectMapper objectMapper <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ObjectMapper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">/**
          * 序列换成json时,将所有的long变成string
          * 因为js中得数字类型不能包含所有的java long值
-         */
-        SimpleModule simpleModule = new SimpleModule();
-        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
-        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
-        objectMapper.registerModule(simpleModule);
+         */</span>
+        SimpleModule simpleModule <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleModule</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        simpleModule<span class="token punctuation">.</span><span class="token function">addSerializer</span><span class="token punctuation">(</span>Long<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> ToStringSerializer<span class="token punctuation">.</span>instance<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        simpleModule<span class="token punctuation">.</span><span class="token function">addSerializer</span><span class="token punctuation">(</span>Long<span class="token punctuation">.</span>TYPE<span class="token punctuation">,</span> ToStringSerializer<span class="token punctuation">.</span>instance<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        objectMapper<span class="token punctuation">.</span><span class="token function">registerModule</span><span class="token punctuation">(</span>simpleModule<span class="token punctuation">)</span><span class="token punctuation">;</span>
         
-        // 将返回值null处理成空值
-        SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
-        serializerProvider.setNullValueSerializer(new JsonSerializer&lt;Object&gt;() {
-            @Override
-            public void serialize(Object o, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
-                    jsonGenerator.writeString("");
-            }
-        });
+        <span class="token comment" spellcheck="true">// 将返回值null处理成空值</span>
+        SerializerProvider serializerProvider <span class="token operator">=</span> objectMapper<span class="token punctuation">.</span><span class="token function">getSerializerProvider</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        serializerProvider<span class="token punctuation">.</span><span class="token function">setNullValueSerializer</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">JsonSerializer</span><span class="token operator">&lt;</span>Object<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">serialize</span><span class="token punctuation">(</span>Object o<span class="token punctuation">,</span> JsonGenerator jsonGenerator<span class="token punctuation">,</span> SerializerProvider serializerProvider<span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException<span class="token punctuation">,</span> JsonProcessingException <span class="token punctuation">{</span>
+                    jsonGenerator<span class="token punctuation">.</span><span class="token function">writeString</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         
-        jackson2HttpMessageConverter.setObjectMapper(objectMapper);
-        converters.add(jackson2HttpMessageConverter);
-        converters.add(new StringHttpMessageConverter());
-//        super.configureMessageConverters(converters);
-    }
-}
-</code></pre>
+        jackson2HttpMessageConverter<span class="token punctuation">.</span><span class="token function">setObjectMapper</span><span class="token punctuation">(</span>objectMapper<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        converters<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>jackson2HttpMessageConverter<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        converters<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">StringHttpMessageConverter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//        super.configureMessageConverters(converters);</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>该配置文件增加了两个json转换处理，顺便贴出来，知道在哪加怎么加就行，跟本文无关。</p>
 <p>4、此处是以手机号举例的，实际生产中，视情况而定。</p>
 <p>5、关于注解不生效的问题，Damon主要以Asyc和Transactional为例说明的，但是就其不生效的原因，<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/76c9ad71ade4">玩转Spring —— 消失的事务</a>基本上讲明白了。</p>

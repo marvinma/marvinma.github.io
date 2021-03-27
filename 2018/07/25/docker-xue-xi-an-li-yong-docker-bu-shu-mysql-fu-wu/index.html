@@ -508,7 +508,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.5k
+                    4.4k
                 </div>
                 
 
@@ -538,7 +538,7 @@
                 <p>docker实际案例之在centOS7.4上用docker部署mysql服务<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/185840de08a8">简书地址</a></p>
 <span id="more"></span>
 
-<h3 id="一、使用docker-run命令直接启动一个mysql容器"><a href="#一、使用docker-run命令直接启动一个mysql容器" class="headerlink" title="一、使用docker run命令直接启动一个mysql容器"></a>一、使用docker run命令直接启动一个mysql容器</h3><h4 id="1-1-下载官方tomcat镜像"><a href="#1-1-下载官方tomcat镜像" class="headerlink" title="1.1 下载官方tomcat镜像"></a>1.1 下载官方tomcat镜像</h4><pre><code>[root@dev ~]# docker search mysql
+<h3 id="一、使用docker-run命令直接启动一个mysql容器"><a href="#一、使用docker-run命令直接启动一个mysql容器" class="headerlink" title="一、使用docker run命令直接启动一个mysql容器"></a>一、使用docker run命令直接启动一个mysql容器</h3><h4 id="1-1-下载官方tomcat镜像"><a href="#1-1-下载官方tomcat镜像" class="headerlink" title="1.1 下载官方tomcat镜像"></a>1.1 下载官方tomcat镜像</h4><pre class="line-numbers language-shell"><code class="language-shell">[root@dev ~]# docker search mysql
 INDEX       NAME                                                             DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
 docker.io   docker.io/mysql                                                  MySQL is a widely used, open-source relati...   6589      [OK]       
 docker.io   docker.io/mariadb                                                MariaDB is a community-developed fork of M...   2086      [OK]       
@@ -589,8 +589,8 @@ docker.io/tomcat    latest              2d43521f2b1a        6 days ago          
 docker.io/nginx     latest              8b89e48b5f15        7 days ago          109 MB
 docker.io/mysql     5.7.19              3e3878acd190        9 months ago        412 MB
 [root@dev mysql]# 
-</code></pre>
-<h4 id="1-2-创建用于挂载的目录"><a href="#1-2-创建用于挂载的目录" class="headerlink" title="1.2 创建用于挂载的目录"></a>1.2 创建用于挂载的目录</h4><pre><code>[root@dev local]# pwd
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="1-2-创建用于挂载的目录"><a href="#1-2-创建用于挂载的目录" class="headerlink" title="1.2 创建用于挂载的目录"></a>1.2 创建用于挂载的目录</h4><pre class="line-numbers language-shell"><code class="language-shell">[root@dev local]# pwd
 /usr/local
 [root@dev local]# mkdir mysql
 [root@dev local]# mkdir mysql/data
@@ -601,22 +601,22 @@ total 8
 drwxr-xr-x 2 root root 4096 Jul 24 14:18 conf.d
 drwxr-xr-x 2 root root 4096 Jul 24 14:18 data
 [root@dev mysql]#
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>命令解析：<br>mkdir /usr/local/mysql/data      #用于挂载mysql数据文件<br>mkdir /usr/local/mysql/conf.d    #用于挂载mysql配置文件</p>
-<h4 id="1-3-启动容器"><a href="#1-3-启动容器" class="headerlink" title="1.3 启动容器"></a>1.3 启动容器</h4><pre><code>[root@dev mysql]# docker run --name mysql5.7 -p 3306:3306 -v /usr/local/mysql/data:/var/lib/mysql -v /usr/local/mysql/conf.d:/etc/mysql/conf.d  -e MYSQL_ROOT_PASSWORD=112233 -d mysql:5.7.19
+<h4 id="1-3-启动容器"><a href="#1-3-启动容器" class="headerlink" title="1.3 启动容器"></a>1.3 启动容器</h4><pre class="line-numbers language-shell"><code class="language-shell">[root@dev mysql]# docker run --name mysql5.7 -p 3306:3306 -v /usr/local/mysql/data:/var/lib/mysql -v /usr/local/mysql/conf.d:/etc/mysql/conf.d  -e MYSQL_ROOT_PASSWORD=112233 -d mysql:5.7.19
 10151eef645f8621441585354ad11d1f98514cdb253c5d1b77db6c0c50327420
 [root@dev mysql]# docker ps
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
-10151eef645f        mysql:5.7.19        "docker-entrypoint..."   3 seconds ago       Up 2 seconds        0.0.0.0:3306-&gt;3306/tcp   mysql5.7
-6f189daf5880        marvin/tomcat       "catalina.sh run"        22 hours ago        Up 22 hours         0.0.0.0:8080-&gt;8080/tcp   tomcat8
+10151eef645f        mysql:5.7.19        "docker-entrypoint..."   3 seconds ago       Up 2 seconds        0.0.0.0:3306->3306/tcp   mysql5.7
+6f189daf5880        marvin/tomcat       "catalina.sh run"        22 hours ago        Up 22 hours         0.0.0.0:8080->8080/tcp   tomcat8
 [root@dev mysql]# 
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>其他参数：</p>
 <blockquote>
 <p>–restart always：开机启动<br>–privileged=true：提升容器内权限<br>-e MYSQL_USER=”marvin”：添加用户marvin<br>-e MYSQL_PASSWORD=”pwd123”：设置marvin的密码伟pwd123<br>-e MYSQL_ROOT_PASSWORD=”rootpwd123”：设置root的密码伟rootpwd123<br>–character-set-server=utf8：设置字符集为utf8<br>–collation-server=utf8_general_ci：设置字符比较规则为utf8_general_ci</p>
 </blockquote>
 <p>注意：如果运行时添加了marvin用户，用root登录后执行用户授权<code>ALTER USER 'marvin'@'%' IDENTIFIED WITH mysql_native_password BY 'password123';</code>，才能用远程客户端访问数据库。</p>
-<h4 id="1-4-检查结果"><a href="#1-4-检查结果" class="headerlink" title="1.4 检查结果"></a>1.4 检查结果</h4><pre><code>[root@dev mysql]# docker exec -it mysql5.7 mysql -uroot -p112233
+<h4 id="1-4-检查结果"><a href="#1-4-检查结果" class="headerlink" title="1.4 检查结果"></a>1.4 检查结果</h4><pre class="line-numbers language-shell"><code class="language-shell">[root@dev mysql]# docker exec -it mysql5.7 mysql -uroot -p112233
 mysql: [Warning] Using a password on the command line interface can be insecure.
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 9
@@ -630,7 +630,7 @@ owners.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-mysql&gt; show databases;
+mysql> show databases;
 +--------------------+
 | Database           |
 +--------------------+
@@ -641,18 +641,18 @@ mysql&gt; show databases;
 +--------------------+
 4 rows in set (0.01 sec)
 
-mysql&gt; 
-</code></pre>
+mysql> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>成功安装mysql</p>
-<h4 id="1-5-设置远程客户端登录"><a href="#1-5-设置远程客户端登录" class="headerlink" title="1.5 设置远程客户端登录"></a>1.5 设置远程客户端登录</h4><pre><code>mysql&gt; grant all privileges on *.* to root@"%" identified by "root.123" with grant option;
+<h4 id="1-5-设置远程客户端登录"><a href="#1-5-设置远程客户端登录" class="headerlink" title="1.5 设置远程客户端登录"></a>1.5 设置远程客户端登录</h4><pre class="line-numbers language-shell"><code class="language-shell">mysql> grant all privileges on *.* to root@"%" identified by "root.123" with grant option;
 Query OK, 0 rows affected, 1 warning (0.00 sec)
 
-mysql&gt; 
-</code></pre>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-75ca16841f9a7f3a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="远程客户端链接"></p>
-<p>通过客户端创建数据一个数据库，创建一张表<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-a66e05bb4d0561b9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+mysql> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/linux/docker/docker-mysql-connect.png" alt="远程客户端链接"></p>
+<p>通过客户端创建数据一个数据库，创建一张表<br><img src="/loading.gif" data-original="/images/linux/docker/docker-mysql-create-table.png" alt="创建表"></p>
 <p>在server端用命令行查看:</p>
-<pre><code>mysql&gt; show databases;
+<pre class="line-numbers language-shell"><code class="language-shell">mysql> show databases;
 +--------------------+
 | Database           |
 +--------------------+
@@ -664,12 +664,12 @@ mysql&gt;
 +--------------------+
 5 rows in set (0.00 sec)
 
-mysql&gt; use demo;
+mysql> use demo;
 Reading table information for completion of table and column names
 You can turn off this feature to get a quicker startup with -A
 
 Database changed
-mysql&gt; show tables;
+mysql> show tables;
 +----------------+
 | Tables_in_demo |
 +----------------+
@@ -677,13 +677,13 @@ mysql&gt; show tables;
 +----------------+
 1 row in set (0.00 sec)
 
-mysql&gt; select * from test;
+mysql> select * from test;
 Empty set (0.00 sec)
 
-mysql&gt; 
-</code></pre>
+mysql> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>再看宿主机文件目录：</p>
-<pre><code>[root@dev data]# pwd
+<pre class="line-numbers language-shell"><code class="language-shell">[root@dev data]# pwd
 /usr/local/mysql/data
 [root@dev data]# ll
 total 188480
@@ -706,10 +706,10 @@ drwxr-x--- 2 polkitd ssh_keys     4096 Jul 24 16:46 performance_schema
 -rw------- 1 polkitd ssh_keys     1675 Jul 24 16:46 server-key.pem
 drwxr-x--- 2 polkitd ssh_keys    12288 Jul 24 16:46 sys
 [root@dev data]# 
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>完美！</p>
 <h3 id="二、-使用dockerfile启动mysql容器"><a href="#二、-使用dockerfile启动mysql容器" class="headerlink" title="二、 使用dockerfile启动mysql容器"></a>二、 使用dockerfile启动mysql容器</h3><h4 id="2-1、编写docker-file"><a href="#2-1、编写docker-file" class="headerlink" title="2.1、编写docker file"></a>2.1、编写docker file</h4><p>在当前目录（/usr/local/mysql/）创建dockerfile文件，编辑内容如下：</p>
-<pre><code>FROM docker.io/mysql:5.7.19
+<pre class="line-numbers language-shell"><code class="language-shell">FROM docker.io/mysql:5.7.19
  
 #设置免密登录
 ENV MYSQL_ALLOW_EMPTY_PASSWORD yes
@@ -729,9 +729,9 @@ EXPOSE 3306
  
 #设置容器启动时执行的命令
 CMD ["sh", "/mysql/setup.sh"]
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="2-2、写容器启动脚本setup-sh和配置文件。"><a href="#2-2、写容器启动脚本setup-sh和配置文件。" class="headerlink" title="2.2、写容器启动脚本setup.sh和配置文件。"></a>2.2、写容器启动脚本setup.sh和配置文件。</h4><p>setup.sh内容如下：</p>
-<pre><code>#!/bin/bash
+<pre class="line-numbers language-shell"><code class="language-shell">#!/bin/bash
 set -e
  
 #查看mysql服务的状态，方便调试，这条语句可以删除
@@ -745,7 +745,7 @@ echo `service mysql status`
  
 echo '2.开始导入数据....'
 #导入数据
-mysql &lt; /mysql/schema.sql
+mysql < /mysql/schema.sql
 echo '3.导入数据完毕....'
  
 sleep 3
@@ -753,7 +753,7 @@ echo `service mysql status`
  
 #重新设置mysql密码
 echo '4.开始修改密码....'
-mysql &lt; /mysql/privileges.sql
+mysql < /mysql/privileges.sql
 echo '5.修改密码完毕....'
  
 #sleep 3
@@ -761,14 +761,14 @@ echo `service mysql status`
 echo `mysql容器启动完毕,且数据导入成功`
  
 tail -f /dev/null
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>设置可执行权限：</p>
 <blockquote>
 <p>chmod  u+x setup.sh</p>
 </blockquote>
 <p>这里是先导入数据，然后才是设置用户和权限，是因为mysql容器一开始为免密登录，Dockerfile中有如下设置：ENV MYSQL_ALLOW_EMPTY_PASSWORD yes,此时执行导入数据命令不需要登录验证操作，如果是先执行权限操作，那么导入数据则需要登录验证，整个过程就麻烦了许多。</p>
 <p>conf.d目录下创建配置文件<code>my.cnf</code>,内容如下：</p>
-<pre><code>[client]
+<pre class="line-numbers language-conf"><code class="language-conf">[client]
 default-character-set=utf8mb4
 
 [mysqld]
@@ -780,48 +780,48 @@ max_allowed_packet=100M
 
 [mysql]
 default-character-set=utf8mb4
-</code></pre>
-<h4 id="2-3、需要导入数据的mysql脚本命令schema-sql："><a href="#2-3、需要导入数据的mysql脚本命令schema-sql：" class="headerlink" title="2.3、需要导入数据的mysql脚本命令schema.sql："></a>2.3、需要导入数据的mysql脚本命令schema.sql：</h4><pre><code>-- 创建数据库
-create database `docker_mysql` default character set utf8 collate utf8_general_ci;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-3、需要导入数据的mysql脚本命令schema-sql："><a href="#2-3、需要导入数据的mysql脚本命令schema-sql：" class="headerlink" title="2.3、需要导入数据的mysql脚本命令schema.sql："></a>2.3、需要导入数据的mysql脚本命令schema.sql：</h4><pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 创建数据库</span>
+<span class="token keyword">create</span> <span class="token keyword">database</span> <span class="token punctuation">`</span>docker_mysql<span class="token punctuation">`</span> <span class="token keyword">default</span> <span class="token keyword">character set</span> utf8 <span class="token keyword">collate</span> utf8_general_ci<span class="token punctuation">;</span>
  
-use docker_mysql;
+<span class="token keyword">use</span> docker_mysql<span class="token punctuation">;</span>
  
--- 建表
-DROP TABLE IF EXISTS `user`;
+<span class="token comment" spellcheck="true">-- 建表</span>
+<span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> <span class="token punctuation">`</span><span class="token keyword">user</span><span class="token punctuation">`</span><span class="token punctuation">;</span>
  
-CREATE TABLE `user` (
- `id` bigint(20) NOT NULL,
- `created_at` bigint(40) DEFAULT NULL,
- `last_modified` bigint(40) DEFAULT NULL,
- `email` varchar(255) DEFAULT NULL,
- `first_name` varchar(255) DEFAULT NULL,
- `last_name` varchar(255) DEFAULT NULL,
- `username` varchar(255) DEFAULT NULL,
- PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token punctuation">`</span><span class="token keyword">user</span><span class="token punctuation">`</span> <span class="token punctuation">(</span>
+ <span class="token punctuation">`</span>id<span class="token punctuation">`</span> <span class="token keyword">bigint</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+ <span class="token punctuation">`</span>created_at<span class="token punctuation">`</span> <span class="token keyword">bigint</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+ <span class="token punctuation">`</span>last_modified<span class="token punctuation">`</span> <span class="token keyword">bigint</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+ <span class="token punctuation">`</span>email<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+ <span class="token punctuation">`</span>first_name<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+ <span class="token punctuation">`</span>last_name<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+ <span class="token punctuation">`</span>username<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+ <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token punctuation">`</span>id<span class="token punctuation">`</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span> <span class="token keyword">ENGINE</span><span class="token operator">=</span><span class="token keyword">InnoDB</span> <span class="token keyword">DEFAULT</span> <span class="token keyword">CHARSET</span><span class="token operator">=</span>latin1<span class="token punctuation">;</span>
  
--- 插入数据
-INSERT INTO `user` (`id`, `created_at`, `last_modified`, `email`, `first_name`, `last_name`, `username`)
-VALUES
-  (0,1490257904,1490257904,'john.doe@example.com','John','Doe','user');
-</code></pre>
+<span class="token comment" spellcheck="true">-- 插入数据</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> <span class="token punctuation">`</span><span class="token keyword">user</span><span class="token punctuation">`</span> <span class="token punctuation">(</span><span class="token punctuation">`</span>id<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token punctuation">`</span>created_at<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token punctuation">`</span>last_modified<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token punctuation">`</span>email<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token punctuation">`</span>first_name<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token punctuation">`</span>last_name<span class="token punctuation">`</span><span class="token punctuation">,</span> <span class="token punctuation">`</span>username<span class="token punctuation">`</span><span class="token punctuation">)</span>
+<span class="token keyword">VALUES</span>
+  <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1490257904</span><span class="token punctuation">,</span><span class="token number">1490257904</span><span class="token punctuation">,</span><span class="token string">'john.doe@example.com'</span><span class="token punctuation">,</span><span class="token string">'John'</span><span class="token punctuation">,</span><span class="token string">'Doe'</span><span class="token punctuation">,</span><span class="token string">'user'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>因为是测试，所以随便写了一个建表语句，如果是真实项目肯定不止这一张表，直接将建表语句覆盖过来就好。</p>
-<h4 id="2-4、mysql权限设置命令privileges-sql："><a href="#2-4、mysql权限设置命令privileges-sql：" class="headerlink" title="2.4、mysql权限设置命令privileges.sql："></a>2.4、mysql权限设置命令privileges.sql：</h4><pre><code>use mysql;
-select host, user from user;
--- 因为mysql版本是5.7，因此新建用户为如下命令：
-create user docker identified by '123456';
--- 将docker_mysql数据库的权限授权给创建的docker用户，密码为123456：
-grant all on docker_mysql.* to docker@'%' identified by '123456' with grant option;
+<h4 id="2-4、mysql权限设置命令privileges-sql："><a href="#2-4、mysql权限设置命令privileges-sql：" class="headerlink" title="2.4、mysql权限设置命令privileges.sql："></a>2.4、mysql权限设置命令privileges.sql：</h4><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">use</span> mysql<span class="token punctuation">;</span>
+<span class="token keyword">select</span> host<span class="token punctuation">,</span> <span class="token keyword">user</span> <span class="token keyword">from</span> <span class="token keyword">user</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">-- 因为mysql版本是5.7，因此新建用户为如下命令：</span>
+<span class="token keyword">create</span> <span class="token keyword">user</span> docker identified <span class="token keyword">by</span> <span class="token string">'123456'</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">-- 将docker_mysql数据库的权限授权给创建的docker用户，密码为123456：</span>
+<span class="token keyword">grant</span> <span class="token keyword">all</span> <span class="token keyword">on</span> docker_mysql<span class="token punctuation">.</span><span class="token operator">*</span> <span class="token keyword">to</span> docker@'<span class="token operator">%</span><span class="token string">' identified by '</span><span class="token number">123456</span>' <span class="token keyword">with</span> <span class="token keyword">grant</span> <span class="token keyword">option</span><span class="token punctuation">;</span>
 
--- 创建root用户，设置密码
-create user root identified by 'root.123';
--- 授权root用户所有数据库密码
-grant all privileges on *.* to root@"%" identified by "root.123" with grant option;
+<span class="token comment" spellcheck="true">-- 创建root用户，设置密码</span>
+<span class="token keyword">create</span> <span class="token keyword">user</span> root identified <span class="token keyword">by</span> <span class="token string">'root.123'</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">-- 授权root用户所有数据库密码</span>
+<span class="token keyword">grant</span> <span class="token keyword">all</span> <span class="token keyword">privileges</span> <span class="token keyword">on</span> <span class="token operator">*</span><span class="token punctuation">.</span><span class="token operator">*</span> <span class="token keyword">to</span> root@"<span class="token operator">%</span><span class="token string">" identified by "</span>root<span class="token number">.123</span>" <span class="token keyword">with</span> <span class="token keyword">grant</span> <span class="token keyword">option</span><span class="token punctuation">;</span>
 
--- 这一条命令一定要有：
-flush privileges;
-</code></pre>
-<h4 id="2-5、创建镜像docker-build-t-marvin-docker-mysql-5-7-19"><a href="#2-5、创建镜像docker-build-t-marvin-docker-mysql-5-7-19" class="headerlink" title="2.5、创建镜像docker build -t marvin/docker-mysql:5.7.19 . "></a>2.5、创建镜像<code>docker build -t marvin/docker-mysql:5.7.19 . </code></h4><pre><code>[root@dev mysql]# ll
+<span class="token comment" spellcheck="true">-- 这一条命令一定要有：</span>
+flush <span class="token keyword">privileges</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-5、创建镜像docker-build-t-marvin-docker-mysql-5-7-19"><a href="#2-5、创建镜像docker-build-t-marvin-docker-mysql-5-7-19" class="headerlink" title="2.5、创建镜像docker build -t marvin/docker-mysql:5.7.19 . "></a>2.5、创建镜像<code>docker build -t marvin/docker-mysql:5.7.19 . </code></h4><pre class="line-numbers language-shell"><code class="language-shell">[root@dev mysql]# ll
 total 28
 drwxr-xr-x 2 root    root     4096 Jul 24 19:16 conf.d
 drwxr-xr-x 6 polkitd ssh_keys 4096 Jul 26 09:52 data
@@ -842,35 +842,35 @@ drwxr-xr-x 6 polkitd ssh_keys 4096 Jul 26 09:52 data
 [root@dev mysql]# docker build -t marvin/docker-mysql:5.7.19 .
 Sending build context to Docker daemon 219.8 MB
 Step 1/9 : FROM docker.io/mysql:5.7.19
- ---&gt; 3e3878acd190
+ ---> 3e3878acd190
 Step 2/9 : ENV MYSQL_ALLOW_EMPTY_PASSWORD yes
- ---&gt; Running in 12565f8c0c75
- ---&gt; c3603b8b0ce0
+ ---> Running in 12565f8c0c75
+ ---> c3603b8b0ce0
 Removing intermediate container 12565f8c0c75
 Step 3/9 : COPY setup.sh /mysql/setup.sh
- ---&gt; 25f810745d6e
+ ---> 25f810745d6e
 Removing intermediate container c87437761955
 Step 4/9 : COPY schema.sql /mysql/schema.sql
- ---&gt; 6336d1ec2e5c
+ ---> 6336d1ec2e5c
 Removing intermediate container d18c0faf05e2
 Step 5/9 : COPY privileges.sql /mysql/privileges.sql
- ---&gt; 909fd9a0147e
+ ---> 909fd9a0147e
 Removing intermediate container 597ba357c5dd
 Step 6/9 : COPY conf.d /etc/mysql/conf.d
- ---&gt; 0df0b1a8419a
+ ---> 0df0b1a8419a
 Removing intermediate container 5495b6697f5a
 Step 7/9 : RUN chmod 755 /mysql/*.sh
- ---&gt; Running in 648c99da183d
+ ---> Running in 648c99da183d
 
- ---&gt; 9637b6b5e125
+ ---> 9637b6b5e125
 Removing intermediate container 648c99da183d
 Step 8/9 : EXPOSE 3306
- ---&gt; Running in 0b4514d7ffcc
- ---&gt; 0acd4a3a39a6
+ ---> Running in 0b4514d7ffcc
+ ---> 0acd4a3a39a6
 Removing intermediate container 0b4514d7ffcc
 Step 9/9 : CMD sh /mysql/setup.sh
- ---&gt; Running in 9cc069e6e6aa
- ---&gt; effcf5bab4c1
+ ---> Running in 9cc069e6e6aa
+ ---> effcf5bab4c1
 Removing intermediate container 9cc069e6e6aa
 Successfully built effcf5bab4c1
 [root@dev mysql]# 
@@ -883,17 +883,17 @@ docker.io/tomcat      latest              2d43521f2b1a        8 days ago        
 docker.io/nginx       latest              8b89e48b5f15        9 days ago          109 MB
 docker.io/mysql       5.7.19              3e3878acd190        9 months ago        412 MB
 [root@dev mysql]# 
-</code></pre>
-<h4 id="2-6、启动容器docker-run-d-p-13306-3306-v-usr-local-mysql-datadir-var-lib-mysql-marvin-docker-mysql-5-7-19"><a href="#2-6、启动容器docker-run-d-p-13306-3306-v-usr-local-mysql-datadir-var-lib-mysql-marvin-docker-mysql-5-7-19" class="headerlink" title="2.6、启动容器docker run -d -p 13306:3306 -v /usr/local/mysql/datadir:/var/lib/mysql marvin/docker-mysql:5.7.19 "></a>2.6、启动容器<code>docker run -d -p 13306:3306 -v /usr/local/mysql/datadir:/var/lib/mysql marvin/docker-mysql:5.7.19 </code></h4><pre><code>[root@dev mysql]# docker run -d -p 13306:3306 -v /usr/local/mysql/datadir:/var/lib/mysql marvin/docker-mysql:5.7.19
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-6、启动容器docker-run-d-p-13306-3306-v-usr-local-mysql-datadir-var-lib-mysql-marvin-docker-mysql-5-7-19"><a href="#2-6、启动容器docker-run-d-p-13306-3306-v-usr-local-mysql-datadir-var-lib-mysql-marvin-docker-mysql-5-7-19" class="headerlink" title="2.6、启动容器docker run -d -p 13306:3306 -v /usr/local/mysql/datadir:/var/lib/mysql marvin/docker-mysql:5.7.19 "></a>2.6、启动容器<code>docker run -d -p 13306:3306 -v /usr/local/mysql/datadir:/var/lib/mysql marvin/docker-mysql:5.7.19 </code></h4><pre class="line-numbers language-shell"><code class="language-shell">[root@dev mysql]# docker run -d -p 13306:3306 -v /usr/local/mysql/datadir:/var/lib/mysql marvin/docker-mysql:5.7.19
 e55a41a9ace4fb09db5af3e77fab257764f938ffe2f7221ec312bf624f41543e
 [root@dev mysql]# docker ps
 CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS              PORTS                     NAMES
-e55a41a9ace4        marvin/docker-mysql:5.7.19   "docker-entrypoint..."   4 seconds ago       Up 3 seconds        0.0.0.0:13306-&gt;3306/tcp   inspiring_bassi
-831da6f83e21        mysql:5.7.19                 "docker-entrypoint..."   2 hours ago         Up 2 hours          0.0.0.0:3306-&gt;3306/tcp    mysql5.7
-6f189daf5880        marvin/tomcat                "catalina.sh run"        2 days ago          Up 2 days           0.0.0.0:8080-&gt;8080/tcp    tomcat8
+e55a41a9ace4        marvin/docker-mysql:5.7.19   "docker-entrypoint..."   4 seconds ago       Up 3 seconds        0.0.0.0:13306->3306/tcp   inspiring_bassi
+831da6f83e21        mysql:5.7.19                 "docker-entrypoint..."   2 hours ago         Up 2 hours          0.0.0.0:3306->3306/tcp    mysql5.7
+6f189daf5880        marvin/tomcat                "catalina.sh run"        2 days ago          Up 2 days           0.0.0.0:8080->8080/tcp    tomcat8
 [root@dev mysql]# 
-</code></pre>
-<h4 id="2-7、检查结果docker-exec-it-e55a41a9ace4-mysql-udocker-p123456"><a href="#2-7、检查结果docker-exec-it-e55a41a9ace4-mysql-udocker-p123456" class="headerlink" title="2.7、检查结果docker exec -it e55a41a9ace4 mysql -udocker -p123456 "></a>2.7、检查结果<code>docker exec -it e55a41a9ace4 mysql -udocker -p123456 </code></h4><pre><code>[root@dev mysql]# docker exec -it e55a41a9ace4 mysql -udocker -p123456            
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-7、检查结果docker-exec-it-e55a41a9ace4-mysql-udocker-p123456"><a href="#2-7、检查结果docker-exec-it-e55a41a9ace4-mysql-udocker-p123456" class="headerlink" title="2.7、检查结果docker exec -it e55a41a9ace4 mysql -udocker -p123456 "></a>2.7、检查结果<code>docker exec -it e55a41a9ace4 mysql -udocker -p123456 </code></h4><pre class="line-numbers language-shell"><code class="language-shell">[root@dev mysql]# docker exec -it e55a41a9ace4 mysql -udocker -p123456            
 mysql: [Warning] Using a password on the command line interface can be insecure.
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 5
@@ -907,7 +907,7 @@ owners.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-mysql&gt; show databases;
+mysql> show databases;
 +--------------------+
 | Database           |
 +--------------------+
@@ -916,12 +916,12 @@ mysql&gt; show databases;
 +--------------------+
 2 rows in set (0.01 sec)
 
-mysql&gt; use docker_mysql
+mysql> use docker_mysql
 Reading table information for completion of table and column names
 You can turn off this feature to get a quicker startup with -A
 
 Database changed
-mysql&gt; show tables;
+mysql> show tables;
 +------------------------+
 | Tables_in_docker_mysql |
 +------------------------+
@@ -929,18 +929,18 @@ mysql&gt; show tables;
 +------------------------+
 1 row in set (0.01 sec)
 
-mysql&gt; 
-</code></pre>
-<h4 id="2-8、远程登录"><a href="#2-8、远程登录" class="headerlink" title="2.8、远程登录"></a>2.8、远程登录</h4><p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-82351f9aa24172a4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+mysql> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-8、远程登录"><a href="#2-8、远程登录" class="headerlink" title="2.8、远程登录"></a>2.8、远程登录</h4><p><img src="/loading.gif" data-original="/images/linux/docker/docker-mysql-connect2.png" alt="远程链接mysql"></p>
 <p>用客户端链接后创建了数据库，然后重新启动docker，数据仍然在。完美~~~</p>
 <h3 id="美中不足"><a href="#美中不足" class="headerlink" title="美中不足"></a>美中不足</h3><p>1、找不到mysql.sock<br>在实践过程中也碰到了比较恶心的问题，就是启动时老是找不到mysql.sock，最开始在my.cnf里没有配置socket的路径，这样没问题。</p>
 <p>但是不知道默认的mysql.sock的容器里是在什么路径上；</p>
 <p>于是在my.cnf配置文件里加上这个配置<code>socket=/var/lib/mysql/mysql.sock</code>;</p>
 <p>启动的时候就怎么都会报错了<br>错误信息大概是这样：</p>
-<pre><code>ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2)
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2)
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>然后将配置改为<code>socket=/tmp/mysql.sock</code><br>启动的时候又变成这样了：</p>
-<pre><code>[root@dev mysql]# docker run -p 13306:3306 -v /usr/local/mysql/datadir:/var/lib/mysql marvin/docker-mysql
+<pre class="line-numbers language-shell"><code class="language-shell">[root@dev mysql]# docker run -p 13306:3306 -v /usr/local/mysql/datadir:/var/lib/mysql marvin/docker-mysql
 MySQL Community Server 5.7.19 is not running.
 1.启动mysql....
 ..
@@ -948,33 +948,33 @@ MySQL Community Server 5.7.19 is started.
 MySQL Community Server 5.7.19 is running.
 2.开始导入数据....
 ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>docker stop</code> <code>docker rm</code>  <code>docker rmi</code> <code>docker build</code> 又重新<code>docker run</code><br>反复了一上午。<br>最后还是没办法，把配置文件中的sock的配置给删除了。</p>
 <p>正常启动后查知sock的路径默认的原来是<code>/var/run/mysqld</code></p>
-<pre><code>root@63d3f0b5ea07:/var/run/mysqld# pwd
+<pre class="line-numbers language-shell"><code class="language-shell">root@63d3f0b5ea07:/var/run/mysqld# pwd
 /var/run/mysqld
 root@63d3f0b5ea07:/var/run/mysqld# ls
 mysqld.pid  mysqld.sock  mysqld.sock.lock
 root@63d3f0b5ea07:/var/run/mysqld# 
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>应该能修改，不过不想折腾了。</p>
 <p>2、如果挂载了数据持久化的数据卷，再次build容器，启动时会报创建用户失败等，因为已有用户了。<br>因此如果是二次运行，要么删除掉持久化的数据，要么修改setup.sh脚本，不要再执行privileges.sql和schema.sql。</p>
 <h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>生产环境中可能数据库要做主从、读写分离等等，但是因为数据是要共享的，所以有可能用到下知识.</p>
 <h5 id="数据共享"><a href="#数据共享" class="headerlink" title="数据共享"></a>数据共享</h5><p>如果要授权一个容器访问另一个容器的Volume，我们可以使用<code>-volumes-from</code>参数来执行<code>docker run</code>。</p>
-<pre><code>$&nbsp;docker&nbsp;run&nbsp;-it&nbsp;-h&nbsp;NEWCONTAINER&nbsp;--volumes-from&nbsp;container-test&nbsp;debian&nbsp;/bin/bash
+<pre class="line-numbers language-shell"><code class="language-shell">$&nbsp;docker&nbsp;run&nbsp;-it&nbsp;-h&nbsp;NEWCONTAINER&nbsp;--volumes-from&nbsp;container-test&nbsp;debian&nbsp;/bin/bash
 root@NEWCONTAINER:/#&nbsp;ls&nbsp;/data
 test-file
 root@NEWCONTAINER:/#
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>值得注意的是不管container-test是否运行，它都会起作用。只要有容器连接Volume，它就不会被删除。</p>
 <h5 id="数据容器"><a href="#数据容器" class="headerlink" title="数据容器"></a>数据容器</h5><p>常见的使用场景是使用纯数据容器来持久化数据库、配置文件或者数据文件等。<a target="_blank" rel="noopener" href="https://docs.docker.com/userguide/dockervolumes/">官方的文档</a>上有详细的解释。例如：</p>
-<pre><code>docker run -it -v /dbdata:/dbdata --name dbdata centos
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">docker run -it -v /dbdata:/dbdata --name dbdata centos
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>该命令将会创建一个已经包含在Dockerfile里定义过Volume的postgres镜像，运行<code>echo</code>命令然后退出。当我们运行<code>docker ps</code>命令时，<code>echo</code>可以帮助我们识别某镜像的用途。我们可以用<code>-volumes-from</code>命令来识别其它容器的Volume：</p>
 <p>创建db1和db2两个容器，并使用–volumes-from挂载dbdata容器中的数据卷</p>
-<pre><code>[root@wls12c /]$ docker run -it --volumes-from dbdata --name db1 centos
+<pre class="line-numbers language-shell"><code class="language-shell">[root@wls12c /]$ docker run -it --volumes-from dbdata --name db1 centos
 [root@wls12c /]$ docker run -it --volumes-from dbdata --name db2 centos
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>这样三个容器任何一个容器在该目录下写入，其它容器都能看见。</p>
 <p>使用数据容器的两个注意点：</p>
 <ul>
@@ -982,7 +982,7 @@ root@NEWCONTAINER:/#
 <li>  不要为了数据容器而使用“最小的镜像”，如<code>busybox</code>或<code>scratch</code>，只使用数据库镜像本身就可以了。你已经拥有该镜像，所以并不需要占用额外的空间。</li>
 </ul>
 <h5 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h5><p>备份dbdata数据卷容器中的数据到主机的当前目录。</p>
-<pre><code>[root@wls12c /]$ docker run --volumes-from dbdata -v $(pwd):/backup --name worker centos tar zcf /backup/backup.tar.gz /dbdata
+<pre class="line-numbers language-shell"><code class="language-shell">[root@wls12c /]$ docker run --volumes-from dbdata -v $(pwd):/backup --name worker centos tar zcf /backup/backup.tar.gz /dbdata
 tar: Removing leading `/' from member names
 [root@wls12c /]$ ls
 b2b            boot    dev   lib         media  net   root     srv   tmp
@@ -993,27 +993,27 @@ drwxr-xr-x root/root         0 2016-08-26 10:51 dbdata/
 -rw-r--r-- root/root         0 2016-08-26 10:40 dbdata/demo
 -rw-r--r-- root/root         6 2016-08-26 10:48 dbdata/test.txt
 -rw-r--r-- root/root         0 2016-08-26 10:51 dbdata/hello
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h5 id="恢复"><a href="#恢复" class="headerlink" title="恢复"></a>恢复</h5><p>创建一个带有数据卷的容器</p>
-<pre><code>[root@wls12c /]$ docker run -v /dbdata/dbdata --name db centos /bin/bash
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@wls12c /]$ docker run -v /dbdata/dbdata --name db centos /bin/bash
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>恢复</p>
-<pre><code>[root@wls12c /]$ docker run --volumes-from db -v $(pwd):/backup  centos tar xf /backup/backup.tar.gz
-</code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">[root@wls12c /]$ docker run --volumes-from db -v $(pwd):/backup  centos tar xf /backup/backup.tar.gz
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h5 id="权限与许可"><a href="#权限与许可" class="headerlink" title="权限与许可"></a>权限与许可</h5><p>通常你需要设置Volume的权限或者为Volume初始化一些默认数据或者配置文件。要注意的关键点是，在Dockerfile的<code>VOLUME</code>指令后的任何东西都不能改变该Volume，比如：</p>
-<pre><code>FROM&nbsp;debian:wheezy
+<pre class="line-numbers language-shell"><code class="language-shell">FROM&nbsp;debian:wheezy
 RUN&nbsp;useradd&nbsp;foo
 VOLUME&nbsp;/data
 RUN&nbsp;touch&nbsp;/data/x
 RUN&nbsp;chown&nbsp;-R&nbsp;foo:foo&nbsp;/data
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>该Docker file不能按预期那样运行，我们本来希望<code>touch</code>命令在镜像的文件系统上运行，但是实际上它是在一个临时容器的Volume上运行。如下所示：</p>
-<pre><code>FROM&nbsp;debian:wheezy
+<pre class="line-numbers language-shell"><code class="language-shell">FROM&nbsp;debian:wheezy
 RUN&nbsp;useradd&nbsp;foo
-RUN&nbsp;mkdir&nbsp;/data&nbsp;&amp;&amp;&nbsp;touch&nbsp;/data/x
+RUN&nbsp;mkdir&nbsp;/data&nbsp;&&&nbsp;touch&nbsp;/data/x
 RUN&nbsp;chown&nbsp;-R&nbsp;foo:foo&nbsp;/data
 VOLUME&nbsp;/data
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Docker可以将镜像中Volume下的文件挂载到Volume下，并设置正确的权限。如果你指定Volume的主机目录将不会出现这种情况。</p>
 <p>如果你没有通过<code>RUN</code>指令设置权限，那么你就需要在容器启动时使用<code>CMD</code>或<code>ENTRYPOINT</code>指令来执行（译者注：CMD指令用于指定一个容器启动时要运行的命令，与RUN类似，只是RUN是镜像在构建时要运行的命令）。</p>
 <h5 id="删除Volumes"><a href="#删除Volumes" class="headerlink" title="删除Volumes"></a>删除Volumes</h5><p>这个功能可能会更加重要，如果你已经使用<code>docker rm</code>来删除你的容器，那可能有很多的孤立的Volume仍在占用着空间。</p>

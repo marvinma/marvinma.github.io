@@ -504,7 +504,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    287
+                    289
                 </div>
                 
 
@@ -536,67 +536,66 @@
 <span id="more"></span>
 
 <p>偷盗别人老动成果，要侵权了。<br>这是同事总结的跳页场景传参的形式。</p>
-<h2 id="umi-router-link-用法"><a href="#umi-router-link-用法" class="headerlink" title="umi - router / link 用法"></a>umi - router / link 用法</h2><pre><code>
-import Link from 'umi/link';
+<h2 id="umi-router-link-用法"><a href="#umi-router-link-用法" class="headerlink" title="umi - router / link 用法"></a>umi - router / link 用法</h2><pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">import</span> Link <span class="token keyword">from</span> <span class="token string">'umi/link'</span><span class="token punctuation">;</span>
 
-/* 普通使用 */
+<span class="token comment" spellcheck="true">/* 普通使用 */</span>
 
-&lt;Link to="/list"&gt;Go to list page&lt;/Link&gt;
+<span class="token operator">&lt;</span>Link to<span class="token operator">=</span><span class="token string">"/list"</span><span class="token operator">></span>Go to list page<span class="token operator">&lt;</span><span class="token operator">/</span>Link<span class="token operator">></span>
 
-/* 带参数 */
+<span class="token comment" spellcheck="true">/* 带参数 */</span>
 
-&lt;Link to="/list?a=b"&gt;Go to list page&lt;/Link&gt;
+<span class="token operator">&lt;</span>Link to<span class="token operator">=</span><span class="token string">"/list?a=b"</span><span class="token operator">></span>Go to list page<span class="token operator">&lt;</span><span class="token operator">/</span>Link<span class="token operator">></span>
 
-/* 包含子组件 */
+<span class="token comment" spellcheck="true">/* 包含子组件 */</span>
 
-&lt;Link to="/list?a=b"&gt;&lt;button&gt;Go to list page&lt;/button&gt;&lt;/Link&gt;
-</code></pre>
+<span class="token operator">&lt;</span>Link to<span class="token operator">=</span><span class="token string">"/list?a=b"</span><span class="token operator">></span><span class="token operator">&lt;</span>button<span class="token operator">></span>Go to list page<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>Link<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="umi-router"><a href="#umi-router" class="headerlink" title="umi/router"></a>umi/router</h3><h4 id="router-push-path"><a href="#router-push-path" class="headerlink" title="router.push(path)"></a>router.push(path)</h4><p>推一个新的页面到 history 里。</p>
-<pre><code>
-import router from 'umi/router';
+<pre class="line-numbers language-js"><code class="language-js">
+<span class="token keyword">import</span> router <span class="token keyword">from</span> <span class="token string">'umi/router'</span><span class="token punctuation">;</span>
 
-// 普通跳转，不带参数
+<span class="token comment" spellcheck="true">// 普通跳转，不带参数</span>
 
-router.push('/list');
+router<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">'/list'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-// 带参数
+<span class="token comment" spellcheck="true">// 带参数</span>
 
-router.push('/list?a=b');
+router<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">'/list?a=b'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-// 带参数，并且参数会显示在url中
+<span class="token comment" spellcheck="true">// 带参数，并且参数会显示在url中</span>
 
-router.push({
+router<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
 
-&nbsp; pathname: '/list',
+<span class="token operator">&amp;</span>nbsp<span class="token punctuation">;</span> pathname<span class="token punctuation">:</span> <span class="token string">'/list'</span><span class="token punctuation">,</span>
 
-&nbsp; query: {
+<span class="token operator">&amp;</span>nbsp<span class="token punctuation">;</span> query<span class="token punctuation">:</span> <span class="token punctuation">{</span>
 
-&nbsp; &nbsp; a: 'b',
+<span class="token operator">&amp;</span>nbsp<span class="token punctuation">;</span> <span class="token operator">&amp;</span>nbsp<span class="token punctuation">;</span> a<span class="token punctuation">:</span> <span class="token string">'b'</span><span class="token punctuation">,</span>
 
-&nbsp; },
+<span class="token operator">&amp;</span>nbsp<span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
 
-});
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-// 带参数，但是参数不会显示在url中
+<span class="token comment" spellcheck="true">// 带参数，但是参数不会显示在url中</span>
 
-router.push({
+router<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
 
-&nbsp; pathname: '/list',
+<span class="token operator">&amp;</span>nbsp<span class="token punctuation">;</span> pathname<span class="token punctuation">:</span> <span class="token string">'/list'</span><span class="token punctuation">,</span>
 
-&nbsp; state: { // state字段可以自定义，如用params等也可以
+<span class="token operator">&amp;</span>nbsp<span class="token punctuation">;</span> state<span class="token punctuation">:</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// state字段可以自定义，如用params等也可以</span>
 
-&nbsp; &nbsp; a: 'b',
+<span class="token operator">&amp;</span>nbsp<span class="token punctuation">;</span> <span class="token operator">&amp;</span>nbsp<span class="token punctuation">;</span> a<span class="token punctuation">:</span> <span class="token string">'b'</span><span class="token punctuation">,</span>
 
-&nbsp; },
+<span class="token operator">&amp;</span>nbsp<span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
 
-});
-</code></pre>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>list页面对参数的接收取值：</strong></p>
-<pre><code>
-const { location: { query, state } } = this.props;**
+<pre class="line-numbers language-js"><code class="language-js">
+<span class="token keyword">const</span> <span class="token punctuation">{</span> location<span class="token punctuation">:</span> <span class="token punctuation">{</span> query<span class="token punctuation">,</span> state <span class="token punctuation">}</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">;</span><span class="token operator">**</span>
 
-console.log(query.a, state.a);**
-</code></pre>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>query<span class="token punctuation">.</span>a<span class="token punctuation">,</span> state<span class="token punctuation">.</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">**</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="router-replace-path"><a href="#router-replace-path" class="headerlink" title="router.replace(path)"></a>router.replace(path)</h4><p>替换当前页面，参数和&nbsp;<a target="_blank" rel="noopener" href="https://umijs.org/zh/api/#router.push(path)">router.push()</a>&nbsp;相同。</p>
 <h4 id="router-go-n"><a href="#router-go-n" class="headerlink" title="router.go(n)"></a>router.go(n)</h4><p>往前或往后跳指定页数。</p>
 <h4 id="router-goBack"><a href="#router-goBack" class="headerlink" title="router.goBack()"></a>router.goBack()</h4><p>后退一页。</p>

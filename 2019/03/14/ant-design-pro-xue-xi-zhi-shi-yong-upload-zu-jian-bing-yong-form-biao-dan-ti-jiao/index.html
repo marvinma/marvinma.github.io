@@ -534,9 +534,9 @@
                 <p>阿里粑粑开源的管理框架<a target="_blank" rel="noopener" href="https://pro.ant.design/index-cn">Ant Design Pro</a>使用记录之表单提交。<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/6dddd745231b">简书地址</a></p>
 <span id="more"></span>
 
-<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-2de1763be8e2ada8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="upload view"></p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-2c26de282b260878.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="http network"></p>
-<p><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-61573772801123f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="api-debug"></p>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="/loading.gif" data-original="/images/fontend/antd-upload1.png" alt="upload view"></p>
+<p><img src="/loading.gif" data-original="/images/fontend/antd-upload2.png" alt="http network"></p>
+<p><img src="/loading.gif" data-original="/images/fontend/antd-upload3.png" alt="api-debug"></p>
 <h3 id="实现思路和代码"><a href="#实现思路和代码" class="headerlink" title="实现思路和代码"></a>实现思路和代码</h3><p>利用upload提供的<code>beforeUpload</code>属性，先将文件放到state里，随后和form表单一起提交。<br>先上干货，再解释一些走过的弯弯绕</p>
 <blockquote>
 <p>接口代码<br>接受实体类</p>
@@ -835,7 +835,7 @@ api.upload这个方法在antd pro里是隔离定义再service目录下的，内�
 </li>
 <li><em>需要注意的是这里得直接使用fetch方法，不能使用框架封装的request发起请求，因为request里封装的content-type类型是application/json</em>*</li>
 </ul>
-<p>在and design pro2.x的版本里，request方法已经兼容了这个处理<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-b5ad8e0ecda860c5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="2.x request"></p>
+<p>在and design pro2.x的版本里，request方法已经兼容了这个处理<br><img src="/loading.gif" data-original="/images/fontend/antd-upload4.png" alt="2.x request"></p>
 <p>在antd1.x的版本里，也可以使用reqeust里封装好的<code>postFormWithProgress</code>方法。比如这个用法：</p>
 <pre class="line-numbers language-js"><code class="language-js"><span class="token operator">&lt;</span>FormItem label<span class="token operator">=</span><span class="token string">"安装包地址"</span> labelCol<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">{</span> span<span class="token punctuation">:</span> <span class="token number">3</span> <span class="token punctuation">}</span><span class="token punctuation">}</span> wrapperCol<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">{</span> span<span class="token punctuation">:</span> <span class="token number">9</span> <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">></span>
           <span class="token punctuation">{</span>

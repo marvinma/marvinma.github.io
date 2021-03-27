@@ -512,14 +512,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.4k
+                    2.2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    12 分
+                    11 分
                 </div>
                 
 
@@ -542,517 +542,546 @@
                 <p>WebFlux响应式编程好记性不如烂笔头<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2a484e7bbce3">简书地址</a></p>
 <span id="more"></span>
 <h2 id="第五节-webflux服务端开发讲解"><a href="#第五节-webflux服务端开发讲解" class="headerlink" title="第五节  webflux服务端开发讲解"></a>第五节  webflux服务端开发讲解</h2><ul>
-<li>5.1 异步servlet<br>1、为什么要使用 异步servlet？<br>回答：同步servlet一直占用服务器tomcat的线程数，是tomcat无暇接受更多的请求。因此有必要使用异步servlet。<br>2、同步servlet阻塞了什么？<br>也就是说同步servlet其实是阻塞了tomcat的servlet线程。<br>3、异步servlet是怎么工作的？<br>先看一个同步servlet的例子:<br>```<br>import java.io.IOException;<br>import java.util.concurrent.TimeUnit;<br>import javax.servlet.ServletException;<br>import javax.servlet.annotation.WebServlet;<br>import javax.servlet.http.HttpServlet;<br>import javax.servlet.http.HttpServletRequest;<br>import javax.servlet.http.HttpServletResponse;</li>
+<li>5.1 异步servlet<br>1、为什么要使用 异步servlet？<br>回答：同步servlet一直占用服务器tomcat的线程数，是tomcat无暇接受更多的请求。因此有必要使用异步servlet。<br>2、同步servlet阻塞了什么？<br>也就是说同步servlet其实是阻塞了tomcat的servlet线程。<br>3、异步servlet是怎么工作的？<br>先看一个同步servlet的例子:</li>
 </ul>
-<p>/**</p>
-<ul>
-<li><p>Servlet implementation class SyncServlet</p>
-</li>
-<li><p>/<br>@WebServlet(“/SyncServlet”)<br>public class SyncServlet extends HttpServlet {<br>  private static final long serialVersionUID = 1L;</p>
-<p>  /**</p>
-<ul>
-<li>@see HttpServlet#HttpServlet()</li>
-<li>/<br>public SyncServlet() {<br>  super();<br>  // TODO Auto-generated constructor stub<br>}</li>
-</ul>
-<p>  /**</p>
-<ul>
-<li><p>@see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse</p>
-</li>
-<li><pre><code> response)
-</code></pre>
-</li>
-<li><p>/<br>protected void doGet(HttpServletRequest request,</p>
-<pre><code>  HttpServletResponse response) throws ServletException, IOException {
-</code></pre>
-<p>  long t1 = System.currentTimeMillis();</p>
-<p>  // 执行业务代码<br>  doSomeThing(request, response);</p>
-<p>  System.out.println(“sync use:” + (System.currentTimeMillis() - t1));<br>}</p>
-</li>
-</ul>
-<p>  private void doSomeThing(HttpServletRequest request,</p>
-<pre><code>      HttpServletResponse response) throws IOException {
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>IOException<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span>TimeUnit<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>ServletException<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>WebServlet<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span>HttpServlet<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span>HttpServletRequest<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span>HttpServletResponse<span class="token punctuation">;</span>
 
-  // 模拟耗时操作
-  try {
-      TimeUnit.SECONDS.sleep(5);
-  } catch (InterruptedException e) {
-  }
+<span class="token comment" spellcheck="true">/**
+ * Servlet implementation class SyncServlet
+ */</span>
+<span class="token annotation punctuation">@WebServlet</span><span class="token punctuation">(</span><span class="token string">"/SyncServlet"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SyncServlet</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServlet</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> serialVersionUID <span class="token operator">=</span> 1L<span class="token punctuation">;</span>
 
-  //
-  response.getWriter().append("done");
-</code></pre>
-<p>  }</p>
-<p>  /**</p>
-<ul>
-<li>@see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse</li>
-<li><pre><code> response)
-</code></pre>
-</li>
-<li>/<br>protected void doPost(HttpServletRequest request,<pre><code>  HttpServletResponse response) throws ServletException, IOException {
-</code></pre>
-  // TODO Auto-generated method stub<br>  doGet(request, response);<br>}<br>}<pre><code>再模拟一个异步servlet的例子：
-</code></pre>
-import java.io.IOException;<br>import java.util.concurrent.CompletableFuture;<br>import java.util.concurrent.TimeUnit;</li>
-</ul>
-</li>
-</ul>
-<p>import javax.servlet.AsyncContext;<br>import javax.servlet.ServletException;<br>import javax.servlet.ServletRequest;<br>import javax.servlet.ServletResponse;<br>import javax.servlet.annotation.WebServlet;<br>import javax.servlet.http.HttpServlet;<br>import javax.servlet.http.HttpServletRequest;<br>import javax.servlet.http.HttpServletResponse;</p>
-<p>/**</p>
-<ul>
-<li><p>Servlet implementation class AsyncServlet</p>
-</li>
-<li><p>/<br>@WebServlet(asyncSupported = true, urlPatterns = { “/AsyncServlet” })<br>public class AsyncServlet extends HttpServlet {<br>  private static final long serialVersionUID = 1L;</p>
-<p>  /**</p>
-<ul>
-<li>@see HttpServlet#HttpServlet()</li>
-<li>/<br>public AsyncServlet() {<br>  super();<br>  // TODO Auto-generated constructor stub<br>}</li>
-</ul>
-<p>  /**</p>
-<ul>
-<li><p>@see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse</p>
-</li>
-<li><pre><code> response)
-</code></pre>
-</li>
-<li><p>/<br>protected void doGet(HttpServletRequest request,</p>
-<pre><code>  HttpServletResponse response) throws ServletException, IOException {
-</code></pre>
-<p>  long t1 = System.currentTimeMillis();</p>
-<p>  // 开启异步<br>  AsyncContext asyncContext = request.startAsync();</p>
-<p>  // 执行业务代码<br>  CompletableFuture.runAsync(() -&gt; doSomeThing(asyncContext,</p>
-<pre><code>      asyncContext.getRequest(), asyncContext.getResponse()));
-</code></pre>
-<p>  System.out.println(“async use:” + (System.currentTimeMillis() - t1));<br>}</p>
-</li>
-</ul>
-<p>  private void doSomeThing(AsyncContext asyncContext,</p>
-<pre><code>      ServletRequest servletRequest, ServletResponse servletResponse) {
+    <span class="token comment" spellcheck="true">/**
+     * @see HttpServlet#HttpServlet()
+     */</span>
+    <span class="token keyword">public</span> <span class="token function">SyncServlet</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// TODO Auto-generated constructor stub</span>
+    <span class="token punctuation">}</span>
 
-  // 模拟耗时操作
-  try {
-      TimeUnit.SECONDS.sleep(5);
-  } catch (InterruptedException e) {
-  }
+    <span class="token comment" spellcheck="true">/**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doGet</span><span class="token punctuation">(</span>HttpServletRequest request<span class="token punctuation">,</span>
+            HttpServletResponse response<span class="token punctuation">)</span> <span class="token keyword">throws</span> ServletException<span class="token punctuation">,</span> IOException <span class="token punctuation">{</span>
+        <span class="token keyword">long</span> t1 <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  //
-  try {
-      servletResponse.getWriter().append("done");
-  } catch (IOException e) {
-      e.printStackTrace();
-  }
+        <span class="token comment" spellcheck="true">// 执行业务代码</span>
+        <span class="token function">doSomeThing</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  // 业务代码处理完毕, 通知结束
-  asyncContext.complete();
-</code></pre>
-<p>  }</p>
-<p>  /**</p>
-<ul>
-<li>@see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse</li>
-<li><pre><code> response)
-</code></pre>
-</li>
-<li>/<br>protected void doPost(HttpServletRequest request,<pre><code>  HttpServletResponse response) throws ServletException, IOException {
-</code></pre>
-  // TODO Auto-generated method stub<br>  doGet(request, response);<br>}<br>}<br>```<br>前后两次在浏览器上访问<a target="_blank" rel="noopener" href="http://localhost:8080/SyncServlet%E5%92%8Chttp://localhost:8080/AsyncServlet%EF%BC%8C%E5%9C%A8%E5%89%8D%E5%8F%B0%E7%9C%8B%E9%83%BD%E6%98%AF%E5%A4%A7%E7%BA%A65s%E8%BF%94%E5%9B%9E%E3%80%82">http://localhost:8080/SyncServlet和http://localhost:8080/AsyncServlet，在前台看都是大约5s返回。</a><br>但是查看服务端控制台：<blockquote>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"sync use:"</span> <span class="token operator">+</span> <span class="token punctuation">(</span>System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> t1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">doSomeThing</span><span class="token punctuation">(</span>HttpServletRequest request<span class="token punctuation">,</span>
+            HttpServletResponse response<span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException <span class="token punctuation">{</span>
+
+        <span class="token comment" spellcheck="true">// 模拟耗时操作</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">//</span>
+        response<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"done"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doPost</span><span class="token punctuation">(</span>HttpServletRequest request<span class="token punctuation">,</span>
+            HttpServletResponse response<span class="token punctuation">)</span> <span class="token keyword">throws</span> ServletException<span class="token punctuation">,</span> IOException <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// TODO Auto-generated method stub</span>
+        <span class="token function">doGet</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>再模拟一个异步servlet的例子：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>io<span class="token punctuation">.</span>IOException<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span>CompletableFuture<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span>TimeUnit<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>AsyncContext<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>ServletException<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>ServletRequest<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>ServletResponse<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>WebServlet<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span>HttpServlet<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span>HttpServletRequest<span class="token punctuation">;</span>
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span>HttpServletResponse<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">/**
+ * Servlet implementation class AsyncServlet
+ */</span>
+<span class="token annotation punctuation">@WebServlet</span><span class="token punctuation">(</span>asyncSupported <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">,</span> urlPatterns <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token string">"/AsyncServlet"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AsyncServlet</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServlet</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> serialVersionUID <span class="token operator">=</span> 1L<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * @see HttpServlet#HttpServlet()
+     */</span>
+    <span class="token keyword">public</span> <span class="token function">AsyncServlet</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// TODO Auto-generated constructor stub</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doGet</span><span class="token punctuation">(</span>HttpServletRequest request<span class="token punctuation">,</span>
+            HttpServletResponse response<span class="token punctuation">)</span> <span class="token keyword">throws</span> ServletException<span class="token punctuation">,</span> IOException <span class="token punctuation">{</span>
+        <span class="token keyword">long</span> t1 <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 开启异步</span>
+        AsyncContext asyncContext <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">startAsync</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 执行业务代码</span>
+        CompletableFuture<span class="token punctuation">.</span><span class="token function">runAsync</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token function">doSomeThing</span><span class="token punctuation">(</span>asyncContext<span class="token punctuation">,</span>
+                asyncContext<span class="token punctuation">.</span><span class="token function">getRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> asyncContext<span class="token punctuation">.</span><span class="token function">getResponse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"async use:"</span> <span class="token operator">+</span> <span class="token punctuation">(</span>System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> t1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">doSomeThing</span><span class="token punctuation">(</span>AsyncContext asyncContext<span class="token punctuation">,</span>
+            ServletRequest servletRequest<span class="token punctuation">,</span> ServletResponse servletResponse<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token comment" spellcheck="true">// 模拟耗时操作</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">//</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            servletResponse<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"done"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 业务代码处理完毕, 通知结束</span>
+        asyncContext<span class="token punctuation">.</span><span class="token function">complete</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doPost</span><span class="token punctuation">(</span>HttpServletRequest request<span class="token punctuation">,</span>
+            HttpServletResponse response<span class="token punctuation">)</span> <span class="token keyword">throws</span> ServletException<span class="token punctuation">,</span> IOException <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// TODO Auto-generated method stub</span>
+        <span class="token function">doGet</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>前后两次在浏览器上访问<a target="_blank" rel="noopener" href="http://localhost:8080/SyncServlet%E5%92%8Chttp://localhost:8080/AsyncServlet%EF%BC%8C%E5%9C%A8%E5%89%8D%E5%8F%B0%E7%9C%8B%E9%83%BD%E6%98%AF%E5%A4%A7%E7%BA%A65s%E8%BF%94%E5%9B%9E%E3%80%82">http://localhost:8080/SyncServlet和http://localhost:8080/AsyncServlet，在前台看都是大约5s返回。</a><br>但是查看服务端控制台：</p>
+<blockquote>
 <p>sync use:5002<br>async use:16</p>
 </blockquote>
-</li>
-</ul>
-</li>
-</ul>
 <p>可以看到，同步是5s，异步的是16ms返回了，这样tomcat就又有时间处理别的业务了，也就是提高了服务器的并发。</p>
 <ul>
-<li>5.2 Mono和Flux返回流接口<br>reactor = java8的流 + java9的响应式流<br>```<br>import java.util.concurrent.TimeUnit;</li>
+<li>5.2 Mono和Flux返回流接口<br>reactor = java8的流 + java9的响应式流</li>
 </ul>
-<p>import org.reactivestreams.Subscriber;<br>import org.reactivestreams.Subscription;</p>
-<p>import reactor.core.publisher.Flux;</p>
-<p>public class ReactorDemo {</p>
-<pre><code>public static void main(String[] args) {
-    // reactor = jdk8 stream + jdk9 reactive stream
-    // Mono 0-1个元素
-    // Flux 0-N个元素
-    String[] strs = { "1", "2", "3" };
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span>TimeUnit<span class="token punctuation">;</span>
 
-    // 2. 定义订阅者
-    Subscriber&lt;Integer&gt; subscriber = new Subscriber&lt;Integer&gt;() {
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>reactivestreams<span class="token punctuation">.</span>Subscriber<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>reactivestreams<span class="token punctuation">.</span>Subscription<span class="token punctuation">;</span>
 
-        private Subscription subscription;
+<span class="token keyword">import</span> reactor<span class="token punctuation">.</span>core<span class="token punctuation">.</span>publisher<span class="token punctuation">.</span>Flux<span class="token punctuation">;</span>
 
-        @Override
-        public void onSubscribe(Subscription subscription) {
-            // 保存订阅关系, 需要用它来给发布者响应
-            this.subscription = subscription;
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ReactorDemo</span> <span class="token punctuation">{</span>
 
-            // 请求一个数据
-            this.subscription.request(1);
-        }
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// reactor = jdk8 stream + jdk9 reactive stream</span>
+        <span class="token comment" spellcheck="true">// Mono 0-1个元素</span>
+        <span class="token comment" spellcheck="true">// Flux 0-N个元素</span>
+        String<span class="token punctuation">[</span><span class="token punctuation">]</span> strs <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token string">"1"</span><span class="token punctuation">,</span> <span class="token string">"2"</span><span class="token punctuation">,</span> <span class="token string">"3"</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-        @Override
-        public void onNext(Integer item) {
-            // 接受到一个数据, 处理
-            System.out.println("接受到数据: " + item);
+        <span class="token comment" spellcheck="true">// 2. 定义订阅者</span>
+        Subscriber<span class="token operator">&lt;</span>Integer<span class="token operator">></span> subscriber <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Subscriber</span><span class="token operator">&lt;</span>Integer<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 
-            try {
-                TimeUnit.SECONDS.sleep(3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            
-            // 处理完调用request再请求一个数据
-            this.subscription.request(1);
+            <span class="token keyword">private</span> Subscription subscription<span class="token punctuation">;</span>
 
-            // 或者 已经达到了目标, 调用cancel告诉发布者不再接受数据了
-            // this.subscription.cancel();
-        }
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onSubscribe</span><span class="token punctuation">(</span>Subscription subscription<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 保存订阅关系, 需要用它来给发布者响应</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>subscription <span class="token operator">=</span> subscription<span class="token punctuation">;</span>
 
-        @Override
-        public void onError(Throwable throwable) {
-            // 出现了异常(例如处理数据的时候产生了异常)
-            throwable.printStackTrace();
+                <span class="token comment" spellcheck="true">// 请求一个数据</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>subscription<span class="token punctuation">.</span><span class="token function">request</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
 
-            // 我们可以告诉发布者, 后面不接受数据了
-            this.subscription.cancel();
-        }
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onNext</span><span class="token punctuation">(</span>Integer item<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 接受到一个数据, 处理</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"接受到数据: "</span> <span class="token operator">+</span> item<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-        @Override
-        public void onComplete() {
-            // 全部数据处理完了(发布者关闭了)
-            System.out.println("处理完了!");
-        }
+                <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                    TimeUnit<span class="token punctuation">.</span>SECONDS<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                
+                <span class="token comment" spellcheck="true">// 处理完调用request再请求一个数据</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>subscription<span class="token punctuation">.</span><span class="token function">request</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    };
-    
-    // 这里就是jdk8的stream
-    Flux.fromArray(strs).map(s -&gt; Integer.parseInt(s))
-    // 最终操作
-    // 这里就是jdk9的reactive stream
-    .subscribe(subscriber);
+                <span class="token comment" spellcheck="true">// 或者 已经达到了目标, 调用cancel告诉发布者不再接受数据了</span>
+                <span class="token comment" spellcheck="true">// this.subscription.cancel();</span>
+            <span class="token punctuation">}</span>
 
-}
-</code></pre>
-<p>}</p>
-<pre><code>* 5.2  完整的fluxweb
-步骤：
-1、添加依赖
-在https://start.spring.io/上选择Reactive MongoDB这个dependencies，按下【Genarate Project】按钮，下载demo.zip,查看mongodb的依赖，加入到pom文件中。
-</code></pre>
-<dependency>
-    <groupid>org.springframework.boot</groupid>
-    <artifactid>spring-boot-starter-data-mongodb-reactive</artifactid>
-</dependency>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onError</span><span class="token punctuation">(</span>Throwable throwable<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 出现了异常(例如处理数据的时候产生了异常)</span>
+                throwable<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<!-- lombok -->
-<dependency>
-     <groupid>org.projectlombok</groupid>
-     <artifactid>lombok</artifactid>
-     <scope>provided</scope>
-</dependency>
-```
-2、启动类application上添加mongodb支持注解`@EnableReactiveMongoRepositories`
-3、定义对象
-```
-@Document(collection = "user")
-@Data
-public class User {
-    @Id
-    private String id;
-    private String name;
-    private int age;
-}
-```
-4、定义仓库repository
-创建UserRepository接口，继承`ReactiveMongoRepository`，并使用`@Repository`注解。
-5、定义controller
-```
-@RestController
-@RequestMapping("/user")
-public class UserController {
+                <span class="token comment" spellcheck="true">// 我们可以告诉发布者, 后面不接受数据了</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>subscription<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
 
-<pre><code>private final UserRepository userRepository;
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onComplete</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">// 全部数据处理完了(发布者关闭了)</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"处理完了!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
 
-//官方推荐使用构造函数的方式注入依赖的bean
-public UserController(UserRepository userRepository) {
-    this.userRepository = userRepository;
-}
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+        
+        <span class="token comment" spellcheck="true">// 这里就是jdk8的stream</span>
+        Flux<span class="token punctuation">.</span><span class="token function">fromArray</span><span class="token punctuation">(</span>strs<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>s <span class="token operator">-</span><span class="token operator">></span> Integer<span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token comment" spellcheck="true">// 最终操作</span>
+        <span class="token comment" spellcheck="true">// 这里就是jdk9的reactive stream</span>
+        <span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>subscriber<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-@GetMapping("/")
-public Flux&lt;User&gt; findAll() {
-    return userRepository.findAll();
-}
-
-@GetMapping(value = "/stream/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-public Flux&lt;User&gt; findAllByStream() {
-    return userRepository.findAll();
-}
-</code></pre>
-<p>}</p>
-<pre><code>6、本地安装配置mongodb
-先[下载](https://www.mongodb.com/download-center#enterprise)mongodb，安装配置，根据平台自行查询，我的windows平台，参考的[https://www.cnblogs.com/weschen/p/8213746.html](https://www.cnblogs.com/weschen/p/8213746.html)
-
-![选择custom修改安装位置](https://upload-images.jianshu.io/upload_images/4109786-f984ac856546d930.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-![选择数据库和log位置](https://upload-images.jianshu.io/upload_images/4109786-f024c2720a7e7be6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-![next](https://upload-images.jianshu.io/upload_images/4109786-c87c9001a06477e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-![next](https://upload-images.jianshu.io/upload_images/4109786-f3dba18c0d0d6dec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-执行`mongod --dbpath D:\MongoDB\data\db --logpath=D:\MongoDB\log\mongodb.log --logappend`启动mongodb
-![启动mongodb](https://upload-images.jianshu.io/upload_images/4109786-fada44b9b12421d6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-![命令行链接](https://upload-images.jianshu.io/upload_images/4109786-821aa889fc283570.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-![测试启动](https://upload-images.jianshu.io/upload_images/4109786-1b7dc632ce4dd25a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-7、mongodb数据库配置mongodb，在application.properties里添加如下配置
-</code></pre>
-<p>spring.data.mongodb.uri=mongodb://localhost:27017/webflux</p>
-<pre><code>8、启动项目并用客户端访问验证
-![http://127.0.0.1:8080/user](https://upload-images.jianshu.io/upload_images/4109786-5d7ea8a8a0bec5f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-![http://127.0.0.1:8080/user/stream/all](https://upload-images.jianshu.io/upload_images/4109786-f41e88b6cc1d8857.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-后续加入CURD的普通接口和stream接口。
-添加validation
-参数check，统一exception抛出及切面拦截。
-具体代码参考[]()
-全局异常：
-</code></pre>
-<p>import lombok.Data;</p>
-<p>/**</p>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
-<li><p>精诚所至，金石为开。</p>
-</li>
-<li><p>石の上にも三年;陽気の発する所金石亦透る。</p>
-</li>
-<li><p>Faith moves mountains.</p>
-</li>
-<li></li>
-<li><p>@author 马海强</p>
-</li>
-<li><p>@create 2018-07-10 22:54</p>
-</li>
-<li><p>@desc ${DESCRIPTION}</p>
-</li>
-<li><p>*/<br>@Data<br>public class CheckException extends RuntimeException {<br>  private static final long serialVersionUID = 1L;</p>
-<p>  /**</p>
-<ul>
-<li>出错字段的名字</li>
-<li>/<br>private String fieldName;</li>
+<li>5.2  完整的fluxweb<br>步骤：<br>1、添加依赖<br>在<a target="_blank" rel="noopener" href="https://start.spring.io/%E4%B8%8A%E9%80%89%E6%8B%A9Reactive">https://start.spring.io/上选择Reactive</a> MongoDB这个dependencies，按下【Genarate Project】按钮，下载demo.zip,查看mongodb的依赖，加入到pom文件中。</li>
 </ul>
-<p>  /**</p>
-<ul>
-<li>出错字段的值</li>
-<li>/<br>private String fieldValue;</li>
-</ul>
-<p>  public CheckException() {</p>
-<pre><code>  super();
-</code></pre>
-<p>  }</p>
-<p>  public CheckException(String message, Throwable cause,</p>
-<pre><code>      boolean enableSuppression, boolean writableStackTrace) {
-  super(message, cause, enableSuppression, writableStackTrace);
-</code></pre>
-<p>  }</p>
-<p>  public CheckException(String message, Throwable cause) {</p>
-<pre><code>  super(message, cause);
-</code></pre>
-<p>  }</p>
-<p>  public CheckException(String message) {</p>
-<pre><code>  super(message);
-</code></pre>
-<p>  }</p>
-<p>  public CheckException(Throwable cause) {</p>
-<pre><code>  super(cause);
-</code></pre>
-<p>  }</p>
-<p>  public CheckException(String fieldName, String fieldValue) {</p>
-<pre><code>  super();
-  this.fieldName = fieldName;
-  this.fieldValue = fieldValue;
-</code></pre>
-<p>  }<br>}</p>
-<pre><code>参数检查公用方法：
-</code></pre>
-<p>import com.marvin.springboot.webflux.demo.exception.CheckException;</p>
-</li>
-</ul>
-<p>import java.util.stream.Stream;</p>
-<p>/**</p>
-<ul>
-<li><p>精诚所至，金石为开。</p>
-</li>
-<li><p>石の上にも三年;陽気の発する所金石亦透る。</p>
-</li>
-<li><p>Faith moves mountains.</p>
-</li>
-<li></li>
-<li><p>@author 马海强</p>
-</li>
-<li><p>@create 2018-07-10 22:53</p>
-</li>
-<li><p>@desc tool</p>
-</li>
-<li><p>*/<br>public class CheckUtil {</p>
-<p>  private static final String[] INVALID_NAMES = {“admin”, “guanliyuan”};</p>
-<p>  /**</p>
-<ul>
-<li>用户名校验，不成功时抛出异常</li>
-<li>@param value</li>
-<li>/<br>public static void checkUserName(String value) {<br>  Stream.of(INVALID_NAMES).filter(name -&gt; name.equalsIgnoreCase(value))<pre><code>      .findAny().ifPresent(name -&gt; {
-          throw new CheckException(name, value);
-</code></pre>
-  });<br>}<br>}<pre><code>异常拦截切面：
-</code></pre>
-import com.marvin.springboot.webflux.demo.exception.CheckException;<br>import org.springframework.http.HttpStatus;<br>import org.springframework.http.ResponseEntity;<br>import org.springframework.web.bind.annotation.ControllerAdvice;<br>import org.springframework.web.bind.annotation.ExceptionHandler;<br>import org.springframework.web.bind.support.WebExchangeBindException;</li>
-</ul>
-</li>
-</ul>
-<p>/**</p>
-<ul>
-<li><p>精诚所至，金石为开。</p>
-</li>
-<li><p>石の上にも三年;陽気の発する所金石亦透る。</p>
-</li>
-<li><p>Faith moves mountains.</p>
-</li>
-<li></li>
-<li><p>@author 马海强</p>
-</li>
-<li><p>@create 2018-07-10 22:43</p>
-</li>
-<li><p>@desc 异常处理切面</p>
-</li>
-<li><p>*/<br>@ControllerAdvice<br>public class CheckAdvice {</p>
-<p>  @ExceptionHandler(WebExchangeBindException.class)<br>  public ResponseEntity handleBindException(WebExchangeBindException e) {</p>
-<pre><code>  return new ResponseEntity&lt;String&gt;(toStr(e), HttpStatus.BAD_REQUEST);
-</code></pre>
-<p>  }</p>
-<p>  @ExceptionHandler(CheckException.class)<br>  public ResponseEntity handleBindException(CheckException e) {</p>
-<pre><code>  return new ResponseEntity&lt;String&gt;(toStr(e), HttpStatus.BAD_REQUEST);
-</code></pre>
-<p>  }</p>
-<p>  /**</p>
-<ul>
-<li>把校验异常转换成字符串</li>
-<li>@param ex</li>
-<li>@return</li>
-<li>/<br>private String toStr(WebExchangeBindException ex) {<br>  return ex.getFieldErrors().stream().map(e -&gt; e.getField() + “:” + e.getDefaultMessage()).reduce(“”, (s1, s2) -&gt; s1 + “\n” + s2);<br>}</li>
-</ul>
-<p>  /**</p>
-<ul>
-<li>把校验异常转换成字符串</li>
-<li>@param ex</li>
-<li>@return</li>
-<li>/<br>private String toStr(CheckException ex) {<br>  return ex.getFieldName() + “:错误的值 “ + ex.getFieldValue();<br>}<br>}<pre><code>controller层加校验：
-</code></pre>
-/**</li>
-<li>修改数据</li>
-<li>存在的时候返回200，数据不存在的话返回404</li>
-<li>/<br>@PutMapping(“/{id}”)<br>public Mono&lt;ResponseEntity<user>&gt; updateUser(@PathVariable(“id”) String id, @Valid @RequestBody User user) {<br>  CheckUtil.checkUserName(user.getName());<br>  return this.userRepository.findById(id)<pre><code>      //flatMat： 操作数据
-  .flatMap(u -&gt; {
-      u.setAge(user.getAge());
-      u.setName(user.getName());
-      return this.userRepository.save(u);
-  })
-      //map：转换数据
-  .map(u -&gt; new ResponseEntity&lt;&gt;(u, HttpStatus.OK)).defaultIfEmpty(new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND));
-</code></pre>
-}<br>```<br>测试：<br><img src="/loading.gif" data-original="https://upload-images.jianshu.io/upload_images/4109786-5798865b82c0013d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="参数校验"></user></li>
-</ul>
-</li>
-<li><p>5.3 RouterFunction模式<br><strong>实现基本的增删改查</strong><br>除了上一节的User实体类，和UserRepository接口类两个，新建一个UserHandler类，内容如下：<br>```<br>import com.marvin.springboot.webfluxrouter.router.domain.User;<br>import com.marvin.springboot.webfluxrouter.router.repository.UserRepository;<br>import org.springframework.http.MediaType;<br>import org.springframework.stereotype.Component;<br>import org.springframework.web.reactive.function.server.ServerRequest;<br>import org.springframework.web.reactive.function.server.ServerResponse;<br>import reactor.core.publisher.Mono;</p>
-</li>
-</ul>
-<p>import javax.annotation.Resource;</p>
-<p>/**</p>
-<ul>
-<li>精诚所至，金石为开。</li>
-<li>石の上にも三年;陽気の発する所金石亦透る。</li>
-<li>Faith moves mountains.</li>
-<li></li>
-<li>@author 马海强</li>
-<li>@create 2018-07-26 22:32</li>
-<li>@desc UserHandler </li>
-<li>*/</li>
-</ul>
-<p>@Component<br>public class UserHandler {</p>
-<pre><code>@Resource
-private UserRepository userRepository;
+<pre class="line-numbers language-java"><code class="language-java"><span class="token operator">&lt;</span>dependency<span class="token operator">></span>
+    <span class="token operator">&lt;</span>groupId<span class="token operator">></span>org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>boot<span class="token operator">&lt;</span><span class="token operator">/</span>groupId<span class="token operator">></span>
+    <span class="token operator">&lt;</span>artifactId<span class="token operator">></span>spring<span class="token operator">-</span>boot<span class="token operator">-</span>starter<span class="token operator">-</span>data<span class="token operator">-</span>mongodb<span class="token operator">-</span>reactive<span class="token operator">&lt;</span><span class="token operator">/</span>artifactId<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>dependency<span class="token operator">></span>
 
-/**
- * 得到所有用户
- * @param request
- * @return
- */
-public Mono&lt;ServerResponse&gt; getAllUser(ServerRequest request) {
-    return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(userRepository.findAll(), User.class);
-}
+<span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> lombok <span class="token operator">--</span><span class="token operator">></span>
+<span class="token operator">&lt;</span>dependency<span class="token operator">></span>
+     <span class="token operator">&lt;</span>groupId<span class="token operator">></span>org<span class="token punctuation">.</span>projectlombok<span class="token operator">&lt;</span><span class="token operator">/</span>groupId<span class="token operator">></span>
+     <span class="token operator">&lt;</span>artifactId<span class="token operator">></span>lombok<span class="token operator">&lt;</span><span class="token operator">/</span>artifactId<span class="token operator">></span>
+     <span class="token operator">&lt;</span>scope<span class="token operator">></span>provided<span class="token operator">&lt;</span><span class="token operator">/</span>scope<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>dependency<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>2、启动类application上添加mongodb支持注解<code>@EnableReactiveMongoRepositories</code><br>3、定义对象</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Document</span><span class="token punctuation">(</span>collection <span class="token operator">=</span> <span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Data</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token keyword">private</span> String id<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> age<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>4、定义仓库repository<br>创建UserRepository接口，继承<code>ReactiveMongoRepository</code>，并使用<code>@Repository</code>注解。<br>5、定义controller</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
+<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/user"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserController</span> <span class="token punctuation">{</span>
 
-/**
- * 创建用户
- * @param request
- * @return
- */
-public Mono&lt;ServerResponse&gt; createUser(ServerRequest request) {
-    Mono&lt;User&gt; user = request.bodyToMono(User.class);
-    return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(userRepository.saveAll(user), User.class);
-}
+    <span class="token keyword">private</span> <span class="token keyword">final</span> UserRepository userRepository<span class="token punctuation">;</span>
 
-/**
- * 根据id删除用户
- * @param request
- * @return
- */
-public Mono&lt;ServerResponse&gt; deleteUserById(ServerRequest request) {
-    String id = request.pathVariable("id");
-    return this.userRepository.findById(id).flatMap(user -&gt;
-        this.userRepository.delete(user).then(ServerResponse.ok().build())).switchIfEmpty(ServerResponse.notFound().build());
+    <span class="token comment" spellcheck="true">//官方推荐使用构造函数的方式注入依赖的bean</span>
+    <span class="token keyword">public</span> <span class="token function">UserController</span><span class="token punctuation">(</span>UserRepository userRepository<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>userRepository <span class="token operator">=</span> userRepository<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-}
-</code></pre>
-<p>}</p>
-<pre><code>在创建一个AllRouters类，并且类似通常写的RequestMapping，处理URL路由，内容如下：
-</code></pre>
-<p>import com.marvin.springboot.webfluxrouter.router.handler.UserHandler;<br>import org.springframework.context.annotation.Bean;<br>import org.springframework.context.annotation.Configuration;<br>import org.springframework.http.MediaType;<br>import org.springframework.web.reactive.function.server.RequestPredicates;<br>import org.springframework.web.reactive.function.server.RouterFunction;<br>import org.springframework.web.reactive.function.server.RouterFunctions;<br>import org.springframework.web.reactive.function.server.ServerResponse;</p>
-<p>/**</p>
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> Flux<span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token function">findAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> userRepository<span class="token punctuation">.</span><span class="token function">findAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"/stream/all"</span><span class="token punctuation">,</span> produces <span class="token operator">=</span> MediaType<span class="token punctuation">.</span>TEXT_EVENT_STREAM_VALUE<span class="token punctuation">)</span>
+    <span class="token keyword">public</span> Flux<span class="token operator">&lt;</span>User<span class="token operator">></span> <span class="token function">findAllByStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> userRepository<span class="token punctuation">.</span><span class="token function">findAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>6、本地安装配置mongodb<br>先<a target="_blank" rel="noopener" href="https://www.mongodb.com/download-center#enterprise">下载</a>mongodb，安装配置，根据平台自行查询，我的windows平台，参考的<a target="_blank" rel="noopener" href="https://www.cnblogs.com/weschen/p/8213746.html">https://www.cnblogs.com/weschen/p/8213746.html</a></p>
+<p><img src="/loading.gif" data-original="/images/java/mongodb1.png" alt="选择custom修改安装位置"></p>
+<p><img src="/loading.gif" data-original="/images/java/mongodb-log.png" alt="选择数据库和log位置"></p>
+<p><img src="/loading.gif" data-original="/images/java/mongodb-next.png" alt="next"></p>
+<p><img src="/loading.gif" data-original="/images/java/mongodb-next2.png" alt="next"></p>
+<p>执行<code>mongod --dbpath D:\MongoDB\data\db --logpath=D:\MongoDB\log\mongodb.log --logappend</code>启动mongodb</p>
+<p><img src="/loading.gif" data-original="/images/java/mongodb-start.png" alt="启动mongodb"></p>
+<p><img src="/loading.gif" data-original="/images/java/mongodb-connect.png" alt="命令行链接"></p>
+<p><img src="/loading.gif" data-original="/images/java/mongodb-test.png" alt="测试启动"></p>
+<p>7、mongodb数据库配置mongodb，在application.properties里添加如下配置</p>
+<pre class="line-numbers language-shell"><code class="language-shell">spring.data.mongodb.uri=mongodb://localhost:27017/webflux
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>8、启动项目并用客户端访问验证<br><img src="/loading.gif" data-original="/images/java/mongodb-project-connect.png" alt="http://127.0.0.1:8080/user"></p>
+<p><img src="/loading.gif" data-original="/images/java/mongodb-no-connect.png" alt="http://127.0.0.1:8080/user/stream/all"></p>
+<p>后续加入CURD的普通接口和stream接口。<br>添加validation<br>参数check，统一exception抛出及切面拦截。<br>具体代码参考<a href=""></a><br>全局异常：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> lombok<span class="token punctuation">.</span>Data<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 精诚所至，金石为开。
+ * 石の上にも三年;陽気の発する所金石亦透る。
+ * Faith moves mountains.
+ *
+ * @author 马海强
+ * @create 2018-07-10 22:54
+ * @desc ${DESCRIPTION}
+ **/</span>
+<span class="token annotation punctuation">@Data</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CheckException</span> <span class="token keyword">extends</span> <span class="token class-name">RuntimeException</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> serialVersionUID <span class="token operator">=</span> 1L<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 出错字段的名字
+     */</span>
+    <span class="token keyword">private</span> String fieldName<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 出错字段的值
+     */</span>
+    <span class="token keyword">private</span> String fieldValue<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">CheckException</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">CheckException</span><span class="token punctuation">(</span>String message<span class="token punctuation">,</span> Throwable cause<span class="token punctuation">,</span>
+            <span class="token keyword">boolean</span> enableSuppression<span class="token punctuation">,</span> <span class="token keyword">boolean</span> writableStackTrace<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>message<span class="token punctuation">,</span> cause<span class="token punctuation">,</span> enableSuppression<span class="token punctuation">,</span> writableStackTrace<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">CheckException</span><span class="token punctuation">(</span>String message<span class="token punctuation">,</span> Throwable cause<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>message<span class="token punctuation">,</span> cause<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">CheckException</span><span class="token punctuation">(</span>String message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">CheckException</span><span class="token punctuation">(</span>Throwable cause<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>cause<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token function">CheckException</span><span class="token punctuation">(</span>String fieldName<span class="token punctuation">,</span> String fieldValue<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>fieldName <span class="token operator">=</span> fieldName<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>fieldValue <span class="token operator">=</span> fieldValue<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参数检查公用方法：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> com<span class="token punctuation">.</span>marvin<span class="token punctuation">.</span>springboot<span class="token punctuation">.</span>webflux<span class="token punctuation">.</span>demo<span class="token punctuation">.</span>exception<span class="token punctuation">.</span>CheckException<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>stream<span class="token punctuation">.</span>Stream<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 精诚所至，金石为开。
+ * 石の上にも三年;陽気の発する所金石亦透る。
+ * Faith moves mountains.
+ *
+ * @author 马海强
+ * @create 2018-07-10 22:53
+ * @desc tool
+ **/</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CheckUtil</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> String<span class="token punctuation">[</span><span class="token punctuation">]</span> INVALID_NAMES <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"admin"</span><span class="token punctuation">,</span> <span class="token string">"guanliyuan"</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 用户名校验，不成功时抛出异常
+     * @param value
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">checkUserName</span><span class="token punctuation">(</span>String value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Stream<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>INVALID_NAMES<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>name <span class="token operator">-</span><span class="token operator">></span> name<span class="token punctuation">.</span><span class="token function">equalsIgnoreCase</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">findAny</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ifPresent</span><span class="token punctuation">(</span>name <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">CheckException</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>异常拦截切面：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> com<span class="token punctuation">.</span>marvin<span class="token punctuation">.</span>springboot<span class="token punctuation">.</span>webflux<span class="token punctuation">.</span>demo<span class="token punctuation">.</span>exception<span class="token punctuation">.</span>CheckException<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>http<span class="token punctuation">.</span>HttpStatus<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>http<span class="token punctuation">.</span>ResponseEntity<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>ControllerAdvice<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>ExceptionHandler<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>support<span class="token punctuation">.</span>WebExchangeBindException<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 精诚所至，金石为开。
+ * 石の上にも三年;陽気の発する所金石亦透る。
+ * Faith moves mountains.
+ *
+ * @author 马海强
+ * @create 2018-07-10 22:43
+ * @desc 异常处理切面
+ **/</span>
+<span class="token annotation punctuation">@ControllerAdvice</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CheckAdvice</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@ExceptionHandler</span><span class="token punctuation">(</span>WebExchangeBindException<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> ResponseEntity <span class="token function">handleBindException</span><span class="token punctuation">(</span>WebExchangeBindException e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ResponseEntity</span><span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token punctuation">(</span><span class="token function">toStr</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">,</span> HttpStatus<span class="token punctuation">.</span>BAD_REQUEST<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@ExceptionHandler</span><span class="token punctuation">(</span>CheckException<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> ResponseEntity <span class="token function">handleBindException</span><span class="token punctuation">(</span>CheckException e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ResponseEntity</span><span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token punctuation">(</span><span class="token function">toStr</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">,</span> HttpStatus<span class="token punctuation">.</span>BAD_REQUEST<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 把校验异常转换成字符串
+     * @param ex
+     * @return
+     */</span>
+    <span class="token keyword">private</span> String <span class="token function">toStr</span><span class="token punctuation">(</span>WebExchangeBindException ex<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> ex<span class="token punctuation">.</span><span class="token function">getFieldErrors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>e <span class="token operator">-</span><span class="token operator">></span> e<span class="token punctuation">.</span><span class="token function">getField</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">":"</span> <span class="token operator">+</span> e<span class="token punctuation">.</span><span class="token function">getDefaultMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>s1<span class="token punctuation">,</span> s2<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> s1 <span class="token operator">+</span> <span class="token string">"\n"</span> <span class="token operator">+</span> s2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 把校验异常转换成字符串
+     * @param ex
+     * @return
+     */</span>
+    <span class="token keyword">private</span> String <span class="token function">toStr</span><span class="token punctuation">(</span>CheckException ex<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> ex<span class="token punctuation">.</span><span class="token function">getFieldName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">":错误的值 "</span> <span class="token operator">+</span> ex<span class="token punctuation">.</span><span class="token function">getFieldValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>controller层加校验：</p>
+<pre class="line-numbers language-java"><code class="language-java"> <span class="token comment" spellcheck="true">/**
+     * 修改数据
+     * 存在的时候返回200，数据不存在的话返回404
+     */</span>
+    <span class="token annotation punctuation">@PutMapping</span><span class="token punctuation">(</span><span class="token string">"/{id}"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> Mono<span class="token operator">&lt;</span>ResponseEntity<span class="token operator">&lt;</span>User<span class="token operator">>></span> <span class="token function">updateUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@PathVariable</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">)</span> String id<span class="token punctuation">,</span> <span class="token annotation punctuation">@Valid</span> <span class="token annotation punctuation">@RequestBody</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        CheckUtil<span class="token punctuation">.</span><span class="token function">checkUserName</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>userRepository<span class="token punctuation">.</span><span class="token function">findById</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span>
+                <span class="token comment" spellcheck="true">//flatMat： 操作数据</span>
+            <span class="token punctuation">.</span><span class="token function">flatMap</span><span class="token punctuation">(</span>u <span class="token operator">-</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                u<span class="token punctuation">.</span><span class="token function">setAge</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span><span class="token function">getAge</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                u<span class="token punctuation">.</span><span class="token function">setName</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>userRepository<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>u<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span>
+                <span class="token comment" spellcheck="true">//map：转换数据</span>
+            <span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>u <span class="token operator">-</span><span class="token operator">></span> <span class="token keyword">new</span> <span class="token class-name">ResponseEntity</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>u<span class="token punctuation">,</span> HttpStatus<span class="token punctuation">.</span>OK<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">defaultIfEmpty</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ResponseEntity</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span>HttpStatus<span class="token punctuation">.</span>NOT_FOUND<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>测试：<br><img src="/loading.gif" data-original="/images/java/mongodb-pug.png" alt="参数校验"></p>
 <ul>
-<li><p>精诚所至，金石为开。</p>
-</li>
-<li><p>石の上にも三年;陽気の発する所金石亦透る。</p>
-</li>
-<li><p>Faith moves mountains.</p>
-</li>
-<li></li>
-<li><p>@author 马海强</p>
-</li>
-<li><p>@create 2018-07-26 22:45</p>
-</li>
-<li><p>@desc 路由</p>
-</li>
-<li><p>*/<br>@Configuration<br>public class AllRouters {</p>
-<p>  @Bean<br>  RouterFunction<serverresponse> userRouter(UserHandler handler) {</serverresponse></p>
-<pre><code>  return RouterFunctions.nest(
-    //相当于类上面的@RequestMapping("/user")
-    RequestPredicates.path("/user"),
-          //相当于方法上面的@RequestMapping，获取所有用户
-          RouterFunctions.route(RequestPredicates.GET(""), handler::getAllUser)
-          //添加用户
-          .andRoute(RequestPredicates.POST("").and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)), handler::createUser)
-          //删除用户
-          .andRoute(RequestPredicates.DELETE("/{id}"), handler::deleteUserById)
-
-  );
-</code></pre>
-<p>  }<br>}</p>
-<pre><code>运行程序，并且添加，列表，删除接口，完美~~~
-
-**实现数据校验功能**
-仍然使用上一节中的`CheckException`和`CheckUtil`两个类。
-修改UserHander：
-</code></pre>
-</li>
+<li>5.3 RouterFunction模式<br><strong>实现基本的增删改查</strong><br>除了上一节的User实体类，和UserRepository接口类两个，新建一个UserHandler类，内容如下：</li>
 </ul>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> com<span class="token punctuation">.</span>marvin<span class="token punctuation">.</span>springboot<span class="token punctuation">.</span>webfluxrouter<span class="token punctuation">.</span>router<span class="token punctuation">.</span>domain<span class="token punctuation">.</span>User<span class="token punctuation">;</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>marvin<span class="token punctuation">.</span>springboot<span class="token punctuation">.</span>webfluxrouter<span class="token punctuation">.</span>router<span class="token punctuation">.</span>repository<span class="token punctuation">.</span>UserRepository<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>http<span class="token punctuation">.</span>MediaType<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>stereotype<span class="token punctuation">.</span>Component<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>reactive<span class="token punctuation">.</span>function<span class="token punctuation">.</span>server<span class="token punctuation">.</span>ServerRequest<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>reactive<span class="token punctuation">.</span>function<span class="token punctuation">.</span>server<span class="token punctuation">.</span>ServerResponse<span class="token punctuation">;</span>
+<span class="token keyword">import</span> reactor<span class="token punctuation">.</span>core<span class="token punctuation">.</span>publisher<span class="token punctuation">.</span>Mono<span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> javax<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Resource<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 精诚所至，金石为开。
+ * 石の上にも三年;陽気の発する所金石亦透る。
+ * Faith moves mountains.
+ *
+ * @author 马海强
+ * @create 2018-07-26 22:32
+ * @desc UserHandler 
+ **/</span>
+
+<span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserHandler</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Resource</span>
+    <span class="token keyword">private</span> UserRepository userRepository<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 得到所有用户
+     * @param request
+     * @return
+     */</span>
+    <span class="token keyword">public</span> Mono<span class="token operator">&lt;</span>ServerResponse<span class="token operator">></span> <span class="token function">getAllUser</span><span class="token punctuation">(</span>ServerRequest request<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> ServerResponse<span class="token punctuation">.</span><span class="token function">ok</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">contentType</span><span class="token punctuation">(</span>MediaType<span class="token punctuation">.</span>APPLICATION_JSON_UTF8<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">body</span><span class="token punctuation">(</span>userRepository<span class="token punctuation">.</span><span class="token function">findAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> User<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 创建用户
+     * @param request
+     * @return
+     */</span>
+    <span class="token keyword">public</span> Mono<span class="token operator">&lt;</span>ServerResponse<span class="token operator">></span> <span class="token function">createUser</span><span class="token punctuation">(</span>ServerRequest request<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Mono<span class="token operator">&lt;</span>User<span class="token operator">></span> user <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">bodyToMono</span><span class="token punctuation">(</span>User<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> ServerResponse<span class="token punctuation">.</span><span class="token function">ok</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">contentType</span><span class="token punctuation">(</span>MediaType<span class="token punctuation">.</span>APPLICATION_JSON_UTF8<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">body</span><span class="token punctuation">(</span>userRepository<span class="token punctuation">.</span><span class="token function">saveAll</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">,</span> User<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 根据id删除用户
+     * @param request
+     * @return
+     */</span>
+    <span class="token keyword">public</span> Mono<span class="token operator">&lt;</span>ServerResponse<span class="token operator">></span> <span class="token function">deleteUserById</span><span class="token punctuation">(</span>ServerRequest request<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        String id <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">pathVariable</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>userRepository<span class="token punctuation">.</span><span class="token function">findById</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">flatMap</span><span class="token punctuation">(</span>user <span class="token operator">-</span><span class="token operator">></span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>userRepository<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>ServerResponse<span class="token punctuation">.</span><span class="token function">ok</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">switchIfEmpty</span><span class="token punctuation">(</span>ServerResponse<span class="token punctuation">.</span><span class="token function">notFound</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在创建一个AllRouters类，并且类似通常写的RequestMapping，处理URL路由，内容如下：</p>
+<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">import</span> com<span class="token punctuation">.</span>marvin<span class="token punctuation">.</span>springboot<span class="token punctuation">.</span>webfluxrouter<span class="token punctuation">.</span>router<span class="token punctuation">.</span>handler<span class="token punctuation">.</span>UserHandler<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Bean<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span>Configuration<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>http<span class="token punctuation">.</span>MediaType<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>reactive<span class="token punctuation">.</span>function<span class="token punctuation">.</span>server<span class="token punctuation">.</span>RequestPredicates<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>reactive<span class="token punctuation">.</span>function<span class="token punctuation">.</span>server<span class="token punctuation">.</span>RouterFunction<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>reactive<span class="token punctuation">.</span>function<span class="token punctuation">.</span>server<span class="token punctuation">.</span>RouterFunctions<span class="token punctuation">;</span>
+<span class="token keyword">import</span> org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>reactive<span class="token punctuation">.</span>function<span class="token punctuation">.</span>server<span class="token punctuation">.</span>ServerResponse<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">/**
+ * 精诚所至，金石为开。
+ * 石の上にも三年;陽気の発する所金石亦透る。
+ * Faith moves mountains.
+ *
+ * @author 马海强
+ * @create 2018-07-26 22:45
+ * @desc 路由
+ **/</span>
+<span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AllRouters</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Bean</span>
+    RouterFunction<span class="token operator">&lt;</span>ServerResponse<span class="token operator">></span> <span class="token function">userRouter</span><span class="token punctuation">(</span>UserHandler handler<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> RouterFunctions<span class="token punctuation">.</span><span class="token function">nest</span><span class="token punctuation">(</span>
+          <span class="token comment" spellcheck="true">//相当于类上面的@RequestMapping("/user")</span>
+          RequestPredicates<span class="token punctuation">.</span><span class="token function">path</span><span class="token punctuation">(</span><span class="token string">"/user"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token comment" spellcheck="true">//相当于方法上面的@RequestMapping，获取所有用户</span>
+                RouterFunctions<span class="token punctuation">.</span><span class="token function">route</span><span class="token punctuation">(</span>RequestPredicates<span class="token punctuation">.</span><span class="token function">GET</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">,</span> handler<span class="token operator">:</span><span class="token operator">:</span>getAllUser<span class="token punctuation">)</span>
+                <span class="token comment" spellcheck="true">//添加用户</span>
+                <span class="token punctuation">.</span><span class="token function">andRoute</span><span class="token punctuation">(</span>RequestPredicates<span class="token punctuation">.</span><span class="token function">POST</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">and</span><span class="token punctuation">(</span>RequestPredicates<span class="token punctuation">.</span><span class="token function">accept</span><span class="token punctuation">(</span>MediaType<span class="token punctuation">.</span>APPLICATION_JSON_UTF8<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> handler<span class="token operator">:</span><span class="token operator">:</span>createUser<span class="token punctuation">)</span>
+                <span class="token comment" spellcheck="true">//删除用户</span>
+                <span class="token punctuation">.</span><span class="token function">andRoute</span><span class="token punctuation">(</span>RequestPredicates<span class="token punctuation">.</span><span class="token function">DELETE</span><span class="token punctuation">(</span><span class="token string">"/{id}"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> handler<span class="token operator">:</span><span class="token operator">:</span>deleteUserById<span class="token punctuation">)</span>
+
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>运行程序，并且添加，列表，删除接口，完美~~~</p>
+<p><strong>实现数据校验功能</strong><br>仍然使用上一节中的<code>CheckException</code>和<code>CheckUtil</code>两个类。<br>修改UserHander：</p>
 <pre><code>
 </code></pre>
 
