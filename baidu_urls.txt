@@ -1,1 +1,1 @@
-https://qdhaiqiang.github.io/2021/03/19/hexo-qie-huan-matery-fei-zhu-liu-zhu-ti/
+https://qdhaiqiang.github.io/2021/04/06/nginx-fu-zai-jie-jue-connection-reset-by-peer-wen-ti/

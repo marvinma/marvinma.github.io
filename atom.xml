@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://qdhaiqiang.github.io/"/>
-  <updated>2021-03-22T13:48:17.078Z</updated>
+  <updated>2021-04-06T14:14:47.240Z</updated>
   <id>https://qdhaiqiang.github.io/</id>
   
   <author>
@@ -17,11 +17,31 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>nginx 负载+ tomcat Connection reset by peer 问题解决</title>
+    <link href="https://qdhaiqiang.github.io/2021/04/06/nginx-fu-zai-jie-jue-connection-reset-by-peer-wen-ti/"/>
+    <id>https://qdhaiqiang.github.io/2021/04/06/nginx-fu-zai-jie-jue-connection-reset-by-peer-wen-ti/</id>
+    <published>2021-04-06T14:10:00.000Z</published>
+    <updated>2021-04-06T14:14:47.240Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;服务端Connection reset by peer错误通过nginx代理解决&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/c2ea5e9692e2&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="nginx" scheme="https://qdhaiqiang.github.io/categories/nginx/"/>
+    
+    
+      <category term="nginx" scheme="https://qdhaiqiang.github.io/tags/nginx/"/>
+    
+  </entry>
+  
+  <entry>
     <title>hexo切换matery非主流主题</title>
     <link href="https://qdhaiqiang.github.io/2021/03/19/hexo-qie-huan-matery-fei-zhu-liu-zhu-ti/"/>
     <id>https://qdhaiqiang.github.io/2021/03/19/hexo-qie-huan-matery-fei-zhu-liu-zhu-ti/</id>
     <published>2021-03-18T16:31:27.000Z</published>
-    <updated>2021-03-22T13:48:17.078Z</updated>
+    <updated>2021-03-27T08:04:47.296Z</updated>
     
     <summary type="html">
     
@@ -29,7 +49,7 @@
     
     </summary>
     
-      <category term="博客搭建" scheme="https://qdhaiqiang.github.io/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
+      <category term="blog" scheme="https://qdhaiqiang.github.io/categories/blog/"/>
     
     
       <category term="hexo" scheme="https://qdhaiqiang.github.io/tags/hexo/"/>
@@ -43,7 +63,7 @@
     <link href="https://qdhaiqiang.github.io/2021/03/10/2020-nian-ge-ren-zong-jie/"/>
     <id>https://qdhaiqiang.github.io/2021/03/10/2020-nian-ge-ren-zong-jie/</id>
     <published>2021-03-10T14:51:45.000Z</published>
-    <updated>2021-03-21T13:55:07.590Z</updated>
+    <updated>2021-03-27T08:05:06.736Z</updated>
     
     <summary type="html">
     
@@ -52,7 +72,7 @@
     
     </summary>
     
-      <category term="博客" scheme="https://qdhaiqiang.github.io/categories/%E5%8D%9A%E5%AE%A2/"/>
+      <category term="生活" scheme="https://qdhaiqiang.github.io/categories/%E7%94%9F%E6%B4%BB/"/>
     
     
       <category term="生活" scheme="https://qdhaiqiang.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
@@ -64,7 +84,7 @@
     <link href="https://qdhaiqiang.github.io/2021/03/01/lao-ba-2020-nian-de-ru-zhang/"/>
     <id>https://qdhaiqiang.github.io/2021/03/01/lao-ba-2020-nian-de-ru-zhang/</id>
     <published>2021-03-01T08:40:51.000Z</published>
-    <updated>2021-03-21T13:55:07.597Z</updated>
+    <updated>2021-03-27T08:05:10.801Z</updated>
     
     <summary type="html">
     
@@ -73,7 +93,7 @@
     
     </summary>
     
-      <category term="博客" scheme="https://qdhaiqiang.github.io/categories/%E5%8D%9A%E5%AE%A2/"/>
+      <category term="生活" scheme="https://qdhaiqiang.github.io/categories/%E7%94%9F%E6%B4%BB/"/>
     
     
       <category term="生活" scheme="https://qdhaiqiang.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
@@ -169,7 +189,7 @@
     <link href="https://qdhaiqiang.github.io/2020/09/22/nginx-wen-jian-mu-lu-fu-wu-qi/"/>
     <id>https://qdhaiqiang.github.io/2020/09/22/nginx-wen-jian-mu-lu-fu-wu-qi/</id>
     <published>2020-09-22T15:00:00.000Z</published>
-    <updated>2021-03-22T14:02:31.116Z</updated>
+    <updated>2021-04-06T14:14:56.170Z</updated>
     
     <summary type="html">
     
@@ -405,29 +425,6 @@
     
     
       <category term="linux" scheme="https://qdhaiqiang.github.io/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>clojureScript页面国际化(i18n多语言)实现</title>
-    <link href="https://qdhaiqiang.github.io/2020/04/04/clojurescript-i18n/"/>
-    <id>https://qdhaiqiang.github.io/2020/04/04/clojurescript-i18n/</id>
-    <published>2020-04-04T14:04:45.000Z</published>
-    <updated>2021-03-22T16:00:12.336Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;clojurescript 国际化核心代码&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/97867dd37db5&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="cljs" scheme="https://qdhaiqiang.github.io/categories/cljs/"/>
-    
-    
-      <category term="cljs" scheme="https://qdhaiqiang.github.io/tags/cljs/"/>
-    
-      <category term="多语言" scheme="https://qdhaiqiang.github.io/tags/%E5%A4%9A%E8%AF%AD%E8%A8%80/"/>
     
   </entry>
   
