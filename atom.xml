@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://qdhaiqiang.github.io/"/>
-  <updated>2021-04-06T14:14:47.240Z</updated>
+  <updated>2021-04-06T14:57:55.526Z</updated>
   <id>https://qdhaiqiang.github.io/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>nginx代理解决api跨域问题，在线测试</title>
+    <link href="https://qdhaiqiang.github.io/2021/04/06/nginx-dai-li-jie-jue-api-kua-yu-wen-ti-bing-zai-xian-ce-shi/"/>
+    <id>https://qdhaiqiang.github.io/2021/04/06/nginx-dai-li-jie-jue-api-kua-yu-wen-ti-bing-zai-xian-ce-shi/</id>
+    <published>2021-04-06T15:00:00.000Z</published>
+    <updated>2021-04-06T14:57:55.526Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;nginx反向代理接口，配置跨域并做在线测试&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/d3d241f2629b&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="nginx" scheme="https://qdhaiqiang.github.io/categories/nginx/"/>
+    
+    
+      <category term="nginx" scheme="https://qdhaiqiang.github.io/tags/nginx/"/>
+    
+  </entry>
   
   <entry>
     <title>nginx 负载+ tomcat Connection reset by peer 问题解决</title>
@@ -398,26 +418,6 @@
     <summary type="html">
     
       &lt;p&gt;curl需要监控的接口，将结果发送邮件通知，也可以判断REST接口的返回数据内容。&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/4b025d8dc12a&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="运维" scheme="https://qdhaiqiang.github.io/categories/%E8%BF%90%E7%BB%B4/"/>
-    
-    
-      <category term="linux" scheme="https://qdhaiqiang.github.io/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux 配置sendmail发送邮件</title>
-    <link href="https://qdhaiqiang.github.io/2020/04/18/linux-pei-zhi-sendmail-fa-song-you-jian/"/>
-    <id>https://qdhaiqiang.github.io/2020/04/18/linux-pei-zhi-sendmail-fa-song-you-jian/</id>
-    <published>2020-04-18T13:41:04.000Z</published>
-    <updated>2021-03-22T14:29:17.560Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;linux服务器配置sendmail在命令行里方便发送邮件&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/e663f29f0eca&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     

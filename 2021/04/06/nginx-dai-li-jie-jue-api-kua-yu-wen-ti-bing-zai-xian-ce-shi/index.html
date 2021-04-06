@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="使用ngrok一分钟实现内网穿透, blog">
+    <meta name="keywords" content="nginx代理解决api跨域问题，在线测试, blog">
     <meta name="description" content="好记性不如烂笔头，一点点攒呗">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>使用ngrok一分钟实现内网穿透 | 回忆点滴</title>
+    <title>nginx代理解决api跨域问题，在线测试 | 回忆点滴</title>
     <link rel="icon" type="image/svg+xml" href="/logo.svg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -349,12 +349,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">使用ngrok一分钟实现内网穿透</h1>
+                    <h1 class="description center-align post-title">nginx代理解决api跨域问题，在线测试</h1>
                 </div>
             </div>
         </div>
@@ -470,20 +470,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/tools/">
-                                <span class="chip bg-color">tools</span>
-                            </a>
-                        
-                            <a href="/tags/server/">
-                                <span class="chip bg-color">server</span>
-                            </a>
-                        
-                            <a href="/tags/%E7%BD%91%E7%BB%9C/">
-                                <span class="chip bg-color">网络</span>
-                            </a>
-                        
-                            <a href="/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">
-                                <span class="chip bg-color">内网穿透</span>
+                            <a href="/tags/nginx/">
+                                <span class="chip bg-color">nginx</span>
                             </a>
                         
                     </div>
@@ -494,8 +482,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" class="post-category">
-                                工具使用
+                            <a href="/categories/nginx/" class="post-category">
+                                nginx
                             </a>
                         
                     </div>
@@ -507,7 +495,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2018-06-26
+                    2021-04-06
                 </div>
                 
 
@@ -516,14 +504,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.5k
+                    590
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    9 分
+                    2 分
                 </div>
                 
 
@@ -543,67 +531,85 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>一分钟有点夸张，5分钟总可以将本地web服务映射到公网了吧。<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4f008e2b7622">简书地址</a></p>
+                <p>nginx反向代理接口，配置跨域并做在线测试<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d3d241f2629b">简书地址</a></p>
 <span id="more"></span>
 
-<h2 id="1、-因果"><a href="#1、-因果" class="headerlink" title="1、 因果"></a>1、 因果</h2><p>周末作为纯后端，与前端同事联调微信jsapi的授权接口，听说就一个接口，不用数据库，不鸟权限的事，就是从服务端向微信发起一个请求token和ticket的接口，返回给前端而已。原计划半个小时搞定的，结果搞了三个多小时，如果不是参考原来一个项目里的实现，估计在加两个小时也不一定能搞出个成品。<br>因为微信限制调用频次，而且本地获取还需要加白名单，但是给前端同事联调的话还需要打包扔到一台公网服务器上，甚是麻烦啊，于是想这次弄完看看搞一个内网穿透，再有类似场景，直接使用。</p>
-<h2 id="2、名词解释"><a href="#2、名词解释" class="headerlink" title="2、名词解释"></a>2、名词解释</h2><h3 id="2-1、为什么需要内网穿透"><a href="#2-1、为什么需要内网穿透" class="headerlink" title="2.1、为什么需要内网穿透"></a>2.1、为什么需要内网穿透</h3><p>当内网中的主机没有静态IP地址要被外网稳定访问时可以使用内网穿透</p>
-<p>在互联网中唯一定位一台主机的方法是通过公网的IP地址，但固定IP是一种非常稀缺的资源，不可能给每个公司都分配一个，且许多中小公司不愿意为高昂的费用买单，多数公司直接或间接的拨号上网，电信部门会给接入网络的用户分配IP地址，以前上网用户少的时候基本分配的都是临时的静态IP地址，租约过了之后可能会更换成另一个IP地址，这样外网访问就不稳定，因为内网的静态IP地址一直变化，为了解决这个问题可以使用动态域名解析的办法变换域名指向的静态IP地址。但是现在越来越多的上网用户使得临时分配的静态IP地址也不够用了，电信部门开始分配一些虚拟的静态IP地址，这些IP是公网不能直接访问的，如以125开头的一些IP地址，以前单纯的动态域名解析就不好用了。</p>
-<h3 id="2-2、内网穿透的定义与障碍"><a href="#2-2、内网穿透的定义与障碍" class="headerlink" title="2.2、内网穿透的定义与障碍"></a>2.2、内网穿透的定义与障碍</h3><p>简单来说实现不同局域网内的主机之间通过互联网进行通信的技术叫内网穿透。</p>
-<p><strong>障碍一</strong>：位于局域网内的主机有两套 IP 地址，一套是局域网内的 IP 地址，通常是动态分配的，仅供局域网内的主机间通信使用；一套是经过网关转换后的外网 IP 地址，用于与外网程。</p>
-<p><img src="/loading.gif" data-original="/images/tools/ngrok-jiagou.png" alt="ngrok原理图"></p>
-<p><strong>障碍二：</strong>位于不同局域网内的两台主机，即使是知道了对方的 IP 地址和端口号，“一厢情愿”地将数据包发送过去，对方也是接收不到的。</p>
-<p>因为出于安全起见，除非是主机主动向对方发出了连接请求（这时会在该主机的数据结构中留下一条记录），否则，当主机接收到数据包时，如果在其数据结构中查询不到对应的记录，那些不请自来的数据包将会被丢弃。</p>
-<p><img src="/loading.gif" data-original="/images/tools/ngrok-jiagou2.png" alt="ngrok原理图2"></p>
-<p>解决办法：要想解决以上两大障碍，我们需要借助一台具有公网 IP 的服务器进行桥接。</p>
-<h2 id="3、-选型"><a href="#3、-选型" class="headerlink" title="3、 选型"></a>3、 选型</h2><h3 id="3-1、花生壳"><a href="#3-1、花生壳" class="headerlink" title="3.1、花生壳"></a>3.1、花生壳</h3><p>花生壳既是内网穿透软件、内网映射软件,也是端口映射软件。规模最大，较正规，完善。</p>
-<p>收费高，使用简单</p>
-<p>官网：<a target="_blank" rel="noopener" href="http://www.oray.com/">http://www.oray.com/</a></p>
-<p><img src="/loading.gif" data-original="/images/tools/ngrok-huashengke.png" alt="花生壳"></p>
-<h3 id="3-2、Nat123"><a href="#3-2、Nat123" class="headerlink" title="3.2、Nat123"></a>3.2、Nat123</h3><p>nat123是内网端口映射与动态域名解析软件，在内网启动映射后，可在外网访问连接内网网站等应用。整个网站我都没有找到客服电话，网友发了一些反面的评价</p>
-<p>收费，使用简单</p>
-<p>官网：<a target="_blank" rel="noopener" href="http://www.nat123.com/">http://www.nat123.com</a></p>
-<p><img src="/loading.gif" data-original="/images/tools/ngrok-nat123.png" alt="Nat123"></p>
-<h3 id="3-3、NATAPP"><a href="#3-3、NATAPP" class="headerlink" title="3.3、NATAPP"></a>3.3、NATAPP</h3><p>NATAPP基于ngrok的国内内网穿透服务，免费版会强制更换域名，临时用一下可以</p>
-<p>收费，使用简单</p>
-<p>官网：<a target="_blank" rel="noopener" href="https://natapp.cn/">https://natapp.cn/</a></p>
-<p><img src="/loading.gif" data-original="/images/tools/ngrok-NATAPP.png" alt="NATAPP"></p>
-<h3 id="3-4、frp与其它"><a href="#3-4、frp与其它" class="headerlink" title="3.4、frp与其它"></a>3.4、frp与其它</h3><p>frp 是一个高性能的反向代理应用，可以帮助您轻松地进行内网穿透，对外网提供服务，支持 tcp, http, https 等协议类型，并且 web 服务支持根据域名进行路由转发。</p>
-<p>开源免费</p>
-<p>使用相对复杂，需要代理服务器支持</p>
-<p>官网：<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp">https://github.com/fatedier/frp</a></p>
-<p>文档：<a target="_blank" rel="noopener" href="http://www.cnblogs.com/%E6%9F%A5%E7%9C%8B%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3">查看帮助文档</a>，<a target="_blank" rel="noopener" href="http://www.jianshu.com/p/e8e26bcc6fe6">简书示例</a></p>
-<p>利用处于内网或防火墙后的机器，对外网环境提供 http 或 https 服务。</p>
-<p>对于 http, https 服务支持基于域名的虚拟主机，支持自定义域名绑定，使多个域名可以共用一个80端口。</p>
-<p>利用处于内网或防火墙后的机器，对外网环境提供 tcp 和 udp 服务，例如在家里通过 ssh 访问处于公司内网环境内的主机。</p>
-<p><img src="/loading.gif" data-original="/images/tools/ngrok-frp.png" alt="frp"></p>
-<p>因为frp 仍然处于前期开发阶段，未经充分测试与验证，不推荐用于生产环境，所有我选择了ngrok，资料比较多。</p>
-<p>还有如圣剑内网通、ngrok（开源免费）、<a target="_blank" rel="noopener" href="https://post.smzdm.com/p/564494/">更多办法</a></p>
-<h3 id="3-5、ngrok"><a href="#3-5、ngrok" class="headerlink" title="3.5、ngrok"></a>3.5、ngrok</h3><p>ngrok是一个反向代理，通过在公共的端点和本地运行的Web服务器之间建立一个安全的通道。ngrok可捕获和分析所有通道上的流量，便于后期分析与响应。</p>
-<p>开源免费</p>
-<p>官网：<a target="_blank" rel="noopener" href="https://ngrok.com/">https://ngrok.com/</a></p>
-<p>源码：<a target="_blank" rel="noopener" href="https://github.com/inconshreveable/ngrok">https://github.com/inconshreveable/ngrok</a></p>
-<p><img src="/loading.gif" data-original="/images/tools/ngrok.png" alt="ngrok"></p>
-<p>ngrok1.x开源，ngrok2.x不开源</p>
-<p>ngrok使用go语言开发，源代码分为客户端与服务器端。</p>
-<p>国内免费服务器：<a target="_blank" rel="noopener" href="http://ngrok.ciqiuwl.cn/">http://ngrok.ciqiuwl.cn/</a>，更多免费服务器请大家挖掘，资源共享，我随时更新：）</p>
-<p>如果有服务器，仅客户端的使用是不复杂的，以上面的免费服务器为示例完成内网穿透</p>
-<p><strong>本屌丝一向没有多余钱给服务商，只能搜索免费的，最后选了ngrok</strong></p>
-<h2 id="3、-搭建"><a href="#3、-搭建" class="headerlink" title="3、 搭建"></a>3、 搭建</h2><p>搭建过程很简单，如果参考官网估计会走点弯路，因为windows对很多东西都有这要求。不过还好，找到了<a target="_blank" rel="noopener" href="http://ngrok.ciqiuwl.cn/">小米球ngrok</a>，让所谓的搭建好像没什么可以说的了。<br>复制一下使用教程。</p>
-<blockquote>
-<p><strong>●windows用户:</strong><br>1、下载windows版本的客户端，解压到你喜欢的目录<br>2、在命令行下进入到ngrok客户端目录下<br>3、执行 ngrok -config=ngrok.cfg -subdomain xxx 80 //(xxx 是你自定义的域名前缀)<br>4、如果开启成功 你就可以使用 xxx.ngrok.xiaomiqiu.cn 来访问你本机的 127.0.0.1:80 的服务啦<br>5、如果你自己有顶级域名，想通过自己的域名来访问本机的项目，那么先将自己的顶级域名解析到&gt;120.25.161.137(域名需要已备案哦)，然后执行 ngrok -config=ngrok.cfg -hostname xxx.xxx.xxx 80 //(xxx.xxx.xxx是你自定义的顶级域名)<br>6、如果开启成功 你就可以使用你的顶级域名来访问你本机的 127.0.0.1:80 的服务啦<br>7、如果失败 就加下交流群 反馈下问题 本屌会看看什么原因….吧<br>8、如果实在闲命令打开麻烦，windows版提供了一键启动脚本！直接启动即可（其它版本没有脚本）<br><strong>●linux用户:</strong><br>只在centos6.5 amd64 下测试没有问题<br>1、下载linux版本的客户端，解压到你喜欢的目录,注意：要给ngrok文件的可执行权限<br>2、在命令行下进入到ngrok客户端目录下<br>3、执行 ./ngrok -config=ngrok.cfg -subdomain xxx 80 //(xxx 是你自定义的域名前缀)<br>4、如果开启成功 你就可以使用 xxx.ngrok.xiaomiqiu.cn 来访问你本机的 127.0.0.1:80 的服务啦<br>5、如果你自己有顶级域名，想通过自己的域名来访问本机的项目，那么先将自己的顶级域名解析到120.25.161.137 (域名需要已备案哦),然后执行./ngrok -config=ngrok.cfg -hostname xxx.xxx.xxx 80 //(xxx.xxx.xxx是你自定义的顶级域名)<br>6、如果开启成功 你就可以使用你的顶级域名来访问你本机的 127.0.0.1:80 的服务啦<br>7、最近有很多同学提到需要linux32位与arm版本，这边也新增了两个客户端，由于本屌没有相应设备或环境，请自行测试，如果有问题，可以反馈。<br>8、如果失败 就加下交流群 反馈下问题 本屌会看看什么原因….吧<br><strong>●Mac 用户:</strong><br>1、呃,虽然提供了mac版的客户端，但是本屌没有mac，所有没有测试！<br>2、所以你下载了之后 自己琢磨吧(应该和linux的使用一样….吧)…….<br><strong>●其他使用方法</strong><br>1、呃,虽然搭建了ngrok服务，但是实际上上面的教程只介绍了一些简单的操作<br>2、ngrok还有许多使用方法，大家可以多了解探索一下<br>3、比如，同时开启多个服务，TCP端口转发，这些大家可以在.cfg上进行配置，本屌就不一一叙述了。</p>
-</blockquote>
-<h3 id="3-1、下载"><a href="#3-1、下载" class="headerlink" title="3.1、下载"></a>3.1、下载</h3><p><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1xiKDwzaTnOZFloKnGxSM6g">下载</a> windows 64位版（密码: p6n6），并解压，内包含3个文件：</p>
-<blockquote>
-<p>ngrok.cfg<br>ngrok.exe<br>小米球Ngrok启动工具.bat</p>
-</blockquote>
-<h3 id="3-2、运行本地web服务"><a href="#3-2、运行本地web服务" class="headerlink" title="3.2、运行本地web服务"></a>3.2、运行本地web服务</h3><p>我现在本地运行我的程序，在80端口上，运行起来以后访问我写的获取微信签名的接口：<br><img src="/loading.gif" data-original="/images/tools/ngrok-local-web.png" alt="本地web接口"></p>
-<h3 id="3-3、启动ngrok，配置映射"><a href="#3-3、启动ngrok，配置映射" class="headerlink" title="3.3、启动ngrok，配置映射"></a>3.3、启动ngrok，配置映射</h3><p><img src="/loading.gif" data-original="/images/tools/ngrok-start.png" alt="配置访问域名和端口"><br>回车，提示配置成功，显示出访问地址：</p>
-<p><img src="/loading.gif" data-original="/images/tools/ngrok-address.png" alt="显示出穿透地址"></p>
-<p>按照提示在浏览器访问一下:<br>![用公用域名访问](/images/tools/ngrok-public-host.png</p>
-<p>然后再观察ngrok的控制台，发现已经记录了一条访问access log：<br><img src="/loading.gif" data-original="/images/tools/ngrok-log.png" alt="ngrok控制台log"></p>
-<p>到此，穿透完毕，so easy！</p>
-<h2 id="鸣谢"><a href="#鸣谢" class="headerlink" title="鸣谢"></a>鸣谢</h2><p>感谢<a target="_blank" rel="noopener" href="http://ngrok.ciqiuwl.cn/">小米球</a>的分享<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c273d3009ded">这篇</a>文章用ngrok官网的指导使用也不错</p>
+<p>今天部署<a target="_blank" rel="noopener" href="https://github.com/wildfirechat">野火IM</a>的<a target="_blank" rel="noopener" href="https://github.com/wildfirechat/server">server端</a>，部署好了以后一直用ip+port测试接口的，测试没问题以后交给前端去使用。</p>
+<p>没想到反馈来的第一个问题居然是接口报跨域错误，想想也是，一般程序里也不会考虑这么全，给你把啥都搞好了。</p>
+<p>也许应该在接口层自己写filter或者加cros的注解一类的，但是我不熟悉项目的架构，加上时间紧迫，我就采取了nginx转发，在nginx做跨域配置的方案。虽然文章一大篇，但是还是自己给自己做一个笔记吧。</p>
+<h2 id="nginx代理配置"><a href="#nginx代理配置" class="headerlink" title="nginx代理配置"></a>nginx代理配置</h2><p>在nginx中增加以下配置，代理原来的ip+端口访问的api</p>
+<pre class="line-numbers language-nginx"><code class="language-nginx"><span class="token keyword">server</span> <span class="token punctuation">{</span>
+    <span class="token keyword">listen</span> <span class="token number">80</span><span class="token punctuation">;</span>
+    <span class="token keyword">server_name</span> imtest<span class="token punctuation">.</span>xxx<span class="token punctuation">.</span>com<span class="token punctuation">;</span>
+
+    <span class="token keyword">location</span> <span class="token operator">/</span> <span class="token punctuation">{</span>
+        <span class="token keyword">proxy_set_header</span> Host <span class="token variable">$host</span><span class="token punctuation">:</span><span class="token variable">$server_port</span><span class="token punctuation">;</span>
+        <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Real<span class="token operator">-</span>IP <span class="token variable">$remote_addr</span><span class="token punctuation">;</span>
+        <span class="token keyword">proxy_set_header</span> REMOTE<span class="token operator">-</span>HOST <span class="token variable">$remote_addr</span><span class="token punctuation">;</span>
+        <span class="token keyword">proxy_set_header</span> X<span class="token operator">-</span>Forwarded<span class="token operator">-</span>For <span class="token variable">$proxy_add_x_forwarded_for</span><span class="token punctuation">;</span>
+        <span class="token keyword">proxy_pass</span> <span class="token keyword">http</span><span class="token punctuation">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token number">127.0</span><span class="token punctuation">.</span><span class="token number">0.1</span><span class="token punctuation">:</span><span class="token number">18080</span><span class="token operator">/</span><span class="token punctuation">;</span>
+        <span class="token keyword">client_max_body_size</span> 100m<span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">#   指定允许跨域的方法，*代表所有</span>
+        <span class="token keyword">add_header</span> Access<span class="token operator">-</span>Control<span class="token operator">-</span><span class="token keyword">Allow</span><span class="token operator">-</span>Methods <span class="token operator">*</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">#   预检命令的缓存，如果不缓存每次会发送两次请求</span>
+        <span class="token keyword">add_header</span> Access<span class="token operator">-</span>Control<span class="token operator">-</span>Max<span class="token operator">-</span>Age <span class="token number">3600</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">#   带cookie请求需要加上这个字段，并设置为true</span>
+        <span class="token keyword">add_header</span> Access<span class="token operator">-</span>Control<span class="token operator">-</span><span class="token keyword">Allow</span><span class="token operator">-</span>Credentials <span class="token boolean">true</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">#   表示允许这个域跨域调用（客户端发送请求的域名和端口）</span>
+        <span class="token comment" spellcheck="true">#   $http_origin动态获取请求客户端请求的域   不用*的原因是带cookie的请求不支持*号</span>
+        <span class="token keyword">add_header</span> Access<span class="token operator">-</span>Control<span class="token operator">-</span><span class="token keyword">Allow</span><span class="token operator">-</span>Origin <span class="token variable">$http_origin</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">#   表示请求头的字段 动态获取</span>
+        <span class="token keyword">add_header</span> Access<span class="token operator">-</span>Control<span class="token operator">-</span><span class="token keyword">Allow</span><span class="token operator">-</span>Headers
+        <span class="token variable">$http_access_control_request_headers</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">#   OPTIONS预检命令，预检命令通过时才发送请求</span>
+        <span class="token comment" spellcheck="true">#   检查请求的类型是不是预检命令</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$request_method</span> <span class="token operator">=</span> OPTIONS<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token number">200</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="在线测试"><a href="#在线测试" class="headerlink" title="在线测试"></a>在线测试</h2><p>浏览器打开一个空白的tab，打开开发者模式，在console中，<strong>一次性copy</strong>以下代码，回车。进行测试</p>
+<ul>
+<li>get请求</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">var</span> xhr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">XMLHttpRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+xhr<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'GET'</span><span class="token punctuation">,</span> <span class="token string">'https://www.xxx.com/api/action?page=1&amp;size=10"'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+xhr<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// xhr.send({ form: 'data' });</span>
+xhr<span class="token punctuation">.</span>onload <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+ <span class="token comment" spellcheck="true">// 请求结束后,在此处写处理代码</span>
+    <span class="token keyword">var</span> xhr <span class="token operator">=</span> e<span class="token punctuation">.</span>target<span class="token punctuation">;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>xhr<span class="token punctuation">.</span>responseText<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/nginx/nginx-cros-test-get.png" alt="get请求测试"></p>
+<ul>
+<li>post请求</li>
+</ul>
+<pre class="line-numbers language-js"><code class="language-js"><span class="token keyword">var</span> params <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token string">"password"</span><span class="token punctuation">:</span> <span class="token string">"Test,123"</span><span class="token punctuation">,</span>
+  <span class="token string">"username"</span><span class="token punctuation">:</span> <span class="token string">"A0026212"</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> xhr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">XMLHttpRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+xhr<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'POST'</span><span class="token punctuation">,</span> <span class="token string">'https://testplattestapi.cosmoplat.com/cosmo/public/v1/admin/auth/token'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+xhr<span class="token punctuation">.</span><span class="token function">setRequestHeader</span><span class="token punctuation">(</span><span class="token string">'Content-Type'</span><span class="token punctuation">,</span> <span class="token string">'application/json'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+xhr<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>JSON<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+xhr<span class="token punctuation">.</span>onload <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+ <span class="token comment" spellcheck="true">// 请求结束后,在此处写处理代码</span>
+    <span class="token keyword">var</span> xhr <span class="token operator">=</span> e<span class="token punctuation">.</span>target<span class="token punctuation">;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>xhr<span class="token punctuation">.</span>responseText<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/loading.gif" data-original="/images/nginx/nginx-cros-test-post.png" alt="post接口测试"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000019227927">nginx解决跨域问题</a></p>
 
                 
             </div>
@@ -618,20 +624,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/tools/">
-                                    <span class="chip bg-color">tools</span>
-                                </a>
-                            
-                                <a href="/tags/server/">
-                                    <span class="chip bg-color">server</span>
-                                </a>
-                            
-                                <a href="/tags/%E7%BD%91%E7%BB%9C/">
-                                    <span class="chip bg-color">网络</span>
-                                </a>
-                            
-                                <a href="/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">
-                                    <span class="chip bg-color">内网穿透</span>
+                                <a href="/tags/nginx/">
+                                    <span class="chip bg-color">nginx</span>
                                 </a>
                             
                         </div>
@@ -1069,54 +1063,48 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2018/06/29/springboot-zhi-ding-shi-ren-wu-dong-tai-xiu-gai-biao-da-shi/">
+                <a href="/2021/04/06/nginx-dai-li-jie-jue-api-kua-yu-wen-ti-bing-zai-xian-ce-shi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="springboot 之 “定时任务-动态修改表达式”">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="nginx代理解决api跨域问题，在线测试">
                         
-                        <span class="card-title">springboot 之 “定时任务-动态修改表达式”</span>
+                        <span class="card-title">nginx代理解决api跨域问题，在线测试</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            定时任务主要用于定时发送邮件、夜间自动维护等。简书地址
+                            nginx反向代理接口，配置跨域并做在线测试简书地址
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2018-06-29
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-06
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/java/" class="post-category">
-                                    java
+                            <a href="/categories/nginx/" class="post-category">
+                                    nginx
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/java/">
-                        <span class="chip bg-color">java</span>
-                    </a>
-                    
-                    <a href="/tags/springboot/">
-                        <span class="chip bg-color">springboot</span>
-                    </a>
-                    
-                    <a href="/tags/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/">
-                        <span class="chip bg-color">定时任务</span>
+                    <a href="/tags/nginx/">
+                        <span class="chip bg-color">nginx</span>
                     </a>
                     
                 </div>
@@ -1130,31 +1118,31 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2018/06/15/react-native-an-zhuo-xiang-mu-gradle-you-hua/">
+                <a href="/2021/04/06/nginx-fu-zai-jie-jue-connection-reset-by-peer-wen-ti/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="react-native 安卓项目gradle优化">
+                        <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="nginx 负载+ tomcat Connection reset by peer 问题解决">
                         
-                        <span class="card-title">react-native 安卓项目gradle优化</span>
+                        <span class="card-title">nginx 负载+ tomcat Connection reset by peer 问题解决</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            大前端学习之安卓项目编译速度优化简书地址
+                            服务端Connection reset by peer错误通过nginx代理解决简书地址
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2018-06-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-06
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%A4%A7%E5%89%8D%E7%AB%AF/" class="post-category">
-                                    大前端
+                            <a href="/categories/nginx/" class="post-category">
+                                    nginx
                                 </a>
                             
                             
@@ -1164,12 +1152,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/react-native/">
-                        <span class="chip bg-color">react-native</span>
-                    </a>
-                    
-                    <a href="/tags/android/">
-                        <span class="chip bg-color">android</span>
+                    <a href="/tags/nginx/">
+                        <span class="chip bg-color">nginx</span>
                     </a>
                     
                 </div>

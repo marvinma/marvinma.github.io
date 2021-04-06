@@ -1,1 +1,1 @@
-https://qdhaiqiang.github.io/2021/04/06/nginx-fu-zai-jie-jue-connection-reset-by-peer-wen-ti/
+https://qdhaiqiang.github.io/2021/04/06/nginx-dai-li-jie-jue-api-kua-yu-wen-ti-bing-zai-xian-ce-shi/
