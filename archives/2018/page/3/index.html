@@ -31,7 +31,7 @@
 
 <meta name="generator" content="Hexo 5.4.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="stylesheet" href="/css/prism-material-dark.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-hopscotch.css" type="text/css">
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"><script src="/js/prism.js"></script>
 <script src="/js/prism-line-numbers.min.js"></script></head>
 
@@ -413,23 +413,27 @@
             <article class="cd-timeline-content" data-aos="fade-up">
                 <div class="article col s12 m6">
                     <div class="card">
-                        <a href="/2018/06/15/react-native-xiang-mu-bian-yi-da-bao-cheng-android-app/">
+                        <a href="/2018/06/15/react-native-an-zhuo-xiang-mu-gradle-you-hua/">
                             <div class="card-image">
                                 
                                 
-                                <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="react native项目编译，打包成android APP">
+                                <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="react-native 安卓项目gradle优化">
                                 
-                                <span class="card-title">react native项目编译，打包成android APP</span>
+                                <span class="card-title">react-native 安卓项目gradle优化</span>
                             </div>
                         </a>
                         <div class="card-content article-content">
                             <div class="summary block-with-text">
                                 
-                                编译react native项目，并最终打包成安卓的apk包简书地址
+                                大前端学习之安卓项目编译速度优化简书地址
 
 
-第十章 离线打包发布10.2 Android打包发布1）将js代码打包成jsbundle包
-在android工程中创建assets文件夹，可以用命令行创建，也可以手动
+
+profile报告命令
+./gradlew clean app:assembleDebug --profile
+
+
+1、debug环境禁止crashLytics上报2、避免Legacy Mul
                                 
                             </div>
                             <div class="publish-info">
