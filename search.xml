@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>git提交时随机产生几个用户充人数</title>
+      <link href="2021/04/24/git-ti-jiao-shi-sui-ji-chan-sheng-ji-ge-yong-hu-chong-ren-shu/"/>
+      <url>2021/04/24/git-ti-jiao-shi-sui-ji-chan-sheng-ji-ge-yong-hu-chong-ren-shu/</url>
+      
+        <content type="html"><![CDATA[<p><a href="https://www.jianshu.com/p/a21fa11d08c7">简书地址</a></p><span id="more"></span><p>这是一边比较表面的方案，能在面子上蒙一下人，记录一下。<br>一个可执行脚本<code>hc_commit</code>：</p><pre class="line-numbers language-shell"><code class="language-shell">#!/bin/bashr=$RANDOMm1=$[32767 * 1 / 9]m2=$[32767 * 2 / 9]m3=$[32767 * 3 / 9]m4=$[32767 * 4 / 9]m5=$[32767 * 5 / 9]#echo "random:" $r "middle:" $m1 " " $m2 " " $m3 " " $m4 " " $m5 " " $m6 " " $m7 " " $m8 " "if [ $r -ge $m4 ] && [ $r -lt $m5 ]then    git commit --author "A0027144 刘占宝 <hczt_215@3vyd.net>" $@elif [ $r -ge $m3 ] && [ $r -lt $m4 ]then    git commit --author "A0009866 沈友谊 <damon.shen@redcreation.net>" $@elif [ $r -ge $m2 ] && [ $r -lt $m3 ]then    git commit --author "A0022694 杨柳 <alisa.yang@redcreation.net>" $@elif [ $r -ge $m1 ] && [ $r -lt $m2 ]then    git commit --author "A0027130 刘大专 <hczt_200@3vyd.net>" $@else    git commit --author "A0027145 石磊文 <hczt_216@3vyd.net>" $@fi<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>给脚本执行权限</p><pre class="line-numbers language-shell"><code class="language-shell">chmod +x hc_commit<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>将脚本加到classpath里，即移动到<code>/usr/local/bin/</code>即可。<br>使用git commit时将git换成hc_commit</p><pre class="line-numbers language-shell"><code class="language-shell">hc_commit -m"bug:最后登录时间数据库少保存了8个小时,页面上显示时多加8小时"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>最后看log<br><img src="/loading.gif" data-original="/images/git/git-hc-commit1.png" alt="tig"></p><p>之所以说面上，是因为没有修改git config，所以看commit详情的话将会看到这些不同用户的提交config居然一样。<br><img src="/loading.gif" data-original="/images/git/git-hc-commit2.png" alt="tig detail"></p><p>当然，有两个办法：</p><ul><li><ol><li>将自己的git config设置为一个通用的，比如公司名称，团队邮箱</li></ol></li><li><ol start="2"><li>修改脚本，每个commit前，设置git config。</li></ol></li></ul><p>以后有需要再按需调整。 </p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 工具使用 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> git </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>使用总结之Java项目中常用的日期和时间工具类</title>
       <link href="2021/04/17/shi-yong-zong-jie-zhi-java-xiang-mu-zhong-chang-yong-de-ri-qi-he-shi-jian-gong-ju-lei/"/>
       <url>2021/04/17/shi-yong-zong-jie-zhi-java-xiang-mu-zhong-chang-yong-de-ri-qi-he-shi-jian-gong-ju-lei/</url>

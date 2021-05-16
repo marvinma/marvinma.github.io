@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://qdhaiqiang.github.io/"/>
-  <updated>2021-04-17T14:52:54.084Z</updated>
+  <updated>2021-05-16T15:17:22.385Z</updated>
   <id>https://qdhaiqiang.github.io/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>git提交时随机产生几个用户充人数</title>
+    <link href="https://qdhaiqiang.github.io/2021/04/24/git-ti-jiao-shi-sui-ji-chan-sheng-ji-ge-yong-hu-chong-ren-shu/"/>
+    <id>https://qdhaiqiang.github.io/2021/04/24/git-ti-jiao-shi-sui-ji-chan-sheng-ji-ge-yong-hu-chong-ren-shu/</id>
+    <published>2021-04-24T14:58:45.000Z</published>
+    <updated>2021-05-16T15:17:22.385Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/a21fa11d08c7&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="工具使用" scheme="https://qdhaiqiang.github.io/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/"/>
+    
+    
+      <category term="git" scheme="https://qdhaiqiang.github.io/tags/git/"/>
+    
+  </entry>
   
   <entry>
     <title>使用总结之Java项目中常用的日期和时间工具类</title>
@@ -405,28 +425,6 @@
     
     
       <category term="clojure" scheme="https://qdhaiqiang.github.io/tags/clojure/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>postgressql数据库+postgrest服务搭建</title>
-    <link href="https://qdhaiqiang.github.io/2020/06/21/postgressql-shu-ju-ku-postgrest-fu-wu-da-jian/"/>
-    <id>https://qdhaiqiang.github.io/2020/06/21/postgressql-shu-ju-ku-postgrest-fu-wu-da-jian/</id>
-    <published>2020-06-21T15:15:11.000Z</published>
-    <updated>2021-03-22T14:21:36.118Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在linux上搭建postgresql和postgrest服务&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/a71fa1207042&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="数据库" scheme="https://qdhaiqiang.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-    
-      <category term="postgrest" scheme="https://qdhaiqiang.github.io/tags/postgrest/"/>
-    
-      <category term="postgresql" scheme="https://qdhaiqiang.github.io/tags/postgresql/"/>
     
   </entry>
   

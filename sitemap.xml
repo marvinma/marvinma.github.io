@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://qdhaiqiang.github.io/2021/04/24/git-ti-jiao-shi-sui-ji-chan-sheng-ji-ge-yong-hu-chong-ren-shu/</loc>
+    
+    <lastmod>2021-05-16T15:17:22.385Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://qdhaiqiang.github.io/2020/02/06/clojure-lein-use-local-jar/</loc>
     
     <lastmod>2021-04-20T15:05:54.549Z</lastmod>
@@ -737,14 +744,14 @@
   </url>
   
   <url>
-    <loc>https://qdhaiqiang.github.io/friends/index.html</loc>
+    <loc>https://qdhaiqiang.github.io/contact/index.html</loc>
     
     <lastmod>2021-03-21T13:55:07.600Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://qdhaiqiang.github.io/contact/index.html</loc>
+    <loc>https://qdhaiqiang.github.io/friends/index.html</loc>
     
     <lastmod>2021-03-21T13:55:07.600Z</lastmod>
     

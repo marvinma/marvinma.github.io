@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="使用总结之Java项目中常用的日期和时间工具类, blog">
+    <meta name="keywords" content="git提交时随机产生几个用户充人数, blog">
     <meta name="description" content="好记性不如烂笔头，一点点攒呗">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>使用总结之Java项目中常用的日期和时间工具类 | 回忆点滴</title>
+    <title>git提交时随机产生几个用户充人数 | 回忆点滴</title>
     <link rel="icon" type="image/svg+xml" href="/logo.svg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -349,12 +349,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">使用总结之Java项目中常用的日期和时间工具类</h1>
+                    <h1 class="description center-align post-title">git提交时随机产生几个用户充人数</h1>
                 </div>
             </div>
         </div>
@@ -470,8 +470,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/java/">
-                                <span class="chip bg-color">java</span>
+                            <a href="/tags/git/">
+                                <span class="chip bg-color">git</span>
                             </a>
                         
                     </div>
@@ -482,8 +482,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/java/" class="post-category">
-                                java
+                            <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" class="post-category">
+                                工具使用
                             </a>
                         
                     </div>
@@ -495,7 +495,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-04-17
+                    2021-04-24
                 </div>
                 
 
@@ -504,14 +504,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    893
+                    302
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    1 分
                 </div>
                 
 
@@ -531,273 +531,57 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/64b92ec452f5">简书地址</a></p>
+                <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a21fa11d08c7">简书地址</a></p>
 <span id="more"></span>
 
-<p>备份2018年海尔创客汇项目上用到的一些日期和时间处理的工具函数，以备不时之需。</p>
-<p>直接贴代码</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">package</span> com<span class="token punctuation">.</span>hczt<span class="token punctuation">.</span>haier<span class="token punctuation">.</span>common<span class="token punctuation">.</span>utils<span class="token punctuation">;</span>
+<p>这是一边比较表面的方案，能在面子上蒙一下人，记录一下。<br>一个可执行脚本<code>hc_commit</code>：</p>
+<pre class="line-numbers language-shell"><code class="language-shell">#!/bin/bash
 
-<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>commons<span class="token punctuation">.</span>lang3<span class="token punctuation">.</span>StringUtils<span class="token punctuation">;</span>
-<span class="token keyword">import</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>commons<span class="token punctuation">.</span>lang3<span class="token punctuation">.</span>time<span class="token punctuation">.</span>DateUtils<span class="token punctuation">;</span>
+r=$RANDOM
 
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>text<span class="token punctuation">.</span>ParseException<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>text<span class="token punctuation">.</span>SimpleDateFormat<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Calendar<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Date<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>LinkedList<span class="token punctuation">;</span>
-<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>List<span class="token punctuation">;</span>
+m1=$[32767 * 1 / 9]
+m2=$[32767 * 2 / 9]
+m3=$[32767 * 3 / 9]
+m4=$[32767 * 4 / 9]
+m5=$[32767 * 5 / 9]
 
-<span class="token comment" spellcheck="true">/**
- * 精诚所至，金石为开。
- * 石の上にも三年;陽気の発する所金石亦透る。
- *
- * @Author mahaiqiang
- * @Create 2021/4/17 10:29 下午
- * @Desc TODO
- **/</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DateUtil</span> <span class="token keyword">extends</span> <span class="token class-name">DateUtils</span> <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">/**
-     * yyyy-MM-dd
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> String DATE_FORMAT    <span class="token operator">=</span> <span class="token string">"yyyy-MM-dd"</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">/**
-     * yyyy年MM月dd日
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> String DATE_FORMAT_CN <span class="token operator">=</span> <span class="token string">"yyyy年MM月dd日"</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">/**
-     * yyyy-MM-dd HH:mm:ss
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> String TIME_FORMAT    <span class="token operator">=</span> <span class="token string">"yyyy-MM-dd HH:mm:ss"</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">/**
-     * yyyy-MM-dd HH:mm
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> String TIME_FORMAT_MINUTE <span class="token operator">=</span> <span class="token string">"yyyy-MM-dd HH:mm"</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">/**
-     * yyyy年MM月dd日 HH:mm:ss
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> String TIME_FORMAT_CN        <span class="token operator">=</span> <span class="token string">"yyyy年MM月dd日 HH:mm:ss"</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">/**
-     * yyyy-MM
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> String MONTH_FORMAT          <span class="token operator">=</span> <span class="token string">"yyyy-MM"</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">/**
-     * yyyyMMdd
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> String DAY_FORMAT            <span class="token operator">=</span> <span class="token string">"yyyyMMdd"</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">/**
-     * yyyyMMddHHmmss
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> String TIME_FORMAT_FOR_NAME  <span class="token operator">=</span> <span class="token string">"yyyyMMddHHmmss"</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">/**
-     * yyMMddHHmmss
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> String TIME_FORMAT_FOR_SHORT <span class="token operator">=</span> <span class="token string">"yyMMddHHmmss"</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">/**
-     * yyyyMMddHHmmss
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">static</span> String TIME_FORMAT_TIME <span class="token operator">=</span> <span class="token string">"yyyyMMddHHmmss"</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> millisOfDay <span class="token operator">=</span> 86400000L<span class="token punctuation">;</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> Date <span class="token function">formateData</span><span class="token punctuation">(</span>Date date<span class="token punctuation">,</span> String format<span class="token punctuation">)</span> <span class="token keyword">throws</span> ParseException <span class="token punctuation">{</span>
-        SimpleDateFormat sdf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span>format<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> sdf<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span><span class="token function">date2str</span><span class="token punctuation">(</span>date<span class="token punctuation">,</span> format<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> Date <span class="token function">str2date</span><span class="token punctuation">(</span>String dateStr<span class="token punctuation">,</span> String format<span class="token punctuation">)</span> <span class="token keyword">throws</span> ParseException <span class="token punctuation">{</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>StringUtils<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>dateStr<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> null<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        SimpleDateFormat sdf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span>format<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> sdf<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>dateStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">date2str</span><span class="token punctuation">(</span>Date date<span class="token punctuation">,</span> String format<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        SimpleDateFormat sdf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span>format<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> sdf<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>date<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token comment" spellcheck="true">/**
-     * date format yyyy-MM-dd
-     *
-     * @param date
-     * @return
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">dateToSimpleDateFormat</span><span class="token punctuation">(</span>Date date<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        SimpleDateFormat sdf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span>DATE_FORMAT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> sdf<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>date<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> Date <span class="token function">addDate</span><span class="token punctuation">(</span>Date date<span class="token punctuation">,</span> <span class="token keyword">int</span> addDay<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Calendar c <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        c<span class="token punctuation">.</span><span class="token function">setTime</span><span class="token punctuation">(</span>date<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        c<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>Calendar<span class="token punctuation">.</span>DAY_OF_YEAR<span class="token punctuation">,</span> addDay<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> c<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    
-    <span class="token keyword">public</span> <span class="token keyword">static</span> Date <span class="token function">getOffsetDate</span><span class="token punctuation">(</span>Date now<span class="token punctuation">,</span> <span class="token keyword">int</span> field<span class="token punctuation">,</span> <span class="token keyword">int</span> offset<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        
-        Calendar calendar <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        calendar<span class="token punctuation">.</span><span class="token function">setTime</span><span class="token punctuation">(</span>now<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        
-        calendar<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>field<span class="token punctuation">,</span> offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        
-        <span class="token keyword">return</span> calendar<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> Date <span class="token function">dayStartTime</span><span class="token punctuation">(</span>Date date<span class="token punctuation">)</span> <span class="token keyword">throws</span> ParseException <span class="token punctuation">{</span>
-        String dateStr <span class="token operator">=</span> <span class="token function">date2str</span><span class="token punctuation">(</span>date<span class="token punctuation">,</span> DATE_FORMAT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token function">str2date</span><span class="token punctuation">(</span>dateStr<span class="token punctuation">,</span> DATE_FORMAT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-
-    <span class="token comment" spellcheck="true">/**
-     * 获取某一天的最后一秒
-     *
-     * @param date
-     * @return
-     * @throws Exception
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> Date <span class="token function">dayEndTime</span><span class="token punctuation">(</span>Date date<span class="token punctuation">)</span> <span class="token keyword">throws</span> ParseException <span class="token punctuation">{</span>
-        String dateStr <span class="token operator">=</span> <span class="token function">date2str</span><span class="token punctuation">(</span>date<span class="token punctuation">,</span> DATE_FORMAT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token function">str2date</span><span class="token punctuation">(</span>dateStr <span class="token operator">+</span> <span class="token string">" 23:59:59"</span><span class="token punctuation">,</span> TIME_FORMAT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token comment" spellcheck="true">/**
-     * start
-     * 本周开始时间戳 - 以星期一为本周的第一天
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> Date <span class="token function">getThisMonday</span><span class="token punctuation">(</span>Date date<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Calendar cal <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        cal<span class="token punctuation">.</span><span class="token function">setTime</span><span class="token punctuation">(</span>date<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> day_of_week <span class="token operator">=</span> cal<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>Calendar<span class="token punctuation">.</span>DAY_OF_WEEK<span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>day_of_week <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            day_of_week <span class="token operator">=</span> <span class="token number">7</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        cal<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>Calendar<span class="token punctuation">.</span>DATE<span class="token punctuation">,</span> <span class="token operator">-</span>day_of_week <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> cal<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token comment" spellcheck="true">/**
-     * 获取某时间段内所有的日期
-     *
-     * @return
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> List<span class="token operator">&lt;</span>Date<span class="token operator">></span> <span class="token function">findDatesBetweenTwoDate</span><span class="token punctuation">(</span>Date beginDate<span class="token punctuation">,</span> Date endDate<span class="token punctuation">)</span> <span class="token keyword">throws</span> ParseException <span class="token punctuation">{</span>
-        List<span class="token operator">&lt;</span>Date<span class="token operator">></span> dates <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LinkedList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>beginDate<span class="token punctuation">.</span><span class="token function">after</span><span class="token punctuation">(</span>endDate<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            beginDate <span class="token operator">=</span> DateUtil<span class="token punctuation">.</span><span class="token function">formateData</span><span class="token punctuation">(</span>beginDate<span class="token punctuation">,</span> DATE_FORMAT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            endDate <span class="token operator">=</span> DateUtil<span class="token punctuation">.</span><span class="token function">formateData</span><span class="token punctuation">(</span>endDate<span class="token punctuation">,</span> DATE_FORMAT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            dates<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>beginDate<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            Calendar calBegin <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            calBegin<span class="token punctuation">.</span><span class="token function">setTime</span><span class="token punctuation">(</span>beginDate<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            Calendar calEnd <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            calEnd<span class="token punctuation">.</span><span class="token function">setTime</span><span class="token punctuation">(</span>endDate<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">while</span> <span class="token punctuation">(</span>endDate<span class="token punctuation">.</span><span class="token function">after</span><span class="token punctuation">(</span>calBegin<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                calBegin<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>Calendar<span class="token punctuation">.</span>DAY_OF_MONTH<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                dates<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>calBegin<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> dates<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-
-    <span class="token comment" spellcheck="true">/**
-     * 获取某日期的前后的日期
-     *
-     * @param date         指定的日期
-     * @param interval     间隔的时间 正为之后的日期，负为之前的日期
-     * @param calendarUnit 间隔单位
-     * @return
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> Date <span class="token function">intervalOfDate</span><span class="token punctuation">(</span>Date date<span class="token punctuation">,</span> Integer interval<span class="token punctuation">,</span> Integer calendarUnit<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Calendar calendar <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        calendar<span class="token punctuation">.</span><span class="token function">setTime</span><span class="token punctuation">(</span>date<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        calendar<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>calendarUnit<span class="token punctuation">,</span> calendar<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>calendarUnit<span class="token punctuation">)</span> <span class="token operator">+</span> interval<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> calendar<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-
-    <span class="token comment" spellcheck="true">/**
-     * 判断时间是不是今天
-     * @param date
-     * @return    是返回true，不是返回false
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">boolean</span> <span class="token function">isToday</span><span class="token punctuation">(</span>Date date<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">//当前时间</span>
-        Date now <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        SimpleDateFormat sf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span><span class="token string">"yyyyMMdd"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">//获取今天的日期</span>
-        String nowDay <span class="token operator">=</span> sf<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>now<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token comment" spellcheck="true">//对比的时间</span>
-        String day <span class="token operator">=</span> sf<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>date<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> day<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>nowDay<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> String <span class="token function">formatDateTime</span><span class="token punctuation">(</span>String startTime<span class="token punctuation">,</span> String endTime<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        String startDate <span class="token operator">=</span> startTime<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        String endDate <span class="token operator">=</span> endTime<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        String beginTime <span class="token operator">=</span> startTime<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">,</span> <span class="token number">19</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        String overTime <span class="token operator">=</span> endTime<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">,</span> <span class="token number">19</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>startDate<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>endDate<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> startDate <span class="token operator">+</span> <span class="token string">" "</span> <span class="token operator">+</span> beginTime <span class="token operator">+</span> <span class="token string">" ~ "</span> <span class="token operator">+</span> overTime<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> startDate <span class="token operator">+</span> <span class="token string">" "</span> <span class="token operator">+</span> beginTime <span class="token operator">+</span> <span class="token string">" ~ "</span> <span class="token operator">+</span> endDate <span class="token operator">+</span> <span class="token string">" "</span> <span class="token operator">+</span> overTime<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Date date <span class="token operator">=</span> DateUtil<span class="token punctuation">.</span><span class="token function">intervalOfDate</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">30</span><span class="token punctuation">,</span> Calendar<span class="token punctuation">.</span>MINUTE<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>DateUtil<span class="token punctuation">.</span><span class="token function">date2str</span><span class="token punctuation">(</span>date<span class="token punctuation">,</span> DateUtil<span class="token punctuation">.</span>TIME_FORMAT<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token comment" spellcheck="true">/**
-     * 获取每天的开始时间 00:00:00:00
-     *
-     * @param date
-     * @return
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> Date <span class="token function">getStartTime</span><span class="token punctuation">(</span>Date date<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Calendar dateStart <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        dateStart<span class="token punctuation">.</span><span class="token function">setTime</span><span class="token punctuation">(</span>date<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        dateStart<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>Calendar<span class="token punctuation">.</span>HOUR_OF_DAY<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        dateStart<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>Calendar<span class="token punctuation">.</span>MINUTE<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        dateStart<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>Calendar<span class="token punctuation">.</span>SECOND<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> dateStart<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token comment" spellcheck="true">/**
-     * 获取每天的开始时间 23:59:59:999
-     *
-     * @param date
-     * @return
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> Date <span class="token function">getEndTime</span><span class="token punctuation">(</span>Date date<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Calendar dateEnd <span class="token operator">=</span> Calendar<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        dateEnd<span class="token punctuation">.</span><span class="token function">setTime</span><span class="token punctuation">(</span>date<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        dateEnd<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>Calendar<span class="token punctuation">.</span>HOUR_OF_DAY<span class="token punctuation">,</span> <span class="token number">23</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        dateEnd<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>Calendar<span class="token punctuation">.</span>MINUTE<span class="token punctuation">,</span> <span class="token number">59</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        dateEnd<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>Calendar<span class="token punctuation">.</span>SECOND<span class="token punctuation">,</span> <span class="token number">59</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> dateEnd<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token comment" spellcheck="true">/**
-     * 获取两个日期相隔天数
-     *
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> Long <span class="token function">daysBetweenDates</span><span class="token punctuation">(</span>Date date1<span class="token punctuation">,</span> Date date2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">long</span> tmp1 <span class="token operator">=</span> date1<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">long</span> tmp2 <span class="token operator">=</span> date2<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token punctuation">(</span>tmp2 <span class="token operator">-</span> tmp1<span class="token punctuation">)</span> <span class="token operator">/</span> millisOfDay<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+#echo "random:" $r "middle:" $m1 " " $m2 " " $m3 " " $m4 " " $m5 " " $m6 " " $m7 " " $m8 " "
+if [ $r -ge $m4 ] && [ $r -lt $m5 ]
+then
+    git commit --author "A0027144 刘占宝 <hczt_215@3vyd.net>" $@
+elif [ $r -ge $m3 ] && [ $r -lt $m4 ]
+then
+    git commit --author "A0009866 沈友谊 <damon.shen@redcreation.net>" $@
+elif [ $r -ge $m2 ] && [ $r -lt $m3 ]
+then
+    git commit --author "A0022694 杨柳 <alisa.yang@redcreation.net>" $@
+elif [ $r -ge $m1 ] && [ $r -lt $m2 ]
+then
+    git commit --author "A0027130 刘大专 <hczt_200@3vyd.net>" $@
+else
+    git commit --author "A0027145 石磊文 <hczt_216@3vyd.net>" $@
+fi
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>给脚本执行权限</p>
+<pre class="line-numbers language-shell"><code class="language-shell">chmod +x hc_commit
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>将脚本加到classpath里，即移动到<code>/usr/local/bin/</code>即可。<br>使用git commit时将git换成hc_commit</p>
+<pre class="line-numbers language-shell"><code class="language-shell">hc_commit -m"bug:最后登录时间数据库少保存了8个小时,页面上显示时多加8小时"
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>最后看log<br><img src="/loading.gif" data-original="/images/git/git-hc-commit1.png" alt="tig"></p>
+<p>之所以说面上，是因为没有修改git config，所以看commit详情的话将会看到这些不同用户的提交config居然一样。<br><img src="/loading.gif" data-original="/images/git/git-hc-commit2.png" alt="tig detail"></p>
+<p>当然，有两个办法：</p>
+<ul>
+<li><ol>
+<li>将自己的git config设置为一个通用的，比如公司名称，团队邮箱</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>修改脚本，每个commit前，设置git config。</li>
+</ol>
+</li>
+</ul>
+<p>以后有需要再按需调整。 </p>
 
                 
             </div>
@@ -812,8 +596,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/java/">
-                                    <span class="chip bg-color">java</span>
+                                <a href="/tags/git/">
+                                    <span class="chip bg-color">git</span>
                                 </a>
                             
                         </div>
@@ -1251,9 +1035,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/04/24/git-ti-jiao-shi-sui-ji-chan-sheng-ji-ge-yong-hu-chong-ren-shu/">
                     <div class="card-image">
@@ -1271,9 +1056,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-24
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-24
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1286,6 +1071,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -1304,13 +1090,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/04/17/springboot-zhi-jie-kou-jian-dan-jia-mi-he-yan-zheng/">
+                <a href="/2021/04/17/shi-yong-zong-jie-zhi-java-xiang-mu-zhong-chang-yong-de-ri-qi-he-shi-jian-gong-ju-lei/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Springboot之接口简单加密和验证">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="使用总结之Java项目中常用的日期和时间工具类">
                         
-                        <span class="card-title">Springboot之接口简单加密和验证</span>
+                        <span class="card-title">使用总结之Java项目中常用的日期和时间工具类</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1340,10 +1126,6 @@
                     
                     <a href="/tags/java/">
                         <span class="chip bg-color">java</span>
-                    </a>
-                    
-                    <a href="/tags/springboot/">
-                        <span class="chip bg-color">springboot</span>
                     </a>
                     
                 </div>
