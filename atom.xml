@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://qdhaiqiang.github.io/"/>
-  <updated>2021-05-16T15:17:22.385Z</updated>
+  <updated>2021-05-16T15:44:09.126Z</updated>
   <id>https://qdhaiqiang.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>mpvue小程序启动报错:&quot;Cannot read property &#39;platform&#39; of undefined&quot;</title>
+    <link href="https://qdhaiqiang.github.io/2021/05/12/mpvue-xiao-cheng-xu-qi-dong-bao-cuo-cannot-read-property-platform-of-undefined/"/>
+    <id>https://qdhaiqiang.github.io/2021/05/12/mpvue-xiao-cheng-xu-qi-dong-bao-cuo-cannot-read-property-platform-of-undefined/</id>
+    <published>2021-05-12T15:31:27.000Z</published>
+    <updated>2021-05-16T15:44:09.126Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;mpvue小程序启动时没有platform，因为mpvue-loading版本问题&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/d19ce0a1ba90&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="大前端" scheme="https://qdhaiqiang.github.io/categories/%E5%A4%A7%E5%89%8D%E7%AB%AF/"/>
+    
+    
+      <category term="mpvue" scheme="https://qdhaiqiang.github.io/tags/mpvue/"/>
+    
+      <category term="小程序" scheme="https://qdhaiqiang.github.io/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>git提交时随机产生几个用户充人数</title>
@@ -405,26 +427,6 @@
     
     
       <category term="微信" scheme="https://qdhaiqiang.github.io/tags/%E5%BE%AE%E4%BF%A1/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【转】Clojure 引用java文件 lein javac 报ClassNotFoundException</title>
-    <link href="https://qdhaiqiang.github.io/2020/07/23/zhuan-clojure-yin-yong-java-wen-jian-lein-javac-bao-classnotfoundexception/"/>
-    <id>https://qdhaiqiang.github.io/2020/07/23/zhuan-clojure-yin-yong-java-wen-jian-lein-javac-bao-classnotfoundexception/</id>
-    <published>2020-07-23T15:31:27.000Z</published>
-    <updated>2021-03-17T15:27:58.765Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在luminus web的clojure模板里直接使用java文件的正确姿势。&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/80e3fcb4267e&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="clojure" scheme="https://qdhaiqiang.github.io/categories/clojure/"/>
-    
-    
-      <category term="clojure" scheme="https://qdhaiqiang.github.io/tags/clojure/"/>
     
   </entry>
   
