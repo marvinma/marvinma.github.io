@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://qdhaiqiang.github.io/2021/06/13/reng-diao-shu-ju-xian-shi-yong-adb-wu-xian-lian-jie-she-bei-diao-shi-an-zhuo-ying-yong/</loc>
+    
+    <lastmod>2021-06-13T09:09:14.353Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://qdhaiqiang.github.io/galleries/mobilewallpaper/index.html</loc>
     
     <lastmod>2021-05-16T16:25:34.896Z</lastmod>
@@ -758,13 +765,6 @@
   </url>
   
   <url>
-    <loc>https://qdhaiqiang.github.io/friends/index.html</loc>
-    
-    <lastmod>2021-03-21T13:55:07.600Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://qdhaiqiang.github.io/contact/index.html</loc>
     
     <lastmod>2021-03-21T13:55:07.600Z</lastmod>
@@ -772,14 +772,21 @@
   </url>
   
   <url>
-    <loc>https://qdhaiqiang.github.io/categories/index.html</loc>
+    <loc>https://qdhaiqiang.github.io/friends/index.html</loc>
+    
+    <lastmod>2021-03-21T13:55:07.600Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://qdhaiqiang.github.io/archives/index.html</loc>
     
     <lastmod>2021-03-21T13:55:07.599Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://qdhaiqiang.github.io/archives/index.html</loc>
+    <loc>https://qdhaiqiang.github.io/categories/index.html</loc>
     
     <lastmod>2021-03-21T13:55:07.599Z</lastmod>
     

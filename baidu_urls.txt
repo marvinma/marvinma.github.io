@@ -1,1 +1,1 @@
-https://qdhaiqiang.github.io/2021/05/12/mpvue-xiao-cheng-xu-qi-dong-bao-cuo-cannot-read-property-platform-of-undefined/
+https://qdhaiqiang.github.io/2021/06/13/reng-diao-shu-ju-xian-shi-yong-adb-wu-xian-lian-jie-she-bei-diao-shi-an-zhuo-ying-yong/

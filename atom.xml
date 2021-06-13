@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://qdhaiqiang.github.io/"/>
-  <updated>2021-05-16T15:47:46.225Z</updated>
+  <updated>2021-06-13T09:09:14.353Z</updated>
   <id>https://qdhaiqiang.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>扔掉数据线，使用adb无限链接设备调试安卓应用</title>
+    <link href="https://qdhaiqiang.github.io/2021/06/13/reng-diao-shu-ju-xian-shi-yong-adb-wu-xian-lian-jie-she-bei-diao-shi-an-zhuo-ying-yong/"/>
+    <id>https://qdhaiqiang.github.io/2021/06/13/reng-diao-shu-ju-xian-shi-yong-adb-wu-xian-lian-jie-she-bei-diao-shi-an-zhuo-ying-yong/</id>
+    <published>2021-06-13T08:40:51.000Z</published>
+    <updated>2021-06-13T09:09:14.353Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;安卓无线连接电脑&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/c541c9f4ecab&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="大前端" scheme="https://qdhaiqiang.github.io/categories/%E5%A4%A7%E5%89%8D%E7%AB%AF/"/>
+    
+    
+      <category term="安卓" scheme="https://qdhaiqiang.github.io/tags/%E5%AE%89%E5%8D%93/"/>
+    
+  </entry>
   
   <entry>
     <title>mpvue小程序启动报错:&quot;Cannot read property &#39;platform&#39; of undefined&quot;</title>
@@ -407,26 +428,6 @@
     
     
       <category term="antd" scheme="https://qdhaiqiang.github.io/tags/antd/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>微信配置本地公众号开发环境</title>
-    <link href="https://qdhaiqiang.github.io/2020/08/06/wei-xin-pei-zhi-ben-di-gong-zhong-hao-kai-fa-huan-jing/"/>
-    <id>https://qdhaiqiang.github.io/2020/08/06/wei-xin-pei-zhi-ben-di-gong-zhong-hao-kai-fa-huan-jing/</id>
-    <published>2020-08-06T15:31:27.000Z</published>
-    <updated>2021-03-22T14:17:59.949Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;配置微信公众号的本地开发环境&lt;br&gt;&lt;a href=&quot;https://www.jianshu.com/p/05a58682cbac&quot;&gt;简书地址&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="cljs" scheme="https://qdhaiqiang.github.io/categories/cljs/"/>
-    
-    
-      <category term="微信" scheme="https://qdhaiqiang.github.io/tags/%E5%BE%AE%E4%BF%A1/"/>
     
   </entry>
   
